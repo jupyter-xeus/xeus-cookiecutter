@@ -2,8 +2,8 @@
 xeus-cookiecutter
 =================================================
 
-..image:: docs/xeus-cookiecutter.rst
-
+..image:: docs/xeus-cookiecutter.svg
+   :scale: 100 %
 
 
 .. image:: https://readthedocs.org/projects/xeus-cookiecutter/badge/?version=latest
