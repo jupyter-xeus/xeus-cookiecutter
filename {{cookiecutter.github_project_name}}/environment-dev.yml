@@ -1,0 +1,17 @@
+name: {{cookiecutter.conda_package_name}}
+channels:
+  - conda-forge
+dependencies:
+  # Build dependencies
+  - cmake
+  # Host dependencies
+  - xeus
+  - nlohmann_json
+  - cppzmq
+  - xtl>=0.7, <0.8
+  - debugpy
+  # Test dependencies
+  - pytest
+  - nbval
+  - ipympl
+  - jupyter_kernel_test

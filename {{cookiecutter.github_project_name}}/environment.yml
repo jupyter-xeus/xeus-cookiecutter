@@ -1,0 +1,8 @@
+name: {{cookiecutter.conda_package_name}}
+channels:
+  - conda-forge
+dependencies:
+  - {{cookiecutter.conda_package_name}}=0.1.0
+  - notebook
+  - ipywidgets>=7.6
+  - jupyterlab=3

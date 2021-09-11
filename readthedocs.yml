@@ -1,0 +1,2 @@
+conda:
+  file: xeus_cookiecutter-dev-requirements.yml
