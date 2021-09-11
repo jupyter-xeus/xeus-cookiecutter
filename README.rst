@@ -2,7 +2,7 @@
 xeus-cookiecutter
 =================================================
 
-..image:: docs/xeus-cookiecutter.svg
+.. image:: docs/xeus-cookiecutter.svg
    :scale: 100 %
 
 
