@@ -2,6 +2,10 @@
 xeus-cookiecutter
 =================================================
 
+..image:: docs/xeus-cookiecutter.rst
+
+
+
 .. image:: https://readthedocs.org/projects/xeus-cookiecutter/badge/?version=latest
         :target: http://xeus-cookiecutter.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status               
