@@ -14,11 +14,11 @@
 cmake_minimum_required(VERSION 3.1)
 
 if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    project(xeus-python-test)
+    project({{cookiecutter.cmake_package_name}}-test)
 
     enable_testing()
 
-    find_package(xeus-python REQUIRED CONFIG)
+    find_package({{cookiecutter.cmake_package_name}} REQUIRED CONFIG)
 endif ()
 
 message(STATUS "Forcing tests build type to Release")
@@ -78,36 +78,35 @@ find_package(Threads)
 
 include_directories(${GTEST_INCLUDE_DIRS} SYSTEM)
 
-set(XEUS_PYTHON_TESTS
+set({{cookiecutter.cmake_var_prefix}}_TESTS
     ../src/xutils.cpp
     test_debugger.cpp
     xeus_client.hpp
     xeus_client.cpp
 )
 
-add_executable(test_xeus_python ${XEUS_PYTHON_TESTS})
-if(XPYT_DOWNLOAD_GTEST OR GTEST_SRC_DIR)
-    add_dependencies(test_xeus_python gtest_main)
+add_executable(test_{{ cookiecutter.package_name|replace('-', '_') }} {{'${'}}{{cookiecutter.cmake_var_prefix}}_TESTS})
+if({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST OR GTEST_SRC_DIR)
+    add_dependencies(test_{{ cookiecutter.package_name|replace('-', '_') }} gtest_main)
 endif()
 
 if (APPLE)
-    set_target_properties(test_xeus_python PROPERTIES
+    set_target_properties(test_{{ cookiecutter.package_name|replace('-', '_') }} PROPERTIES
         MACOSX_RPATH ON
     )
 else()
-    set_target_properties(test_xeus_python PROPERTIES
+    set_target_properties(test_{{ cookiecutter.package_name|replace('-', '_') }} PROPERTIES
         BUILD_WITH_INSTALL_RPATH 1
         SKIP_BUILD_RPATH FALSE
     )
 endif()
 
-set_target_properties(test_xeus_python PROPERTIES
+set_target_properties(test_{{ cookiecutter.package_name|replace('-', '_') }} PROPERTIES
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
 
-include_directories(${PYTHON_INCLUDE_DIRS})
-target_link_libraries(test_xeus_python ${PYTHON_LIBRARIES} xeus ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
-target_include_directories(test_xeus_python PRIVATE ${XEUS_PYTHON_INCLUDE_DIR})
+target_link_libraries(test_{{ cookiecutter.package_name|replace('-', '_') }}  xeus ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_include_directories(test_{{ cookiecutter.package_name|replace('-', '_') }} PRIVATE {{'${'}}{{cookiecutter.cmake_var_prefix}}_INCLUDE_DIR})
 
-add_custom_target(xtest COMMAND test_xeus_python DEPENDS test_xeus_python)
+add_custom_target(xtest COMMAND test_{{ cookiecutter.package_name|replace('-', '_') }} DEPENDS test_{{ cookiecutter.package_name|replace('-', '_') }})
 

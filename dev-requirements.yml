@@ -1,0 +1,16 @@
+name: xeus-cookiecutter
+
+channels:
+  - conda-forge
+dependencies:
+  - make
+  - cmake
+  - python >=3.6
+  - cookiecutter
+  - pytest-cookies
+  - pytest
+  - xeus
+  - xtl
+  - sh
+  - nlohmann_json
+  - cppzmq

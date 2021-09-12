@@ -1,6 +1,5 @@
 * xeus-cookiecutter version:
 * Operating System:
-* Compiler:
 
 ### Description
 

@@ -8,9 +8,6 @@ Welcome to xeus-cookiecutter's documentation!
    readme
    installation
    usage
-   auto_examples/index.rst
-   tutorials/index.rst
-   theapi
    contributing
    authors
    history

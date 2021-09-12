@@ -19,7 +19,7 @@
 
 namespace nl = nlohmann;
 
-namespace xwren
+namespace {{cookiecutter.cpp_namespace}}
 {
  
 
@@ -96,8 +96,8 @@ namespace xwren
         nl::json result;
         result["status"] = "ok";
         result["found"] = true;
-        result["data"] = {{"text/plain", ""}};
-        result["metadata"] = {{"text/plain", ""}};
+        result["data"] = nl::json::object();
+        result["metadata"] = nl::json::object();
         return result;    
     }
 

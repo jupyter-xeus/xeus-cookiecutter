@@ -9,23 +9,23 @@
 ############################################################################
 
 cmake_minimum_required(VERSION 3.4.3)
-project(xeus-wren)
+project({{cookiecutter.cmake_project_name}})
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
-set(XEUS_WREN_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set({{cookiecutter.cmake_var_prefix}}_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Versionning
 # ===========
 
-file(STRINGS "${XEUS_WREN_INCLUDE_DIR}/xeus-wren/xeus_wren_config.hpp" xwren_version_defines
-     REGEX "#define XWREN_VERSION_(MAJOR|MINOR|PATCH)")
-foreach (ver ${xwren_version_defines})
-    if (ver MATCHES "#define XWREN_VERSION_(MAJOR|MINOR|PATCH) +([^ ]+)$")
-        set(XWREN_VERSION_${CMAKE_MATCH_1} "${CMAKE_MATCH_2}" CACHE INTERNAL "")
+file(STRINGS "{{'${'}}{{cookiecutter.cmake_var_prefix}}_INCLUDE_DIR}/{{cookiecutter.cpp_root_folder}}/{{cookiecutter.config_file_name}}.hpp" version_defines
+     REGEX "#define {{cookiecutter.cpp_macro_prefix}}_VERSION_(MAJOR|MINOR|PATCH)")
+foreach (ver ${version_defines})
+    if (ver MATCHES "#define {{cookiecutter.cpp_macro_prefix}}_VERSION_(MAJOR|MINOR|PATCH) +([^ ]+)$")
+        set({{cookiecutter.cpp_macro_prefix}}_VERSION_${CMAKE_MATCH_1} "${CMAKE_MATCH_2}" CACHE INTERNAL "")
     endif ()
 endforeach ()
 set(${PROJECT_NAME}_VERSION
-    ${XWREN_VERSION_MAJOR}.${XWREN_VERSION_MINOR}.${XWREN_VERSION_PATCH})
+    {{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_MAJOR}.{{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_MINOR}.{{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_PATCH})
 message(STATUS "Building xeus-wren v${${PROJECT_NAME}_VERSION}")
 
 # Configuration
@@ -33,50 +33,48 @@ message(STATUS "Building xeus-wren v${${PROJECT_NAME}_VERSION}")
 
 include(GNUInstallDirs)
 
-if (NOT DEFINED XWREN_KERNELSPEC_PATH)
-    set(XWREN_KERNELSPEC_PATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/")
+if (NOT DEFINED {{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH)
+    set({{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/")
 endif ()
 
-if (NOT DEFINED XWREN_LUA_EXTRA_PACKAGE_PATH)
-    set(XWREN_LUA_EXTRA_PACKAGE_PATH "${CMAKE_INSTALL_PREFIX}/share/jupyter/kernels/xwren/wren_packages")
-endif ()
+
 
 configure_file (
-    "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/xwren/kernel.json.in"
-    "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/xwren/kernel.json"
+    "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/{{cookiecutter.kernel_name}}/kernel.json.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/{{cookiecutter.kernel_name}}/kernel.json"
 )
 
 # Build options
 # =============
 
 # Compilation options
-OPTION(XWREN_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
-OPTION(XWREN_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
+OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
+OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
 
-option(XWREN_BUILD_STATIC "Build xeus-wren static library" ON)
-OPTION(XWREN_BUILD_SHARED "Split xwren build into executable and library" ON)
-OPTION(XWREN_BUILD_XWREN_EXECUTABLE "Build the xwren executable" ON)
+option({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC "Build {{cookiecutter.cmake_project_name}} static library" ON)
+OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED "Split {{cookiecutter.binary_name}} build into executable and library" ON)
+OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE "Build the {{cookiecutter.binary_name}} executable" ON)
 
-OPTION(XWREN_USE_SHARED_XEUS "Link xwren  with the xeus shared library (instead of the static library)" ON)
-OPTION(XWREN_USE_SHARED_XEUS_WREN "Link xwren  with the xeus shared library (instead of the static library)" ON)
+OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
+OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 
 # Test options
-OPTION(XWREN_BUILD_TESTS "xeus-wren test suite" OFF)
-OPTION(XWREN_DOWNLOAD_GTEST "build gtest from downloaded sources" OFF)
+OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS "xeus-wren test suite" OFF)
+OPTION({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST "build gtest from downloaded sources" OFF)
 
 
 
 if(EMSCRIPTEN)
     message("Build with emscripten")
-    SET(XWREN_DISABLE_ARCH_NATIVE ON)
-    SET(XWREN_DISABLE_TUNE_GENERIC ON)
-    SET(XWREN_BUILD_STATIC ON)
-    SET(XWREN_BUILD_SHARED OFF)
-    SET(XWREN_BUILD_XWREN_EXECUTABLE OFF)
-    SET(XWREN_USE_SHARED_XEUS OFF)
-    SET(XWREN_USE_SHARED_XEUS_WREN OFF)
-    SET(XWREN_BUILD_TESTS OFF)
-    SET(XWREN_DOWNLOAD_GTEST OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE ON)
+    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC ON)
+    SET({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC ON)
+    SET({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS OFF)
+    SET({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST OFF)
 endif()
 
 
@@ -109,9 +107,9 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     if(NOT EMSCRIPTEN)    
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     endif()
-    if (XWREN_DISABLE_ARCH_NATIVE AND NOT XWREN_DISABLE_TUNE_GENERIC)
+    if ({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE AND NOT {{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=generic")
-    elseif (XWREN_DISABLE_TUNE_GENERIC)
+    elseif ({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
@@ -164,10 +162,7 @@ if(EMSCRIPTEN)
     # ENV (https://github.com/emscripten-core/emscripten/commit/6d9681ad04f60b41ef6345ab06c29bbc9eeb84e0)
     set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[ENV']\"")
 
-    # filesystem
-    file(COPY asset_dir DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} --embed-file asset_dir")
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FEATURES}")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${EMSCRIPTEN_FEATURES} ---proxy-to-worker")
@@ -176,31 +171,16 @@ endif()
 # Source files
 # ============
 
-set(XEUS_WREN_SRC
-    external/wren/src/vm/wren_compiler.c
-    external/wren/src/vm/wren_primitive.c
-    external/wren/src/vm/wren_vm.c
-    external/wren/src/vm/wren_core.c
-    external/wren/src/vm/wren_utils.c
-    external/wren/src/vm/wren_debug.c
-    external/wren/src/vm/wren_value.c
-    external/wren/src/optional/wren_opt_meta.c
-    external/wren/src/optional/wren_opt_random.c
-    src/xinterpreter.cpp
+set({{cookiecutter.cmake_var_prefix}}_HEADERS
+    include/{{cookiecutter.cpp_root_folder}}/{{cookiecutter.config_file_name}}.hpp
+    include/{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp
 )
 
-set(WREN_INCLUDE_DIR external/wren/src/include/)
-set(WREN_SRC_DIR external/wren/src/vm/)
-set(WREN_OPT_SRC_DIR external/wren/src/optional/)
-
-set(XEUS_WREN_HEADERS
-    external/wren/src/include/wren.hpp
-    external/wren/src/include/wren.h
-    include/xeus-wren/xeus_wren_config.hpp
-    include/xeus-wren/xinterpreter.hpp
+set({{cookiecutter.cmake_var_prefix}}_SRC
+    src/xinterpreter.cpp 
 )
 
-set(XWREN_SRC
+set({{cookiecutter.cmake_var_prefix}}_MAIN_SRC
     src/main.cpp
 )
 
@@ -215,7 +195,7 @@ string(TOUPPER "${CMAKE_BUILD_TYPE}" U_CMAKE_BUILD_TYPE)
 
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib; ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-macro(xwren_set_common_options target_name)
+macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
     if (MSVC)
         target_compile_options(${target_name} PUBLIC /wd4251 /wd4141)
         target_compile_options(${target_name} PUBLIC /wd4018 /wd4267 /wd4715 /wd4146 /wd4129)
@@ -228,9 +208,9 @@ macro(xwren_set_common_options target_name)
         target_compile_options(${target_name} PUBLIC -Wunused-parameter -Wextra -Wreorder)
 
         # Mtune generic/native
-        if (XWREN_DISABLE_ARCH_NATIVE AND NOT XWREN_DISABLE_TUNE_GENERIC)
+        if ({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE AND NOT {{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
             target_compile_options(${target_name} PUBLIC -mtune=generic)
-        elseif (XWREN_DISABLE_TUNE_GENERIC)
+        elseif ({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
         else ()
             target_compile_options(${target_name} PUBLIC -march=native)
         endif ()
@@ -261,17 +241,17 @@ macro(xwren_set_common_options target_name)
 endmacro()
 
 # Common macro kernels (xwren )
-macro(xwren_set_kernel_options target_name)
+macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
    
 
-    if (XWREN_USE_SHARED_XEUS_WREN)
-        target_link_libraries(${target_name} PRIVATE xeus-wren)
+    if ({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}})
+        target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}})
 
         if(CMAKE_DL_LIBS)
             target_link_libraries(${target_name} PRIVATE ${CMAKE_DL_LIBS} util)
         endif()
     else ()
-        target_link_libraries(${target_name} PRIVATE xeus-wren-static)
+        target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}}-static)
     endif()
 
     find_package(Threads) # TODO: add Threads as a dependence of xeus or xeus-static?
@@ -279,40 +259,39 @@ macro(xwren_set_kernel_options target_name)
 endmacro()
 
 # Common macro for shared and static library xeus-wren
-macro(xwren_create_target target_name linkage output_name)
+macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage output_name)
     string(TOUPPER "${linkage}" linkage_upper)
 
     if (NOT ${linkage_upper} MATCHES "^(SHARED|STATIC)$")
         message(FATAL_ERROR "Invalid library linkage: ${linkage}")
     endif ()
 
-    add_library(${target_name} ${linkage_upper} ${XEUS_WREN_SRC} ${XEUS_WREN_HEADERS})
-    xwren_set_common_options(${target_name})
+    add_library(${target_name} ${linkage_upper} {{'${'}}{{cookiecutter.cmake_var_prefix}}_SRC} {{'${'}}{{cookiecutter.cmake_var_prefix}}_HEADERS})
+    {{cookiecutter.cmake_var_prefix|lower}}_set_common_options(${target_name})
 
     set_target_properties(${target_name} PROPERTIES
-                          PUBLIC_HEADER "${XEUS_WREN_HEADERS}"
+                          PUBLIC_HEADER "{{'${'}}{{cookiecutter.cmake_var_prefix}}_HEADERS}"
                           PREFIX ""
                           VERSION ${${PROJECT_NAME}_VERSION}
-                          SOVERSION ${XWREN_VERSION_MAJOR}
+                          SOVERSION {{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_MAJOR}
                           OUTPUT_NAME "lib${output_name}")
 
-    target_compile_definitions(${target_name} PUBLIC "XEUS_WREN_EXPORTS")
+    target_compile_definitions(${target_name} PUBLIC "{{cookiecutter.cpp_macro_prefix}}_EXPORTS")
 
     target_compile_features(${target_name} PRIVATE cxx_std_17)
 
     target_include_directories(${target_name}
                                PUBLIC
-                               ${PYTHON_INCLUDE_DIRS}
-                               $<BUILD_INTERFACE:${XEUS_WREN_INCLUDE_DIR};${WREN_INCLUDE_DIR};${WREN_SRC_DIR};${WREN_OPT_SRC_DIR}>
+                               $<BUILD_INTERFACE:{{'${'}}{{cookiecutter.cmake_var_prefix}}_INCLUDE_DIR}>
                                $<INSTALL_INTERFACE:include>)
 
-    if (XWREN_USE_SHARED_XEUS)
-        set(XWREN_XEUS_TARGET xeus)
+    if ({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS)
+        set({{cookiecutter.cmake_var_prefix}}_XEUS_TARGET xeus)
     else ()
-        set(XWREN_XEUS_TARGET xeus-static)
+        set({{cookiecutter.cmake_var_prefix}}_XEUS_TARGET xeus-static)
     endif ()
 
-    target_link_libraries(${target_name} PUBLIC ${XWREN_XEUS_TARGET} xtl )
+    target_link_libraries(${target_name} PUBLIC {{'${'}}{{cookiecutter.cmake_var_prefix}}_XEUS_TARGET} xtl )
     if (WIN32 OR CYGWIN)
         # 
     elseif (APPLE)
@@ -324,44 +303,43 @@ macro(xwren_create_target target_name linkage output_name)
 
 endmacro()
 
-# xeus-wren
+# {{cookiecutter.library_name}}
 # ===========
 
-set(XEUS_WREN_TARGETS "")
+set({{cookiecutter.cmake_var_prefix}}_TARGETS "")
 
-if (XWREN_BUILD_SHARED)
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
     # Build libraries
-    xwren_create_target(xeus-wren SHARED xeus-wren)
-    list(APPEND XEUS_WREN_TARGETS xeus-wren)
+    {{cookiecutter.cmake_var_prefix|lower}}_create_target({{cookiecutter.library_name}} SHARED {{cookiecutter.library_name}})
+    list(APPEND {{cookiecutter.cmake_var_prefix}}_TARGETS {{cookiecutter.library_name}})
 endif ()
 
-if (XWREN_BUILD_STATIC)
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC)
     # On Windows, a static library should use a different output name
     # to avoid the conflict with the import library of a shared one.
     if (CMAKE_HOST_WIN32)
-        xwren_create_target(xeus-wren-static STATIC xeus-wren-static)
+        {{cookiecutter.cmake_var_prefix|lower}}_create_target({{cookiecutter.library_name}}-static STATIC {{cookiecutter.library_name}}-static)
     else ()
-        xwren_create_target(xeus-wren-static STATIC xeus-wren)
+        {{cookiecutter.cmake_var_prefix|lower}}_create_target({{cookiecutter.library_name}}-static STATIC {{cookiecutter.library_name}})
     endif ()
-    list(APPEND XEUS_WREN_TARGETS xeus-wren-static)
+    list(APPEND {{cookiecutter.cmake_var_prefix}}_TARGETS {{cookiecutter.library_name}}-static)
 endif ()
 
-# xwren
+# {{cookiecutter.library_name}}
 # =======
-
-if (XWREN_BUILD_XWREN_EXECUTABLE)
-    add_executable(xwren ${XWREN_SRC})
-    target_compile_features(xwren PRIVATE cxx_std_17)
-    xwren_set_common_options(xwren)
-    xwren_set_kernel_options(xwren)
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
+    add_executable({{cookiecutter.binary_name}} {{'${'}}{{cookiecutter.cmake_var_prefix}}_MAIN_SRC})
+    target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_17)
+    {{cookiecutter.cmake_var_prefix|lower}}_set_common_options({{cookiecutter.binary_name}})
+    {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
 endif()
 
 
 
 
 if(EMSCRIPTEN)
-    add_executable(xeus_wren src/main_emscripten.cpp )
-    target_compile_features(xeus_wren PRIVATE cxx_std_17)
+    add_executable({{cookiecutter.binary_name}}_emscripten src/main_emscripten.cpp )
+    target_compile_features({{cookiecutter.binary_name}}_emscripten PRIVATE cxx_std_17)
 endif()
 
 
@@ -369,11 +347,11 @@ endif()
 # Tests
 # =====
 
-if(XWREN_DOWNLOAD_GTEST OR XWREN_GTEST_SRC_DIR)
-    set(XWREN_BUILD_TESTS ON)
+if({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST OR {{cookiecutter.cmake_var_prefix}}_GTEST_SRC_DIR)
+    set({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS ON)
 endif()
 
-if(XWREN_BUILD_TESTS)
+if({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
@@ -382,11 +360,11 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-set(XEUS_WREN_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-wrenConfig.cmake")
+set({{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-wrenConfig.cmake")
 
-# Install xeus-wren and xeus-wren-static
-if (XWREN_BUILD_SHARED)
-    install(TARGETS ${XEUS_WREN_TARGETS}
+# Install {{cookiecutter.library_name}} and {{cookiecutter.library_name}}-static
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
+    install(TARGETS {{'${'}}{{cookiecutter.cmake_var_prefix}}_TARGETS}
             EXPORT ${PROJECT_NAME}-targets
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -398,58 +376,52 @@ if (XWREN_BUILD_SHARED)
            FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake")
 endif ()
 
-# Install xwren
-if (XWREN_BUILD_XWREN_EXECUTABLE)
-    install(TARGETS xwren
+# Install {{cookiecutter.binary_name}}
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
+    install(TARGETS {{cookiecutter.binary_name}}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
     # Configuration and data directories for jupyter and xeus-wren
     set(XJUPYTER_DATA_DIR "share/jupyter"    CACHE STRING "Jupyter data directory")
 
     # Install xwren Jupyter kernelspec
-    set(XWREN_KERNELSPEC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels)
-    install(DIRECTORY ${XWREN_KERNELSPEC_DIR}
+    set(KERNELSPEC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels)
+    install(DIRECTORY ${KERNELSPEC_DIR}
             DESTINATION ${XJUPYTER_DATA_DIR}
             PATTERN "*.in" EXCLUDE)
 
 
-    # wren packages (json and iwren)
-    set(XWREN_PACKAGES_DIR "asset_dir/wren_packages"    CACHE STRING "Jupyter data directory")
-    install(DIRECTORY ${XWREN_PACKAGES_DIR}
-            DESTINATION ${XJUPYTER_DATA_DIR}/kernels/xwren
-            PATTERN "*.in" EXCLUDE)
-
     # Extra path for installing Jupyter kernelspec
     if (XEXTRA_JUPYTER_DATA_DIR)
-        install(DIRECTORY ${XWREN_KERNELSPEC_DIR}
+        install(DIRECTORY ${KERNELSPEC_DIR}
                 DESTINATION ${XEXTRA_JUPYTER_DATA_DIR}
                 PATTERN "*.in" EXCLUDE)
     endif ()
 endif ()
 
 # Configure 'xeus-wrenConfig.cmake' for a build tree
-set(XEUS_WREN_CONFIG_CODE "####### Expanded from \@XEUS_WREN_CONFIG_CODE\@ #######\n")
-set(XEUS_WREN_CONFIG_CODE "${XEUS_WREN_CONFIG_CODE}set(CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/cmake;\${CMAKE_MODULE_PATH}\")\n")
-set(XEUS_WREN_CONFIG_CODE "${XEUS_WREN_CONFIG_CODE}##################################################")
+set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "####### Expanded from \@{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE\@ #######\n")
+set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "{{'${'}}{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE}set(CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/cmake;\${CMAKE_MODULE_PATH}\")\n")
+set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "{{'${'}}{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE}##################################################")
 configure_package_config_file(${PROJECT_NAME}Config.cmake.in
                               "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
                               INSTALL_DESTINATION ${PROJECT_BINARY_DIR})
 
-# Configure 'xeus-wrenConfig.cmake' for an install tree
-set(XEUS_WREN_CONFIG_CODE "")
+# Configure '{{cookiecutter.cmake_project_name}}Config.cmake.in for an install tree
+set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "")
 configure_package_config_file(${PROJECT_NAME}Config.cmake.in
                               "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${PROJECT_NAME}Config.cmake"
-                              INSTALL_DESTINATION ${XEUS_WREN_CMAKECONFIG_INSTALL_DIR})
+                              INSTALL_DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
                                  VERSION ${${PROJECT_NAME}_VERSION}
                                  COMPATIBILITY AnyNewerVersion)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${PROJECT_NAME}Config.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-              DESTINATION ${XEUS_WREN_CMAKECONFIG_INSTALL_DIR})
+              DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 
-if (XWREN_BUILD_SHARED)
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
     install(EXPORT ${PROJECT_NAME}-targets
             FILE ${PROJECT_NAME}Targets.cmake
-            DESTINATION ${XEUS_WREN_CMAKECONFIG_INSTALL_DIR})
+            DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 endif ()

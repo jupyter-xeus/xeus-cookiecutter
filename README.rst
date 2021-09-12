@@ -19,25 +19,3 @@ xeus-cookiecutter
 .. image:: https://dev.azure.com/derthorstenbeier/xeus-cookiecutter/_apis/build/status/DerThorsten.xeus-cookiecutter?branchName=master
     :target: https://dev.azure.com/derthorstenbeier/xeus-cookiecutter/_build/latest?definitionId=1&branchName=master
 
-
-
-
-
-
-
-
-Features
---------
-
-Current features include: 
-  * conda ready
-  * pytest unit test
-  * continous integration
-
-  * coverall code coverage
-  * documentation with sphinx
-  * documentation on readthedocs
-
-
-
-
