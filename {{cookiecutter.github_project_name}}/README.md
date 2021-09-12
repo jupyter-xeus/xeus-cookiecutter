@@ -11,7 +11,7 @@ Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
 
 ## Installation
 
-{{cookiecutter.package_name}} has been packaged for the mamba (or conda) package manager.
+{{cookiecutter.package_name}} has not been packaged for the mamba (or conda) package manager.
 
 To ensure that the installation works, it is preferable to install `{{cookiecutter.conda_package_name}}` in a
 fresh environment. It is also needed to use a
@@ -27,20 +27,20 @@ mamba create -n  `{{cookiecutter.conda_package_name}}`
 source activate  `{{cookiecutter.conda_package_name}}`
 ```
 
-### Installing from conda-forge
+<!-- ### Installing from conda-forge
 
 Then you can install in this environment `{{cookiecutter.conda_package_name}}` and its dependencies
 
 ```bash
 mamba install`{{cookiecutter.conda_package_name}}` notebook -c conda-forge
-```
+``` -->
 
 ### Installing from source
 
 Or you can install it from the sources, you will first need to install dependencies
 
 ```bash
-mamba install cmake xeus nlohmann_json cppzmq xtl pybind11 pybind11_json ipython debugpy jupyterlab -c conda-forge
+mamba install cmake xeus nlohmann_json cppzmq xtl jupyterlab -c conda-forge
 ```
 
 Then you can compile the sources (replace `$CONDA_PREFIX` with a custom installation
@@ -48,45 +48,32 @@ prefix if need be)
 
 ```bash
 mkdir build && cd build
-cmake .. -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -D CMAKE_INSTALL_LIBDIR=lib -D PYTHON_EXECUTABLE=`which python`
+cmake .. -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -D CMAKE_INSTALL_LIBDIR=lib
 make && make install
 ```
 
-## Trying it online
+<!-- ## Trying it online
 
-To try out xeus-python interactively in your web browser, just click on the binder link:
+To try out {{cookiecutter.package_name}} interactively in your web browser, just click on the binder link:
+(Once Conda Package is Ready)
 
-[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/jupyter-xeus/xeus-python/stable?urlpath=/lab/tree/notebooks/xeus-python.ipynb)
+[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_packag_name}}/stable?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb) -->
 
 
 
 ## Documentation
 
-To get started with using `xeus-python`, check out the full documentation
+To get started with using `{{cookiecutter.package_name}}`, check out the full documentation
 
-http://xeus-python.readthedocs.io
+http://{{cookiecutter.readthedocs_package_name}}.readthedocs.io
 
-## What are the advantages of using xeus-python over ipykernel (IPython kernel)?
-
-Check-out this blog post for the answer:
-https://blog.jupyter.org/a-new-python-kernel-for-jupyter-fcdf211e30a8. Long story short:
-
-- xeus-python is a lot lighter than ipykernel, which makes it a lot easier to implement
-  new features on top of it.
-- xeus-python already works with the **Jupyter Lab debugger**:
-  https://github.com/jupyterlab/debugger
-- xeus-based kernels are more versatile in that one can overload e.g. the concurrency
-  model. This is something that Kitware’s SlicerJupyter project takes advantage of to
-  integrate with the Qt event loop of their Qt-based desktop application.
 
 ## Dependencies
 
-`xeus-python` depends on
+`{{cookiecutter.package_name}}` depends on
 
 - [xeus](https://github.com/jupyter-xeus/xeus)
 - [xtl](https://github.com/xtensor-stack/xtl)
-- [pybind11](https://github.com/pybind/pybind11)
-- [pybind11_json](https://github.com/pybind/pybind11_json)
 - [nlohmann_json](https://github.com/nlohmann/json)
 
 

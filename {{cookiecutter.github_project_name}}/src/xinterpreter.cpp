@@ -120,7 +120,7 @@ namespace {{cookiecutter.cpp_namespace}}
         result["banner"] = "{{cookiecutter.kernel_name}}";
         result["language_info"]["name"] = "{{cookiecutter.language}}";
         result["language_info"]["version"] = "{{cookiecutter.language_version}}";
-        result["language_info"]["mimetype"] = "text/x-luasrc";
+        result["language_info"]["mimetype"] = "{{cookiecutter.language_mimetype}}";
         result["language_info"]["file_extension"] = "{{cookiecutter.language_file_extension}}";
         return result;
     }
