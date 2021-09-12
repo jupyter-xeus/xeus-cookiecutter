@@ -6,11 +6,6 @@ Welcome to xeus-cookiecutter's documentation!
    :caption: Contents:
 
    readme
-   installation
-   usage
-   contributing
-   authors
-   history
 
 
 Indices and tables
