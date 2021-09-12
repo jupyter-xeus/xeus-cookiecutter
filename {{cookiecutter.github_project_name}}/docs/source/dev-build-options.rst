@@ -14,7 +14,7 @@ General Build Options
 Building the xeus-python library
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``xeus-python`` build supports the following options:
+``{{cookiecutter.package_name}}`` build supports the following options:
 
 - ``XPYT_BUILD_SHARED``: Build the xeus-python shared library. **Enabled by default**.
 - ``XPYT_BUILD_STATIC``: Build the xeus-python static library. **Enabled by default**.

@@ -1,7 +1,6 @@
-.. Copyright (c) 2017, Martin Renou, Johan Mabille, Sylvain Corlay, and
-   Wolf Vollprecht
+..  Copyright (c) {% now 'utc', '%Y' %},    
 
-   Distributed under the terms of the BSD 3-Clause License.
+   Distributed under the terms of the {{cookiecutter.open_source_license}}.  
 
    The full license is in the file LICENSE, distributed with this software.
 
@@ -12,29 +11,16 @@
 Introduction
 ------------
 
-``xeus-python`` is a Jupyter kernel for Python based on the native implementation of the Jupyter protocol 
+``{{cookiecutter.package_name}}`` is a Jupyter kernel for {{cookiecutter.language}} based on the native implementation of the Jupyter protocol 
 xeus_.
 
 Licensing
 ---------
 
-We use a shared copyright model that enables all contributors to maintain the
-copyright on their contributions.
+Distributed under the terms of the {{cookiecutter.open_source_license}}.  
 
-This software is licensed under the BSD-3-Clause license. See the LICENSE file for details.
+The full license is in the file LICENSE, distributed with this software.
 
-
-.. toctree::
-   :caption: INSTALLATION
-   :maxdepth: 2
-
-   installation
-
-.. toctree::
-   :caption: USAGE
-   :maxdepth: 2
-
-   usage
 
 .. toctree::
    :caption: DEVELOPER ZONE
@@ -42,4 +28,4 @@ This software is licensed under the BSD-3-Clause license. See the LICENSE file f
 
    dev-build-options
 
-.. _xeus: https://github.com/jupyter-xeus/xeus
+.. _xeus: https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}
