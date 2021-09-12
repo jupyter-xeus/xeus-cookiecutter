@@ -58,25 +58,6 @@ OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE "Build the {{cookiecut
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 
-# Test options
-OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS "xeus-wren test suite" OFF)
-OPTION({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST "build gtest from downloaded sources" OFF)
-
-
-
-if(EMSCRIPTEN)
-    message("Build with emscripten")
-    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE ON)
-    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC ON)
-    SET({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC ON)
-    SET({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED OFF)
-    SET({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE OFF)
-    SET({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS OFF)
-    SET({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} OFF)
-    SET({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS OFF)
-    SET({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST OFF)
-endif()
-
 
 # Dependencies
 # ============
@@ -334,26 +315,6 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
 endif()
 
-
-
-
-if(EMSCRIPTEN)
-    add_executable({{cookiecutter.binary_name}}_emscripten src/main_emscripten.cpp )
-    target_compile_features({{cookiecutter.binary_name}}_emscripten PRIVATE cxx_std_17)
-endif()
-
-
-
-# Tests
-# =====
-
-if({{cookiecutter.cmake_var_prefix}}_DOWNLOAD_GTEST OR {{cookiecutter.cmake_var_prefix}}_GTEST_SRC_DIR)
-    set({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS ON)
-endif()
-
-if({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS)
-    add_subdirectory(test)
-endif()
 
 # Installation
 # ============
