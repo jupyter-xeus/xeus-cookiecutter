@@ -14,6 +14,7 @@ cookiecutter .. --no-input -f
 conda deactivate 
 conda env remove --name ${ENV_NAME}
 mamba env create -f ../dev-requirements.yml   --name ${ENV_NAME}
+conda activate root
 conda activate ${ENV_NAME}
 
 cd ${DIR_NAME}
