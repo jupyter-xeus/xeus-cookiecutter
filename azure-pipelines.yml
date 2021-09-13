@@ -23,10 +23,10 @@ jobs:
     variables:
       repoDir: '$(Build.Repository.LocalPath)'
     steps:
-      - script: |
-          echo "Removing homebrew for Azure to avoid conflicts with conda"
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
-        displayName: Remove homebrew
+      # - script: |
+      #     echo "Removing homebrew for Azure to avoid conflicts with conda"
+      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
+      #   displayName: Remove homebrew
 
       - bash: |
           echo "##vso[task.prependpath]$CONDA/bin"
