@@ -12,7 +12,9 @@ steps:
   - script: |
       source activate {{cookiecutter.conda_package_name}}
       conda install gcc_linux-64=7.5.0 gcc_impl_linux-64=7.5.0 gxx_linux-64=7.5.0 gxx_impl_linux-64 -c conda-forge;
+    {% raw %}
     condition: eq('${{ parameters.platform }}', 'Linux')
+    {% endraw %}
     displayName: Install conda-forge compilers
 
   - script: |
