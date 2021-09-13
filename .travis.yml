@@ -6,7 +6,7 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-    #- os: osx
+    - os: osx
 env:
   global:
     - MINCONDA_VERSION="latest"
