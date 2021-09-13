@@ -17,7 +17,7 @@ cd ${DIR_NAME}
 mamba env create -f environment-dev.yml   --name ${ENV_NAME}
 conda activate root
 conda activate ${ENV_NAME}
-mamba install cxx-compiler -c conda-f
+mamba install cxx-compiler -c conda-forge
 mkdir -p bld
 cd bld
 cmake .. \
