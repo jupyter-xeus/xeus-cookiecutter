@@ -24,11 +24,6 @@ import sys
 import subprocess
 sys.path.insert(0, os.path.abspath('..'))
 
-import xeus_cookiecutter
-import sphinx_gallery
-import sphinx_rtd_theme
-
-
 
 def erase_folder_content(folder):
     if os.path.isdir(folder):
@@ -47,14 +42,7 @@ on_ci = on_rtd or on_travis
 
 package_name = "xeus_cookiecutter"
 this_dir = os.path.dirname(__file__)
-py_mod_path  = os.path.join(this_dir, '../')
-package_dir = os.path.join(py_mod_path, package_name)
 template_dir =  os.path.join(this_dir, '_template')
-if True:
-    apidoc_out_folder =  os.path.join(this_dir, 'api')
-    erase_folder_content(apidoc_out_folder)
-    arglist = ['sphinx-apidoc','-o',apidoc_out_folder,package_dir,'-P']
-    subprocess.call(arglist, shell=False)
 
 
 
@@ -68,23 +56,9 @@ if True:
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc', 
-    'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery',
-    'sphinx.ext.napoleon'
 ]
 
 
-
-sphinx_gallery_conf = {
-    'doc_module': ('xeus_cookiecutter',),
-    # path to your examples scripts
-    'examples_dirs': '../examples',
-    # path where to save gallery generated examples
-    'gallery_dirs': 'auto_examples',
-    'backreferences_dir': 'api',
-    'reference_url': {'xeus_cookiecutter': None},
-}
 html_theme = "sphinx_rtd_theme"
 #html_theme = "classic"
 html_theme_path = [
