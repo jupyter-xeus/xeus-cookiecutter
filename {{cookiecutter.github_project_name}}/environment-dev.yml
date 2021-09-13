@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
   # Build dependencies
-  - compilers
+  - cxx-compiler
   - cmake
   # Host dependencies
   - xeus
