@@ -57,7 +57,7 @@ make && make install
 To try out {{cookiecutter.package_name}} interactively in your web browser, just click on the binder link:
 (Once Conda Package is Ready)
 
-[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_packag_name}}/stable?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb) -->
+[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/stable?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb) -->
 
 
 

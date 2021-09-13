@@ -20,7 +20,7 @@
     "cpp_namespace":                 "{{ cookiecutter.project_name|lower|replace(' ', '_')|replace('-', '_') }}",   
     "cpp_macro_prefix":             "{{ cookiecutter.project_name|upper|replace(' ', '_')|replace('-', '_') }}",    
     "cmake_var_prefix":             "{{ cookiecutter.cpp_macro_prefix|upper|replace(' ', '_')|replace('-', '_') }}",    
-    "cpp_standart":                 ["C++17", "C++14", "C++11", "NotSpecified"],
+    "cpp_standart":                 ["17", "14"],
     "cmake_project_name":           "{{ cookiecutter.package_name }}",
     "cmake_interface_library_name": "{{ cookiecutter.package_name }}",
     "github_project_name":          "{{ cookiecutter.project_slug }}",

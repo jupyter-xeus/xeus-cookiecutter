@@ -74,7 +74,6 @@ endif ()
 
 # Flags
 # =====
-
 include(CheckCXXCompilerFlag)
 
 if (MSVC)
@@ -94,58 +93,16 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
     endif ()
 
-    CHECK_CXX_COMPILER_FLAG("-std=c++14" HAS_CPP14_FLAG)
 
-    if (HAS_CPP14_FLAG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standart}}" HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
+    if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++{{cookiecutter.cpp_standart}}")
     else ()
-        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++14 support!")
+        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++{{cookiecutter.cpp_standart}} support!")
     endif ()
+
 endif ()
 
-
-
-if(EMSCRIPTEN)
-
-    add_compile_definitions(EMSCRIPTEN)
-    add_compile_definitions(EMSCRIPTEN_ZMQ_REPLACEMENT)
-
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} --bind --std=c++17")
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -Wno-unused-parameter -Wno-deprecated -Wno-unused-command-line-argument")
-    #set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -lwebsocket.js")
-    # module / import 
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s MODULARIZE=1 -s EXPORT_NAME=\"createXeusLuaModule\" -s EXPORT_ES6=0 -s USE_ES6_IMPORT_META=0")
-    # safty
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES}  -s  DEMANGLE_SUPPORT=1 -s SAFE_HEAP=0  -s ASSERTIONS=2   -s STACK_OVERFLOW_CHECK=1 ")
-    # web
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s ENVIRONMENT=web,worker")
-    # mem
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s TOTAL_MEMORY=512MB")
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s EXIT_RUNTIME=1")
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s WASM=1")
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s ERROR_ON_UNDEFINED_SYMBOLS=1")
-
-    # threads
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s USE_PTHREADS=1")
-
-    # fetch related
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES}")
-
-    # exceptions    
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s DISABLE_EXCEPTION_CATCHING=0 ")
-
-    # async
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s ASYNCIFY=1 -s 'ASYNCIFY_IMPORTS=[\"async_get_input_function\"]'")
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s 'ASYNCIFY_STACK_SIZE=20480'")
-
-    # ENV (https://github.com/emscripten-core/emscripten/commit/6d9681ad04f60b41ef6345ab06c29bbc9eeb84e0)
-    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[ENV']\"")
-
-
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_FEATURES}")
-    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${EMSCRIPTEN_FEATURES} ---proxy-to-worker")
-endif()
 
 # Source files
 # ============
@@ -162,7 +119,6 @@ set({{cookiecutter.cmake_var_prefix}}_SRC
 set({{cookiecutter.cmake_var_prefix}}_MAIN_SRC
     src/main.cpp
 )
-
 
 
 # Targets and link - Macros
@@ -194,12 +150,12 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
             target_compile_options(${target_name} PUBLIC -march=native)
         endif ()
 
-        # C++14 flag
-        CHECK_CXX_COMPILER_FLAG("-std=c++14" HAS_CPP14_FLAG)
-        if (HAS_CPP14_FLAG)
-            target_compile_features(${target_name} PRIVATE cxx_std_14)
+        # C++{cookiecutter.cpp_standart} flag
+        CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standart}}" HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
+        if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
+            target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- xeus-wren requires C++14 support!")
+            message(FATAL_ERROR "Unsupported compiler -- xeus-wren requires C++{cookiecutter.cpp_standart} support!")
         endif ()
     endif ()
 
@@ -219,21 +175,17 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
     )
 endmacro()
 
-# Common macro kernels (xwren )
+# Common macro kernels ({{cookiecutter.kernel_name}} )
 macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
-   
-
     if ({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}})
         target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}})
-
         if(CMAKE_DL_LIBS)
             target_link_libraries(${target_name} PRIVATE ${CMAKE_DL_LIBS} util)
         endif()
     else ()
         target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}}-static)
     endif()
-
-    find_package(Threads) # TODO: add Threads as a dependence of xeus or xeus-static?
+    find_package(Threads) 
     target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 endmacro()
 
@@ -257,7 +209,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage 
 
     target_compile_definitions(${target_name} PUBLIC "{{cookiecutter.cpp_macro_prefix}}_EXPORTS")
 
-    target_compile_features(${target_name} PRIVATE cxx_std_17)
+    target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
 
     target_include_directories(${target_name}
                                PUBLIC
@@ -308,7 +260,7 @@ endif ()
 # =======
 if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     add_executable({{cookiecutter.binary_name}} {{'${'}}{{cookiecutter.cmake_var_prefix}}_MAIN_SRC})
-    target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_17)
+    target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_common_options({{cookiecutter.binary_name}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
 endif()
@@ -343,7 +295,7 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     # Configuration and data directories for jupyter and xeus-wren
     set(XJUPYTER_DATA_DIR "share/jupyter"    CACHE STRING "Jupyter data directory")
 
-    # Install xwren Jupyter kernelspec
+    # Install {{cookiecutter.kernel_name}} Jupyter kernelspec
     set(KERNELSPEC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels)
     install(DIRECTORY ${KERNELSPEC_DIR}
             DESTINATION ${XJUPYTER_DATA_DIR}

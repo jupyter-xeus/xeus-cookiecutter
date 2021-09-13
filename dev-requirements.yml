@@ -3,6 +3,7 @@ name: xeus-cookiecutter
 channels:
   - conda-forge
 dependencies:
+  - cookiecutter=
   - make
   - cmake
   - python >=3.6

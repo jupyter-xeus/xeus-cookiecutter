@@ -5,8 +5,6 @@
 *                                                                          
 * The full license is in the file LICENSE, distributed with this software. 
 ****************************************************************************/
-
-
 #ifndef {{cookiecutter.cpp_macro_prefix}}_CONFIG_HPP
 #define {{cookiecutter.cpp_macro_prefix}}_CONFIG_HPP
 
