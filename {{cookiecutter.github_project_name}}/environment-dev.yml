@@ -4,6 +4,7 @@ channels:
 dependencies:
   # Build dependencies
   - cxx-compiler
+  - make
   - cmake
   # Host dependencies
   - xeus
