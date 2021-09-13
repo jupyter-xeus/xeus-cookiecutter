@@ -24,7 +24,7 @@ foreach (ver ${version_defines})
 endforeach ()
 set(${PROJECT_NAME}_VERSION
     {{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_MAJOR}.{{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_MINOR}.{{'${'}}{{cookiecutter.cpp_macro_prefix}}_VERSION_PATCH})
-message(STATUS "Building xeus-wren v${${PROJECT_NAME}_VERSION}")
+message(STATUS "Building {{cookiecutter.package_name}} v${${PROJECT_NAME}_VERSION}")
 
 # Configuration
 # =============

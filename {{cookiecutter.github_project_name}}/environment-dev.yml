@@ -9,7 +9,7 @@ dependencies:
   - xeus
   - nlohmann_json
   - cppzmq
-  - xtl>=0.7, <0.8
+  - xtl
   # Test dependencies
   - pytest
   - nbval
