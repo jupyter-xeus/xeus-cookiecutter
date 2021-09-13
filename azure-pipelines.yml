@@ -76,7 +76,7 @@ jobs:
         echo "cd path" || exit 1
         cd ..\xeus-lua || exit 1
         echo "activate" || exit 1
-        call activate {{cookiecutter.conda_package_name}} || exit 1
+        call activate xeus_lua || exit 1
         call conda  install cxx-compiler -c conda-forge || exit 1
         echo "mkdir" || exit 1
         mkdir build || exit 1
@@ -90,7 +90,7 @@ jobs:
         echo "cd path" || exit 1
         cd ..\xeus-lua\build || exit 1
         echo "activate" || exit 1
-        call activate {{cookiecutter.conda_package_name}} || exit 1
+        call activate xeus_lua || exit 1
         cmake --build . --target ALL_BUILD || exit 1
       displayName: build project
 
