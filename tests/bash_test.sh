@@ -14,10 +14,10 @@ cookiecutter .. --no-input -f
 conda deactivate 
 conda env remove --name ${ENV_NAME}
 cd ${DIR_NAME}
-conda env create -f environment-dev.yml   --name ${ENV_NAME}
+mamba env create -f environment-dev.yml   --name ${ENV_NAME}
 conda activate root
 conda activate ${ENV_NAME}
-conda install cxx-compiler -c conda-forge
+mamba install cxx-compiler -c conda-f
 mkdir -p bld
 cd bld
 cmake .. \
