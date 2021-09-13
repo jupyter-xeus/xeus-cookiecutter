@@ -2,6 +2,9 @@
 xeus-cookiecutter
 =================================================
 
+
+THIS IS STILL A WORK IN PROGRESS
+
 .. image:: docs/xeus-cookiecutter.svg
    :scale: 150 %
 
