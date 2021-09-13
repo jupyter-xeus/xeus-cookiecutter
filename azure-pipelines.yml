@@ -8,9 +8,9 @@ jobs:
       repoDir: '$(Build.Repository.LocalPath)'
 
     steps:
-      - task: CondaEnvironment@1
-        inputs:
-          updateConda: false
+      # - task: CondaEnvironment@1
+      #   inputs:
+      #     updateConda: false
       - script: |
           chmod +x .ci/test_project.sh || exit 1
           ./.ci/test_project.sh || exit 1
