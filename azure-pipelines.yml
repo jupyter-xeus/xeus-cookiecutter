@@ -74,6 +74,7 @@ jobs:
         cd ..\xeus-lua || exit 1
         echo "activate" || exit 1
         call activate xeus-lua || exit 1
+        call connda  install cxx-compiler || exit 1
         echo "mkdir" || exit 1
         mkdir build || exit 1
         cd build || exit 1
