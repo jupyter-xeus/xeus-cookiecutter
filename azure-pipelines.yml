@@ -1,16 +1,12 @@
 jobs:
   - job: Linux
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-20.04'
     strategy:
       maxParallel: 2
     variables:
       repoDir: '$(Build.Repository.LocalPath)'
-
     steps:
-      # - task: CondaEnvironment@1
-      #   inputs:
-      #     updateConda: false
       - script: |
           chmod +x .ci/test_project.sh || exit 1
           ./.ci/test_project.sh || exit 1
