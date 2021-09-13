@@ -14,7 +14,6 @@ cookiecutter .. --no-input -f
 conda deactivate 
 conda env remove --name ${ENV_NAME}
 mamba env create -f ../dev-requirements.yml   --name ${ENV_NAME}
-mamba install gcc -c conda-forge
 conda activate ${ENV_NAME}
 
 cd ${DIR_NAME}
