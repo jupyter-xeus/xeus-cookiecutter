@@ -1,14 +1,9 @@
 #!/bin/bash
 
 echo "------------------------------------------------------------"
-echo "create dev-requirements conda env"
+echo "install cookiecutter"
 echo "------------------------------------------------------------"
-conda env create -f dev-requirements.yml || exit 1
-
-echo "------------------------------------------------------------"
-echo "activate dev-requirements conda env"
-echo "------------------------------------------------------------"
-source activate dev-requirements || exit 1
+conda install cookiecutter -c conda-forge
 
 echo "------------------------------------------------------------"
 echo "run bash test"
