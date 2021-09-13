@@ -64,11 +64,11 @@ variables:
 jobs:
   test_job:
     docker:
-     - image: continuumio/miniconda3:4.5.12
+     - image: continuumio/miniconda3:4.7.12
     working_directory: ~/repo
     steps:
       - checkout
-      # - *update_conda
+      - *update_conda
       - *run_test_script
 
 
