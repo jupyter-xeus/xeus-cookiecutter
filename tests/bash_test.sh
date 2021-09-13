@@ -13,7 +13,7 @@ cookiecutter .. --no-input -f
 # try to remove env
 conda deactivate 
 conda env remove --name ${ENV_NAME}
-conda env create -f ../dev-requirements.yml   --name ${ENV_NAME}
+mamba env create -f ../dev-requirements.yml   --name ${ENV_NAME}
 conda activate ${ENV_NAME}
 
 cd ${DIR_NAME}

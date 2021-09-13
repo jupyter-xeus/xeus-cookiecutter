@@ -3,7 +3,7 @@
 echo "------------------------------------------------------------"
 echo "install cookiecutter"
 echo "------------------------------------------------------------"
-conda install cookiecutter -c conda-forge
+conda install cookiecutter mamba -c conda-forge
 
 echo "------------------------------------------------------------"
 echo "run bash test"
