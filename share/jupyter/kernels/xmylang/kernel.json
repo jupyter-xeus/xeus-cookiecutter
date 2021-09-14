@@ -1,11 +1,11 @@
 {
-  "display_name": "Wren 0.12 (xlua)",
+  "display_name": "Wren 0.12 (xmylang)",
   "argv": [
       "/home/runner/micromamba/envs/xeus_cookiecutter_test_env/bin/xwren",
       "-f",
       "{connection_file}"
   ],
-  "language": "lua",
+  "language": "mylang",
   "metadata": {"debugger": false
   }
 }

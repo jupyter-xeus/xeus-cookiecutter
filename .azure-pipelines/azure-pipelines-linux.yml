@@ -4,13 +4,13 @@ jobs:
       matrix:
         static_xeus:
           use_shared_xeus: 0
-          use_shared_xeus_lua: 1
-        static_xeus_lua:
+          use_shared_xeus_mylang: 1
+        static_xeus_mylang:
           use_shared_xeus: 1
-          use_shared_xeus_lua: 0
+          use_shared_xeus_mylang: 0
         full_static:
           use_shared_xeus: 1
-          use_shared_xeus_lua: 1
+          use_shared_xeus_mylang: 1
     pool:
       vmImage: ubuntu-16.04
     timeoutInMinutes: 30

@@ -26,8 +26,8 @@
 #include "xeus/xserver_zmq.hpp"
 
 
-#include "xeus-lua/xinterpreter.hpp"
-#include "xeus-lua/xeus_lua_config.hpp"
+#include "xeus-mylang/xinterpreter.hpp"
+#include "xeus-mylang/xeus_mylang_config.hpp"
 
 
 #ifdef __GNUC__
@@ -82,14 +82,14 @@ int main(int argc, char* argv[])
 {
     if (should_print_version(argc, argv))
     {
-        std::clog << "xlua " << XEUS_LUA_VERSION  << std::endl;
+        std::clog << "xmylang " << XEUS_MYLANG_VERSION  << std::endl;
         return 0;
     }
 
     // If we are called from the Jupyter launcher, silence all logging. This
     // is important for a JupyterHub configured with cleanup_servers = False:
     // Upon restart, spawned single-user servers keep running but without the
-    // std* streams. When a user then tries to start a new kernel, xlua
+    // std* streams. When a user then tries to start a new kernel, xmylang
     // will get a SIGPIPE and exit.
     if (std::getenv("JPY_PARENT_PID") != NULL)
     {
@@ -105,8 +105,8 @@ int main(int argc, char* argv[])
     auto context = xeus::make_context<zmq::context_t>();
 
     // Instantiating the xeus xinterpreter
-    using interpreter_ptr = std::unique_ptr<xeus_lua::interpreter>;
-    interpreter_ptr interpreter = interpreter_ptr(new xeus_lua::interpreter());
+    using interpreter_ptr = std::unique_ptr<xeus_mylang::interpreter>;
+    interpreter_ptr interpreter = interpreter_ptr(new xeus_mylang::interpreter());
 
 
     std::string connection_filename = extract_filename(argc, argv);
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 
         const auto& config = kernel.get_config();
         std::cout <<
-            "Starting xlua kernel...\n\n"
+            "Starting xmylang kernel...\n\n"
             "If you want to connect to this kernel from an other client, just copy"
             " and paste the following content inside of a `kernel.json` file. And then run for example:\n\n"
             "# jupyter console --existing kernel.json\n\n"

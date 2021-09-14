@@ -10,7 +10,7 @@ steps:
     displayName: Install dependencies
 
   - script: |
-      source activate xeus_lua
+      source activate xeus-mylang
       conda install gcc_linux-64=7.5.0 gcc_impl_linux-64=7.5.0 gxx_linux-64=7.5.0 gxx_impl_linux-64 -c conda-forge;
     
     condition: eq('${{ parameters.platform }}', 'Linux')
@@ -18,30 +18,30 @@ steps:
     displayName: Install conda-forge compilers
 
   - script: |
-      source activate xeus_lua
+      source activate xeus-mylang
       mkdir build
       cd build
-      if [[ $(use_shared_xeus_lua) == '0' ]]; then
-        CMAKE_EXTRA_ARGS="$CMAKE_EXTRA_ARGS -DXEUS_LUA_BUILD_SHARED=OFF -DXEUS_LUA_USE_SHARED_XEUS_LUA=OFF";
+      if [[ $(use_shared_xeus_mylang) == '0' ]]; then
+        CMAKE_EXTRA_ARGS="$CMAKE_EXTRA_ARGS -DXEUS_MYLANG_BUILD_SHARED=OFF -DXEUS_MYLANG_USE_SHARED_XEUS_MYLANG=OFF";
       fi
       if [[ $(use_shared_xeus) == '0' ]]; then
-        CMAKE_EXTRA_ARGS="$CMAKE_EXTRA_ARGS -DXEUS_LUA_USE_SHARED_XEUS=OFF";
+        CMAKE_EXTRA_ARGS="$CMAKE_EXTRA_ARGS -DXEUS_MYLANG_USE_SHARED_XEUS=OFF";
       fi
       # The xeus conda package is built with CMAKE_CXX_STANDARD=17
       CMAKE_EXTRA_ARGS="$CMAKE_EXTRA_ARGS -DCMAKE_CXX_STANDARD=17";
-      cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DXEUS_LUA_DOWNLOAD_GTEST=ON  -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX ${CMAKE_EXTRA_ARGS} $(Build.SourcesDirectory)
-    displayName: Configure xeus-lua
+      cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DXEUS_MYLANG_DOWNLOAD_GTEST=ON  -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX ${CMAKE_EXTRA_ARGS} $(Build.SourcesDirectory)
+    displayName: Configure xeus-mylang
     workingDirectory: $(Build.BinariesDirectory)
 
   - script: |
-      source activate xeus_lua
+      source activate xeus-mylang
       make install -j2
     displayName: Build xeus-lua
     workingDirectory: $(Build.BinariesDirectory)/build
 
 
   # - script: |
-  #     source activate xeus_lua
+  #     source activate xeus-mylang
   #     pytest . -vvv
   #   displayName: Test xeus-lua (Python)
   #   workingDirectory: $(Build.sourcesDirectory)/test

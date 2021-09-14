@@ -11,7 +11,7 @@
 Introduction
 ------------
 
-``xeus-lua`` is a Jupyter kernel for lua based on the native implementation of the Jupyter protocol 
+``xeus-mylang`` is a Jupyter kernel for mylang based on the native implementation of the Jupyter protocol 
 xeus_.
 
 Licensing
@@ -28,4 +28,4 @@ The full license is in the file LICENSE, distributed with this software.
 
    dev-build-options
 
-.. _xeus: https://github.com/JohnDoe/xeus-lua
+.. _xeus: https://github.com/JohnDoe/xeus-mylang

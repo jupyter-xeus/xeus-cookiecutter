@@ -1,4 +1,4 @@
-# ![xeus-lua](docs/source/xeus-python.svg)
+# ![xeus-mylang](docs/source/xeus-python.svg)
 
 [![Azure Pipelines](https://dev.azure.com/jupyter-xeus/jupyter-xeus/_apis/build/status/jupyter-xeus.xeus-python?branchName=master)](https://dev.azure.com/jupyter-xeus/jupyter-xeus/_build/latest?definitionId=2&branchName=master)
 [![Appveyor](https://ci.appveyor.com/api/projects/status/vy6rhqdw24pjduip?svg=true)](https://ci.appveyor.com/project/jupyter-xeus/xeus-python)
@@ -6,33 +6,33 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jupyter-xeus/xeus-python/stable?urlpath=/lab/tree/notebooks/xeus-python.ipynb)
 [![Join the Gitter Chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/QuantStack/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-`xeus_lua` is a Jupyter kernel for lua based on the native implementation of the
+`xeus-mylang` is a Jupyter kernel for mylang based on the native implementation of the
 Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
 
 ## Installation
 
-xeus-lua has not been packaged for the mamba (or conda) package manager.
+xeus-mylang has not been packaged for the mamba (or conda) package manager.
 
-To ensure that the installation works, it is preferable to install `xeus_lua` in a
+To ensure that the installation works, it is preferable to install `xeus-mylang` in a
 fresh environment. It is also needed to use a
 [miniforge](https://github.com/conda-forge/miniforge#mambaforge) or
 [miniconda](https://conda.io/miniconda.html) installation because with the full
 [anaconda](https://www.anaconda.com/) you may have a conflict with the `zeromq` library
 which is already installed in the anaconda distribution.
 
-The safest usage is to create an environment named `xeus_lua`
+The safest usage is to create an environment named `xeus-mylang`
 
 ```bash
-mamba create -n  `xeus_lua`
-source activate  `xeus_lua`
+mamba create -n  `xeus-mylang`
+source activate  `xeus-mylang`
 ```
 
 <!-- ### Installing from conda-forge
 
-Then you can install in this environment `xeus_lua` and its dependencies
+Then you can install in this environment `xeus-mylang` and its dependencies
 
 ```bash
-mamba install`xeus_lua` notebook -c conda-forge
+mamba install`xeus-mylang` notebook -c conda-forge
 ``` -->
 
 ### Installing from source
@@ -54,23 +54,23 @@ make && make install
 
 <!-- ## Trying it online
 
-To try out xeus-lua interactively in your web browser, just click on the binder link:
+To try out xeus-mylang interactively in your web browser, just click on the binder link:
 (Once Conda Package is Ready)
 
-[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-lua/stable?urlpath=/lab/tree/notebooks/xeus-lua.ipynb) -->
+[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/stable?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb) -->
 
 
 
 ## Documentation
 
-To get started with using `xeus-lua`, check out the full documentation
+To get started with using `xeus-mylang`, check out the full documentation
 
-http://xeus_lua.readthedocs.io
+http://xeus-mylang.readthedocs.io
 
 
 ## Dependencies
 
-`xeus-lua` depends on
+`xeus-mylang` depends on
 
 - [xeus](https://github.com/jupyter-xeus/xeus)
 - [xtl](https://github.com/xtensor-stack/xtl)

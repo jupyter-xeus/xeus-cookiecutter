@@ -1,0 +1,11 @@
+{
+  "display_name": "Wren @XEUS_MYLANG_VERSION_MAJOR@.@XEUS_MYLANG_VERSION_MINOR@ (xmylang)",
+  "argv": [
+      "@XEUS_MYLANG_KERNELSPEC_PATH@xwren",
+      "-f",
+      "{connection_file}"
+  ],
+  "language": "mylang",
+  "metadata": {"debugger": false
+  }
+}

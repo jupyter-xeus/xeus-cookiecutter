@@ -7,8 +7,8 @@
 ****************************************************************************/
 
 
-#ifndef XEUS_LUA_INTERPRETER_HPP
-#define XEUS_LUA_INTERPRETER_HPP
+#ifndef XEUS_MYLANG_INTERPRETER_HPP
+#define XEUS_MYLANG_INTERPRETER_HPP
 
 #ifdef __GNUC__
     #pragma GCC diagnostic push
@@ -20,15 +20,15 @@
 
 #include "nlohmann/json.hpp"
 
-#include "xeus_lua_config.hpp"
+#include "xeus_mylang_config.hpp"
 #include "xeus/xinterpreter.hpp"
 
 
 namespace nl = nlohmann;
 
-namespace xeus_lua
+namespace xeus_mylang
 {
-    class XEUS_LUA_API interpreter : public xeus::xinterpreter
+    class XEUS_MYLANG_API interpreter : public xeus::xinterpreter
     {
     public:
 

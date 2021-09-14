@@ -13,8 +13,8 @@ import jupyter_kernel_test
 
 class KernelTests(jupyter_kernel_test.KernelTests):
 
-    kernel_name = "xlua"
-    language_name = "lua"
+    kernel_name = "xmylang"
+    language_name = "mylang"
 
     code_hello_world = "print('hello, world')"
     code_page_something = "?print"

@@ -15,11 +15,11 @@
 #include "xeus/xinput.hpp"
 #include "xeus/xinterpreter.hpp"
 
-#include "xeus-lua/xinterpreter.hpp"
+#include "xeus-mylang/xinterpreter.hpp"
 
 namespace nl = nlohmann;
 
-namespace xeus_lua
+namespace xeus_mylang
 {
  
 
@@ -164,13 +164,13 @@ namespace xeus_lua
     nl::json interpreter::kernel_info_request_impl()
     {
         nl::json result;
-        result["implementation"] = "xlua";
-        result["implementation_version"] = XEUS_LUA_VERSION;
-        result["banner"] = "xlua";
-        result["language_info"]["name"] = "lua";
+        result["implementation"] = "xmylang";
+        result["implementation_version"] = XEUS_MYLANG_VERSION;
+        result["banner"] = "xmylang";
+        result["language_info"]["name"] = "mylang";
         result["language_info"]["version"] = "1.0.0";
-        result["language_info"]["mimetype"] = "text/x-luasrc";
-        result["language_info"]["file_extension"] = "lua";
+        result["language_info"]["mimetype"] = "text/x-mylangsrc";
+        result["language_info"]["file_extension"] = "mylang";
         return result;
     }
 
