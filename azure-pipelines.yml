@@ -69,19 +69,19 @@ jobs:
 
     - powershell: |
           micromamba activate microenv
-          cookiecutter %repoDir% --overwrite-if-exists --no-input || exit 1
-          cd xeus-lua || exit 1 
+          cookiecutter %repoDir% --overwrite-if-exists --no-input 
+          cd xeus-lua  
       displayName: run cookiecutter
 
     - powershell: |
-          cd xeus-lua || exit 1 
-          ..\micromamba.exe env create   -f environment-dev.yml || exit 1
+          cd xeus-lua  
+          ..\micromamba.exe env create   -f environment-dev.yml 
       displayName: create dev env
 
     - powershell: |
-          cd xeus-lua || exit 1 
+          cd xeus-lua  
           call micromamba activate xeus_lua
-          call micromamba  install cxx-compiler -c conda-forge -y || exit 1
+          call micromamba  install cxx-compiler -c conda-forge -y 
       displayName: install cxx compiler
 
     - powershell: |
