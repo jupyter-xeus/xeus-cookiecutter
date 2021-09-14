@@ -9,12 +9,12 @@ jobs:
     steps:
       - script: |
           wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba --strip-components=1
-
         displayName: install micromamba
 
       - script: |
           chmod +x .ci/test_project.sh || exit 1
           ./.ci/test_project.sh || exit 1
+        displayName: run test script
 
   - job: macOS
     pool:
@@ -36,6 +36,7 @@ jobs:
       - script: |
           chmod +x .ci/test_project.sh || exit 1
           ./.ci/test_project.sh || exit 1
+        displayName: run test script
 
   - job:
     displayName: Windows
@@ -58,6 +59,45 @@ jobs:
           C:\PROGRA~1\7-Zip\7z.exe x micromamba.tar -ttar -aoa -r Library\bin\micromamba.exe
           MOVE -Force Library\bin\micromamba.exe micromamba.exe
           .\micromamba.exe shell init -s powershell -p ~/micromamba
+      displayName: install micromamba
+
+    - powershell: |
+          $Env:MAMBA_ROOT_PREFIX=(Join-Path -Path $HOME -ChildPath micromamba)
+          $Env:MAMBA_EXE=(Join-Path -Path (Get-Location) -ChildPath micromamba.exe)
+          .\micromamba.exe create -f ./ci/microenv.yml -y
+      displayName: install microenv
+
+    - powershell: |
+          micromamba activate microenv
+          cookiecutter %repoDir% --overwrite-if-exists --no-input || exit 1
+          cd xeus-lua || exit 1 
+      displayName: run cookiecutter
+
+    - powershell: |
+          cd xeus-lua || exit 1 
+          ..\micromamba.exe env create   -f environment-dev.yml || exit 1
+      displayName: create dev env
+
+    - powershell: |
+          cd xeus-lua || exit 1 
+          call micromamba activate xeus_lua
+          call micromamba  install cxx-compiler -c conda-forge -y || exit 1
+      displayName: install cxx compiler
+
+    - powershell: |
+          cd xeus-lua || exit 1 
+          call micromamba activate xeus_lua
+          call cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
+    #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
+      displayName: cmake configure
+
+    - powershell: |
+          cd xeus-lua || exit 1 
+          call micromamba activate xeus_lua
+          call cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
+    #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
+      displayName: build project
+
 
     #   displayName: Add conda to PATH
 
