@@ -64,7 +64,7 @@ jobs:
     - powershell: |
           $Env:MAMBA_ROOT_PREFIX=(Join-Path -Path $HOME -ChildPath micromamba)
           $Env:MAMBA_EXE=(Join-Path -Path (Get-Location) -ChildPath micromamba.exe)
-          .\micromamba.exe create -f ./ci/microenv.yml -y
+          .\micromamba.exe create -f .ci/microenv.yml -y
       displayName: install microenv
 
     - powershell: |
