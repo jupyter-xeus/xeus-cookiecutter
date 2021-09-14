@@ -83,8 +83,5 @@ development environment.
 
 ## License
 
-We use a shared copyright model that enables all contributors to maintain the copyright
-on their contributions.
-
 This software is licensed under the `{{cookiecutter.open_source_license}}`. See the [LICENSE](LICENSE)
 file for details.
