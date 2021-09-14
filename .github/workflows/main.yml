@@ -10,7 +10,7 @@ on:
     - main
 
 jobs:
-  test_shells:
+  ci:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,7 +28,7 @@ jobs:
           fi
           ./micromamba shell init -s bash -p ~/micromamba
           mkdir -p ~/micromamba/pkgs/
-      - name: install deps
+      - name: run tests
         shell: bash -l {0}
         run: |
           export MAMBA_ROOT_PREFIX=~/micromamba
