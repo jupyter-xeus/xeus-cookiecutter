@@ -2,7 +2,7 @@
 
 [![Azure Pipelines](https://dev.azure.com/{{cookiecutter.azure_user_name}}/{{cookiecutter.project_name}}/_apis/build/status/jupyter-xeus.xeus-python?branchName=main)](https://dev.azure.com/{{cookiecutter.azure_user_name}}/{{cookiecutter.project_name}}/_build/latest?definitionId=2&branchName=main)
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://{{cookiecutter.readthedocs_package_name}}readthedocs.io/en/latest/?badge=latest)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/stable?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/main?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb)
 
 `{{cookiecutter.conda_package_name}}` is a Jupyter kernel for {{cookiecutter.language}} based on the native implementation of the
 Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
@@ -55,7 +55,7 @@ make && make install
 To try out {{cookiecutter.package_name}} interactively in your web browser, just click on the binder link:
 (Once Conda Package is Ready)
 
-[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/stable?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb) -->
+[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/main?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb) -->
 
 
 
