@@ -1,0 +1,17 @@
+name: xeus_lua
+channels:
+  - conda-forge
+dependencies:
+  # Build dependencies
+  - make
+  - cmake
+  # Host dependencies
+  - xeus
+  - nlohmann_json
+  - cppzmq
+  - xtl
+  # Test dependencies
+  - pytest
+  - nbval
+  - ipympl
+  - jupyter_kernel_test

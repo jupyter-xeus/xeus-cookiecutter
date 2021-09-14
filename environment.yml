@@ -1,0 +1,8 @@
+name: xeus_lua
+channels:
+  - conda-forge
+dependencies:
+  - xeus_lua=0.1.0
+  - notebook
+  - ipywidgets>=7.6
+  - jupyterlab=3
