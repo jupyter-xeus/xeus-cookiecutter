@@ -80,21 +80,21 @@ jobs:
 
     - powershell: |
           cd xeus-lua  
-          call micromamba activate xeus_lua
-          call micromamba  install cxx-compiler -c conda-forge -y 
+          micromamba activate xeus_lua
+          micromamba  install cxx-compiler -c conda-forge -y 
       displayName: install cxx compiler
 
     - powershell: |
           cd xeus-lua || exit 1 
-          call micromamba activate xeus_lua
-          call cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
+          micromamba activate xeus_lua
+          cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
     #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
       displayName: cmake configure
 
     - powershell: |
           cd xeus-lua || exit 1 
-          call micromamba activate xeus_lua
-          call cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
+          micromamba activate xeus_lua
+          cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
     #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
       displayName: build project
 
