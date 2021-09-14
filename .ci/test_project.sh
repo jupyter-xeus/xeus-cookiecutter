@@ -17,7 +17,7 @@ export MAMBA_EXE=$(pwd)/micromamba
 micromamba activate microenv
 
 ENV_NAME=xeus_cookiecutter_test_env
-DIR_NAME=xeus-lua
+PACKAGE_NAME=xeus-mylang
 
 
 
@@ -28,7 +28,7 @@ echo "------------------------------------------------------------"
 echo " use cookiecutter"
 echo "------------------------------------------------------------"
 cookiecutter  . --no-input -f
-cd ${DIR_NAME}
+cd ${PACKAGE_NAME}
 
 echo "------------------------------------------------------------"
 echo " create env"
