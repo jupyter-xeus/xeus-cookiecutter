@@ -74,6 +74,7 @@ jobs:
 
     - powershell: |
           cd xeus-lua  
+          ./micromamba.exe activate
           micromamba activate xeus_lua
           micromamba  install cxx-compiler -c conda-forge -y 
       displayName: install cxx compiler
