@@ -10,14 +10,11 @@ DIR_NAME=xeus-lua
 set -e
 
 cookiecutter .. --no-input -f
-# try to remove env
-conda deactivate 
-conda env remove --name ${ENV_NAME}
 cd ${DIR_NAME}
 mamba env create -f environment-dev.yml   --name ${ENV_NAME}
 conda activate root
-conda activate ${ENV_NAME}
-mamba install cxx-compiler -c conda-forge
+micromamba activate ${ENV_NAME}
+.micromamba install cxx-compiler -c conda-forge
 mkdir -p bld
 cd bld
 cmake .. \
