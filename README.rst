@@ -7,7 +7,13 @@ THIS IS STILL A WORK IN PROGRESS
 
 .. image:: docs/xeus-cookiecutter.svg
    :scale: 150 %
-    
+
+
+
+.. image:: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml
+
+
 .. image:: https://dev.azure.com/derthorstenbeier/xeus-cookiecutter/_apis/build/status/DerThorsten.xeus-cookiecutter?branchName=main
     :target: https://dev.azure.com/derthorstenbeier/xeus-cookiecutter/_build/latest?definitionId=1&branchName=main
 
