@@ -85,14 +85,14 @@ jobs:
       displayName: install cxx compiler
 
     - powershell: |
-          cd xeus-lua || exit 1 
+          cd xeus-lua
           micromamba activate xeus_lua
           cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
     #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
       displayName: cmake configure
 
     - powershell: |
-          cd xeus-lua || exit 1 
+          cd xeus-lua
           micromamba activate xeus_lua
           cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
     #           -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" || exit 1
