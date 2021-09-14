@@ -23,7 +23,7 @@
 
 #include "xeus/xkernel.hpp"
 #include "xeus/xkernel_configuration.hpp"
-#include "xeus/xserver.hpp"
+#include "xeus/xserver_zmq.hpp"
 
 
 #include "{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp"
@@ -102,19 +102,14 @@ int main(int argc, char* argv[])
     signal(SIGSEGV, handler);
 #endif
 
-
+    auto context = xeus::make_context<zmq::context_t>();
 
     // Instantiating the xeus xinterpreter
     using interpreter_ptr = std::unique_ptr<{{cookiecutter.cpp_namespace}}::interpreter>;
     interpreter_ptr interpreter = interpreter_ptr(new {{cookiecutter.cpp_namespace}}::interpreter());
 
-    using history_manager_ptr = std::unique_ptr<xeus::xhistory_manager>;
-    history_manager_ptr hist = xeus::make_in_memory_history_manager();
 
     std::string connection_filename = extract_filename(argc, argv);
-
-
-    nl::json debugger_config;
 
     if (!connection_filename.empty())
     {
@@ -122,13 +117,9 @@ int main(int argc, char* argv[])
         xeus::xconfiguration config = xeus::load_configuration(connection_filename);
         xeus::xkernel kernel(config,
                              xeus::get_user_name(),
+                             std::move(context),
                              std::move(interpreter),
-                             std::move(hist),
-                             xeus::make_console_logger(xeus::xlogger::msg_type,
-                                                       xeus::make_file_logger(xeus::xlogger::content, "xeus.log")),
-                             xeus::make_xserver_shell_main,
-                             xeus::make_null_debugger,
-                             debugger_config);
+                             xeus::make_xserver_zmq);
 
         std::cout <<
             "Starting xeus-wren kernel...\n\n"
@@ -141,12 +132,9 @@ int main(int argc, char* argv[])
     else
     {
         xeus::xkernel kernel(xeus::get_user_name(),
+                             std::move(context),
                              std::move(interpreter),
-                             std::move(hist),
-                             nullptr,
-                             xeus::make_xserver_shell_main,
-                             xeus::make_null_debugger,
-                             debugger_config);
+                             xeus::make_xserver_zmq);
 
         const auto& config = kernel.get_config();
         std::cout <<

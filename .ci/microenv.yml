@@ -1,0 +1,6 @@
+name: microenv
+channels:
+  - conda-forge
+dependencies:
+  - cookiecutter
+

@@ -10,7 +10,7 @@ dependencies:
   - cookiecutter
   - pytest-cookies
   - pytest
-  - xeus
+  - xeus >= 2.0
   - xtl
   - sh
   - nlohmann_json

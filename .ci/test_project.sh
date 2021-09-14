@@ -1,18 +1,54 @@
 #!/bin/bash
 
 echo "------------------------------------------------------------"
-echo "config conda"
+echo " initialize micromamba"
 echo "------------------------------------------------------------"
-
-conda config --set always_yes yes --set changeps1 no
-echo "------------------------------------------------------------"
-echo "install cookiecutter"
-echo "------------------------------------------------------------"
-conda install cookiecutter  mamba -c conda-forge
+./micromamba shell init -s bash -p ~/micromamba
+mkdir -p ~/micromamba/pkgs/
 
 echo "------------------------------------------------------------"
-echo "run bash test"
+echo " create cookiecutter env"
 echo "------------------------------------------------------------"
-cd tests
-./bash_test.sh || exit 1
+export MAMBA_ROOT_PREFIX=~/micromamba
+export MAMBA_EXE=$(pwd)/micromamba
 
+. $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
+./micromamba create -f .ci/microenv.yml -y
+micromamba activate microenv
+
+ENV_NAME=xeus_cookiecutter_test_env
+DIR_NAME=xeus-lua
+
+
+
+# exit when any command fails
+set -e
+
+echo "------------------------------------------------------------"
+echo " use cookiecutter"
+echo "------------------------------------------------------------"
+cookiecutter  . --no-input -f
+cd ${DIR_NAME}
+
+echo "------------------------------------------------------------"
+echo " create env"
+echo "------------------------------------------------------------"
+../micromamba env create -f environment-dev.yml  -y --name ${ENV_NAME}
+
+echo "------------------------------------------------------------"
+echo " activate env"
+echo "------------------------------------------------------------"
+micromamba activate ${ENV_NAME}
+
+echo "------------------------------------------------------------"
+echo " install cxx compiler"
+echo "------------------------------------------------------------"
+../micromamba install cxx-compiler -c conda-forge -y
+mkdir -p bld
+cd bld
+cmake .. \
+     -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+     -Dxtl_DIR=$CONDA_PREFIX/share/cmake/xtl
+
+make -j8
