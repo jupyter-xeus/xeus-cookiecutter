@@ -24,10 +24,10 @@ jobs:
     variables:
       repoDir: '$(Build.Repository.LocalPath)'
     steps:
-        - script: |
-            wget -qO- https://micromamba.snakepit.net/api/micromamba/osx-64/latest | tar -xvj bin/micromamba
-            mv bin/micromamba ./micromamba
-          displayName: install micromamba
+      - script: |
+          wget -qO- https://micromamba.snakepit.net/api/micromamba/osx-64/latest | tar -xvj bin/micromamba
+          mv bin/micromamba ./micromamba
+        displayName: install micromamba
       # - bash: |
       #     echo "##vso[task.prependpath]$CONDA/bin"
       #     sudo chown -R $USER $CONDA
