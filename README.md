@@ -2,7 +2,7 @@
 
 [![Azure Pipelines](https://dev.azure.com/JohnDoe/xeus-mylang/_apis/build/status/jupyter-xeus.xeus-python?branchName=main)](https://dev.azure.com/JohnDoe/xeus-mylang/_build/latest?definitionId=2&branchName=main)
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://xeus-mylangreadthedocs.io/en/latest/?badge=latest)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/stable?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/main?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb)
 
 `xeus-mylang` is a Jupyter kernel for mylang based on the native implementation of the
 Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
@@ -55,7 +55,7 @@ make && make install
 To try out xeus-mylang interactively in your web browser, just click on the binder link:
 (Once Conda Package is Ready)
 
-[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/stable?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb) -->
+[![Binder](binder-logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/main?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb) -->
 
 
 
