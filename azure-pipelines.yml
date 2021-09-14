@@ -68,7 +68,7 @@ jobs:
       displayName: install microenv
 
     - powershell: |
-          .\micromamba.exe activate microenv
+          micromamba activate microenv
           call cookiecutter %repoDir% --overwrite-if-exists --no-input 
           cd xeus-lua  
       displayName: run cookiecutter
