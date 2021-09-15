@@ -110,7 +110,11 @@ namespace {{cookiecutter.cpp_namespace}}
         if (code[0] == 'H')
         {
             result["status"] = "ok";
-            result["matches"] = {"Hello", "Hey", "Howdy"};
+            result["matches"] = {
+                std::string("Hello"), 
+                std::string("Hey"), 
+                std::string("Howdy")
+            };
             result["cursor_start"] = 5;
             result["cursor_end"] = cursor_pos;
         }
