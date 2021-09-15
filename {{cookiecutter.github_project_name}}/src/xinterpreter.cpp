@@ -101,8 +101,8 @@ namespace {{cookiecutter.cpp_namespace}}
         }
         return result;
     }
-    nl::json interpreter::complete_request_impl(const std::string& /* code */,
-                                                     int /* cursor_pos */)
+    nl::json interpreter::complete_request_impl(const std::string&  code,
+                                                     int cursor_pos)
     {
         nl::json result;
 
