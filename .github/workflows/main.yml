@@ -82,6 +82,11 @@ jobs:
           environment-file: .ci/microenv.yml
           environment-name: microenv
 
+      - name: probe micromamba
+        shell: powershell
+        run: |
+          micromamba.exe 
+
       - name: create project with cookiecutter
         shell: powershell
         run: 
