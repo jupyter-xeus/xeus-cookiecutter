@@ -67,6 +67,12 @@ jobs:
           cd xeus-mylang/bld
           make install
 
+      - name: test
+        shell: bash -l {0}
+        run: |
+          cd xeus-mylang/test
+          pytest .
+
       - name: Push
         uses: s0/git-publish-subdir-action@develop
         env:

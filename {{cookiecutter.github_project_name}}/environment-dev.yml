@@ -12,6 +12,4 @@ dependencies:
   - xtl
   # Test dependencies
   - pytest
-  - nbval
-  - ipympl
   - jupyter_kernel_test
