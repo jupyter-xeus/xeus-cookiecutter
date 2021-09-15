@@ -38,7 +38,7 @@ $MAMBA_BIN env create -f environment-dev.yml  -y --name ${ENV_NAME}
 echo "------------------------------------------------------------"
 echo " activate env"
 echo "------------------------------------------------------------"
-$MAMBA_BIN activate ${ENV_NAME}
+micromamba activate ${ENV_NAME}
 
 echo "------------------------------------------------------------"
 echo " install cxx compiler"
