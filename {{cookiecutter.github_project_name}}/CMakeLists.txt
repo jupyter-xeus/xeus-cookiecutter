@@ -7,7 +7,7 @@
 #############################################################################
 
 cmake_minimum_required(VERSION 3.4.3)
-project({{cookiecutter.cmake_project_name}})
+project({{cookiecutter.project_name}})
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 set({{cookiecutter.cmake_var_prefix}}_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -49,7 +49,7 @@ configure_file (
 OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
 OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
 
-option({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC "Build {{cookiecutter.cmake_project_name}} static library" ON)
+option({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC "Build {{cookiecutter.project_name}} static library" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED "Split {{cookiecutter.binary_name}} build into executable and library" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE "Build the {{cookiecutter.binary_name}} executable" ON)
 
@@ -318,7 +318,7 @@ configure_package_config_file(${PROJECT_NAME}Config.cmake.in
                               "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
                               INSTALL_DESTINATION ${PROJECT_BINARY_DIR})
 
-# Configure '{{cookiecutter.cmake_project_name}}Config.cmake.in for an install tree
+# Configure '{{cookiecutter.project_name}}Config.cmake.in for an install tree
 set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "")
 configure_package_config_file(${PROJECT_NAME}Config.cmake.in
                               "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${PROJECT_NAME}Config.cmake"
