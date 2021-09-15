@@ -1,7 +1,7 @@
 /***************************************************************************
 * Copyright (c) 2021,                                          
 *                                                                          
-* Distributed under the terms of the MIT license.                 
+* Distributed under the terms of the BSD 3-Clause License.                 
 *                                                                          
 * The full license is in the file LICENSE, distributed with this software. 
 ****************************************************************************/
@@ -30,33 +30,54 @@ namespace xeus_mylang
     }
 
     nl::json interpreter::execute_request_impl(int execution_counter, // Typically the cell number
-                                                      const std::string& /*code*/, // Code to execute
+                                                      const std::string& code, // Code to execute
                                                       bool /*silent*/,
                                                       bool /*store_history*/,
                                                       nl::json /*user_expressions*/,
                                                       bool /*allow_stdin*/)
     {
-        // You can use the C-API of your target language for executing the code,
-        // e.g. `PyRun_String` for the Python C-API
-        //      `luaL_dostring` for the Lua C-API
+        nl::json kernel_res;
 
-        // Use this method for publishing the execution result to the client,
-        // this method takes the ``execution_counter`` as first argument,
-        // the data to publish (mime type data) as second argument and metadata
-        // as third argument.
-        // Replace "Hello World !!" by what you want to be displayed under the execution cell
+        if (code.compare("hello, world") == 0)
+        {
+            publish_stream("stdout", code);
+        }
+
+        if (code.compare("error") == 0)
+        {
+            publish_stream("stderr", code);
+        }
+
+        if (code.compare("?") == 0)
+        {
+            std::string html_content = R"(<iframe class="xpyt-iframe-pager" src="
+                https://xeus.readthedocs.io"></iframe>)";
+
+            kernel_res["status"] = "ok";
+            kernel_res["payload"] = nl::json::array();
+            kernel_res["payload"][0] = nl::json::object({
+                {"data", {
+                    {"text/plain", "https://xeus.readthedocs.io"},
+                    {"text/html", html_content}}
+                },
+                {"source", "page"},
+                {"start", 0}
+            });
+            kernel_res["user_expressions"] = nl::json::object();
+
+            return kernel_res;
+        }
+
         nl::json pub_data;
-        pub_data["text/plain"] = "Hello World !!";
-        publish_execution_result(execution_counter, std::move(pub_data), nl::json::object());
+        pub_data["text/plain"] = code;
+        publish_execution_result(execution_counter, std::move(pub_data), nl::json());
 
-        // You can also use this method for publishing errors to the client, if the code
-        // failed to execute
-        // publish_execution_error(error_name, error_value, error_traceback);
-        publish_execution_error("TypeError", "123", {"!@#$", "*(*"});
+        kernel_res["status"] = "ok";
+        kernel_res["payload"] = nl::json::array();
+        kernel_res["user_expressions"] = nl::json::object();
 
-        nl::json result;
-        result["status"] = "ok";
-        return result;
+        return kernel_res;
+
     }
 
     void interpreter::configure_impl()
@@ -64,8 +85,24 @@ namespace xeus_mylang
         // Perform some operations
     }
 
-    nl::json interpreter::complete_request_impl(const std::string& code,
-                                                       int cursor_pos)
+    nl::json interpreter::is_complete_request_impl(const std::string& code)
+    {
+        nl::json result;
+        result["status"] = "complete";
+        if (code.compare("incomplete") == 0)
+        {
+            result["status"] = "incomplete";
+            result["indent"] = "   ";
+        }
+        else if(code.compare("invalid") == 0)
+        {
+            result["status"] = "invalid";
+            result["indent"] = "   ";
+        }
+        return result;
+    }
+    nl::json interpreter::complete_request_impl(const std::string&  code,
+                                                     int cursor_pos)
     {
         nl::json result;
 
@@ -94,21 +131,10 @@ namespace xeus_mylang
                                                       int /*detail_level*/)
     {
         nl::json result;
-        result["data"] = nl::json::object();
-        result["metadata"] = nl::json::object();
-
-        if (code.compare("print") == 0)
-        {
-
-            result["found"] = true;
-            result["text/plain"] = "Print objects to the text stream file, [...]";
-        }
-        else
-        {
-            result["found"] = false;
-        }
-
         result["status"] = "ok";
+        result["found"] = true;
+        result["data"] = ('text/plain', 'hello!');
+        result["metadata"] = ('text/plain', 'hello!');
         return result;
     }
 
@@ -117,49 +143,6 @@ namespace xeus_mylang
         std::cout << "Bye!!" << std::endl;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    nl::json interpreter::is_complete_request_impl(const std::string& code)
-    {
-        nl::json result;
-        result["status"] = code;
-        if (code.compare("incomplete") == 0)
-        {
-            result["indent"] = "   ";
-        }
-        return result;
-    }
 
     nl::json interpreter::kernel_info_request_impl()
     {

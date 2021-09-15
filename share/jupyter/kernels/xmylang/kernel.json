@@ -1,7 +1,7 @@
 {
-  "display_name": "Wren 0.12 (xmylang)",
+  "display_name": "mylang 1.0.0 (xmylang)",
   "argv": [
-      "/home/runner/micromamba/envs/xeus_cookiecutter_test_env/bin/xwren",
+      "/home/runner/micromamba/envs/xeus_cookiecutter_test_env/bin/xmylang",
       "-f",
       "{connection_file}"
   ],

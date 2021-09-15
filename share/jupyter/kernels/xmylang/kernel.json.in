@@ -1,7 +1,7 @@
 {
-  "display_name": "Wren @XEUS_MYLANG_VERSION_MAJOR@.@XEUS_MYLANG_VERSION_MINOR@ (xmylang)",
+  "display_name": "mylang 1.0.0 (xmylang)",
   "argv": [
-      "@XEUS_MYLANG_KERNELSPEC_PATH@xwren",
+      "@XEUS_MYLANG_KERNELSPEC_PATH@xmylang",
       "-f",
       "{connection_file}"
   ],
