@@ -36,6 +36,8 @@ namespace {{cookiecutter.cpp_namespace}}
                                                       nl::json /*user_expressions*/,
                                                       bool /*allow_stdin*/)
     {
+        nl::json kernel_res;
+
         if (code.compare("hello, world") == 0)
         {
             publish_stream("stdout", code);
@@ -65,6 +67,16 @@ namespace {{cookiecutter.cpp_namespace}}
 
             return kernel_res;
         }
+
+        nl::json pub_data;
+        pub_data["text/plain"] = code;
+        publish_execution_result(execution_counter, std::move(pub_data), nl::json());
+
+        kernel_res["status"] = "ok";
+        kernel_res["payload"] = nl::json::array();
+        kernel_res["user_expressions"] = nl::json::object();
+
+        return kernel_res;
 
     }
 
