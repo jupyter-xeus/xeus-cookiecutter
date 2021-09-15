@@ -2,14 +2,16 @@ name: CI
 on:
   push:
     branches:
-    - main
+    - {{cookiecutter.branch_name}}
   pull_request:
     branches:
-    - main
+    - {{cookiecutter.branch_name}}
 
 jobs:
   unix:
+    {% raw %}
     runs-on: ${{ matrix.os }}
+    {% endraw %} 
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +25,7 @@ jobs:
         with:
           environment-file: environment-dev.yml
           environment-name: {{cookiecutter.conda_package_name}}
-          
+
       - name: install cxx compiler
         shell: bash -l {0}
         run: |
@@ -51,7 +53,9 @@ jobs:
           make install
 
   win:
+    {% raw %}
     runs-on: ${{ matrix.os }}
+    {% endraw %} 
     strategy:
       fail-fast: false
       matrix:
