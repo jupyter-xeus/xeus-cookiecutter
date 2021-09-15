@@ -47,7 +47,8 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang
-          mkdir bld
+          mkdir -p bld
+          cd bld
           cmake .. \
            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
