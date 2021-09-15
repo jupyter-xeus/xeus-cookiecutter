@@ -70,6 +70,7 @@ jobs:
       - name: test
         shell: bash -l {0}
         run: |
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .
 

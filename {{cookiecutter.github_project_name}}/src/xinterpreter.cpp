@@ -86,7 +86,7 @@ namespace {{cookiecutter.cpp_namespace}}
     }
 
     nl::json interpreter::complete_request_impl(const std::string& code,
-                                                       int cursor_pos)
+                                                       int /*cursor_pos*/)
     {
         nl::json result;
         result["status"] = "complete";
