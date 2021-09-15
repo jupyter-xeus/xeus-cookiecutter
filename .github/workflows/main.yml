@@ -85,7 +85,7 @@ jobs:
       - name: probe micromamba
         shell: powershell
         run: |
-          $Env:MAMBA_EXE
+          .\micromamba.exe 
 
       - name: create project with cookiecutter
         shell: powershell
@@ -95,14 +95,14 @@ jobs:
       - name: create and activate env
         shell: powershell
         run: |
-          micromamba.exe env create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
+         .\micromamba.exe  env create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
         shell: powershell
         run: |
           micromamba activate xeus_cookiecutter_test_env
-          $MAMBA_EXE install cxx-compiler -c conda-forge -y
+         .\micromamba.exe install cxx-compiler -c conda-forge -y
 
       - name: cmake configure
         shell: powershell
