@@ -119,8 +119,8 @@ namespace {{cookiecutter.cpp_namespace}}
         nl::json result;
         result["status"] = "ok";
         result["found"] = true;
-        result["data"] = {{"text/plain", ""}};
-        result["metadata"] = {{"text/plain", ""}};
+        result["data"] = {{"text/plain", "hello!"}};
+        result["metadata"] = {{"text/plain", "hello!"}};
         return result;
     }
 
