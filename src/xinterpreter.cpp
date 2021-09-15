@@ -110,7 +110,11 @@ namespace xeus_mylang
         if (code[0] == 'H')
         {
             result["status"] = "ok";
-            result["matches"] = {"Hello", "Hey", "Howdy"};
+            result["matches"] = {
+                std::string("Hello"), 
+                std::string("Hey"), 
+                std::string("Howdy")
+            };
             result["cursor_start"] = 5;
             result["cursor_end"] = cursor_pos;
         }
@@ -133,8 +137,10 @@ namespace xeus_mylang
         nl::json result;
         result["status"] = "ok";
         result["found"] = true;
-        result["data"] = ('text/plain', 'hello!');
-        result["metadata"] = ('text/plain', 'hello!');
+        
+        result["data"] = {{std::string("text/plain"), std::string("hello!")}};
+        result["metadata"] = {{std::string("text/plain"), std::string("hello!")}};
+         
         return result;
     }
 
