@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "------------------------------------------------------------"
-echo " initialize micromamba"
-echo "------------------------------------------------------------"
-./micromamba shell init -s bash -p ~/micromamba
-mkdir -p ~/micromamba/pkgs/
+# echo "------------------------------------------------------------"
+# echo " initialize micromamba"
+# echo "------------------------------------------------------------"
+# ./micromamba shell init -s bash -p ~/micromamba
+# mkdir -p ~/micromamba/pkgs/
 
 echo "------------------------------------------------------------"
 echo " create cookiecutter env"
