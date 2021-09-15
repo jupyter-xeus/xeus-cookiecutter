@@ -24,7 +24,7 @@ class KernelTests(jupyter_kernel_test.KernelTests):
     complete_code_samples = ['hello, world']
     incomplete_code_samples = ["incomplete"]
     invalid_code_samples = ['invalid']
-    code_inspect_sample = "print"
+    # code_inspect_sample = "print"
 
 
     def test_stdout(self):
