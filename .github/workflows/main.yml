@@ -102,7 +102,7 @@ jobs:
         shell: powershell
         run: |
           micromamba activate xeus_cookiecutter_test_env
-          .\micromamba.exe install cxx-compiler -c conda-forge -y
+          .\micromamba.exe install cxx-compiler ninja -c conda-forge -y
 
       - name: cmake configure
         shell: powershell
@@ -111,7 +111,7 @@ jobs:
           cd xeus-mylang
           mkdir -p bld
           cd bld
-          cmake ..  -DCMAKE_BUILD_TYPE=Release  -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library"
+          cmake .. -G"Ninja" -DCMAKE_BUILD_TYPE=Release  -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library"
           cmake .. \
            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX 
