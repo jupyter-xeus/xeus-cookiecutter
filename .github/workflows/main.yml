@@ -26,7 +26,13 @@ jobs:
           environment-file: .ci/microenv.yml
           environment-name: microenv
 
-      - name: run tests
+
+      - name: create project with cookiecutter
+        shell: bash -l {0}
+        run: 
+          cookiecutter  . --no-input -f
+
+      - name: create and activate env
         shell: bash -l {0}
         run: 
            $HOME/micromamba-bin/micromamba env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
