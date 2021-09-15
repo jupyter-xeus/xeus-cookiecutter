@@ -25,6 +25,9 @@ jobs:
         with:
           environment-file: .ci/microenv.yaml
           environment-name: microenv
+
+      - name: run tests
+        shell: bash -l {0}
         run: |
           chmod +x .ci/test_project.sh || exit 1
           ./.ci/test_project.sh || exit 1
