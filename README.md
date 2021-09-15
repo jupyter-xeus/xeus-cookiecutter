@@ -1,4 +1,4 @@
-# ![xeus-mylang](docs/source/xeus-python.svg)
+# ![xeus-mylang](docs/source/xeus-logo.svg)
 
 
 
