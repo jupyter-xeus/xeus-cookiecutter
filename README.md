@@ -1,6 +1,10 @@
 # ![xeus-mylang](docs/source/xeus-python.svg)
 
-[![Azure Pipelines](https://dev.azure.com/JohnDoe/xeus-mylang/_apis/build/status/jupyter-xeus.xeus-python?branchName=main)](https://dev.azure.com/JohnDoe/xeus-mylang/_build/latest?definitionId=2&branchName=main)
+
+
+
+[![Build Status](https://github.com/JohnDoe/xeus-mylang/actions/workflows/main.yml/badge.svg)](https://github.com/JohnDoe/xeus-mylang/actions/workflows/main.yml)
+
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://xeus-mylangreadthedocs.io/en/latest/?badge=latest)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/JohnDoe/xeus-mylang/main?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb)
 
