@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-    - main
+    - rendered
   pull_request:
     branches:
-    - main
+    - rendered
 
 jobs:
   unix:

@@ -28,4 +28,4 @@ The full license is in the file LICENSE, distributed with this software.
 
    dev-build-options
 
-.. _xeus: https://github.com/JohnDoe/xeus-mylang
+.. _xeus: https://github.com/DerThorsten/xeus-mylang
