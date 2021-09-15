@@ -1,4 +1,4 @@
-# ![{{cookiecutter.package_name}}](docs/source/xeus-python.svg)
+# ![{{cookiecutter.package_name}}](docs/source/xeus-logo.svg)
 
 
 
