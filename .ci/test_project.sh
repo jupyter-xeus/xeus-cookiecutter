@@ -18,7 +18,7 @@
 
 ENV_NAME=xeus_cookiecutter_test_env
 PACKAGE_NAME=xeus-mylang
-
+MAMBA_BIN=$HOME/micromamba-bin/micromamba
 
 
 # exit when any command fails
@@ -29,11 +29,11 @@ echo " use cookiecutter"
 echo "------------------------------------------------------------"
 cookiecutter  . --no-input -f
 cd ${PACKAGE_NAME}
-echo "micromambaLoc" ${micromambaLoc}
+echo "micromambaLoc" ${micromambaLoc} $micromambaLoc
 echo "------------------------------------------------------------"
 echo " create env"
 echo "------------------------------------------------------------"
-${micromambaLoc} env create -f environment-dev.yml  -y --name ${ENV_NAME}
+$MAMBA_BIN env create -f environment-dev.yml  -y --name ${ENV_NAME}
 
 echo "------------------------------------------------------------"
 echo " activate env"
@@ -43,7 +43,7 @@ micromamba activate ${ENV_NAME}
 echo "------------------------------------------------------------"
 echo " install cxx compiler"
 echo "------------------------------------------------------------"
-${micromambaLoc}  install cxx-compiler -c conda-forge -y
+$MAMBA_BIN  install cxx-compiler -c conda-forge -y
 mkdir -p bld
 cd bld
 cmake .. \
