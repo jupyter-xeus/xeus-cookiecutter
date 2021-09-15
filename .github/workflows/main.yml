@@ -102,7 +102,7 @@ jobs:
         shell: powershell
         run: |
           micromamba activate xeus_cookiecutter_test_env
-         .\micromamba.exe install cxx-compiler -c conda-forge -y
+          .\micromamba.exe install cxx-compiler -c conda-forge -y
 
       - name: cmake configure
         shell: powershell
