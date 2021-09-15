@@ -33,7 +33,7 @@ cd ${PACKAGE_NAME}
 echo "------------------------------------------------------------"
 echo " create env"
 echo "------------------------------------------------------------"
-.micromamba env create -f environment-dev.yml  -y --name ${ENV_NAME}
+micromamba env create -f environment-dev.yml  -y --name ${ENV_NAME}
 
 echo "------------------------------------------------------------"
 echo " activate env"
