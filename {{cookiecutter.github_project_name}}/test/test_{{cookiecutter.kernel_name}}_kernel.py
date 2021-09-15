@@ -19,7 +19,7 @@ class KernelTests(jupyter_kernel_test.KernelTests):
     code_hello_world = "hello, world"
     code_page_something = "?"
     completion_samples = [
-        {'text': 'H', 'matches': {'Hello", "Hey", "Howdy"'}}
+        {'text': 'H', 'matches': {"Hello", "Hey", "Howdy"}}
     ]
     complete_code_samples = ['hello, world']
     incomplete_code_samples = ["incomplete"]
