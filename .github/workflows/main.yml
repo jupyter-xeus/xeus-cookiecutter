@@ -26,7 +26,6 @@ jobs:
           environment-file: .ci/microenv.yml
           environment-name: microenv
 
-
       - name: create project with cookiecutter
         shell: bash -l {0}
         run: 
@@ -38,6 +37,34 @@ jobs:
           cd xeus-mylang
           $HOME/micromamba-bin/micromamba env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
+
+      - name: install cxx compiler
+        shell: bash -l {0}
+        run: |
+          $HOME/micromamba-bin/micromamba install cxx-compiler -c conda-forge -y
+
+      - name: cmake configure
+        shell: bash -l {0}
+        run: |
+          cd xeus-mylang
+          mkdir bld
+          cmake .. \
+           -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+           -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+           -Dxtl_DIR=$CONDA_PREFIX/share/cmake/xtl
+
+
+      - name: build
+        shell: bash -l {0}
+        run: |
+          cd xeus-mylang/bld
+          make -j8
+
+      - name: install
+        shell: bash -l {0}
+        run: |
+          cd xeus-mylang/bld
+          make install
 #  ci:
 #    runs-on: ${{ matrix.os }}
 #    strategy:
