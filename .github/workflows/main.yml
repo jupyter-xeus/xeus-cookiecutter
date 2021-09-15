@@ -10,7 +10,7 @@ on:
     - main
 
 jobs:
-  mambaci:
+  unix:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -66,7 +66,60 @@ jobs:
         run: |
           cd xeus-mylang/bld
           make install
-#  ci:
+  win:
+  runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install mamba
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          environment-file: .ci/microenv.yml
+          environment-name: microenv
+
+      - name: create project with cookiecutter
+        shell: powershell
+        run: 
+          cookiecutter  . --no-input -f
+
+      - name: create and activate env
+        shell: powershell
+        run: |
+          cd xeus-mylang
+          $HOME/micromamba-bin/micromamba env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
+
+      - name: install cxx compiler
+        shell: powershell
+        run: |
+          micromamba activate xeus_cookiecutter_test_env
+          $HOME/micromamba-bin/micromamba install cxx-compiler -c conda-forge -y
+
+      - name: cmake configure
+        shell: powershell
+        run: |
+          micromamba activate xeus_cookiecutter_test_env
+          cd xeus-mylang
+          mkdir -p bld
+          cd bld
+          cmake .. -G"Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE=Release  ^
+              -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library"
+          cmake .. \
+           -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+           -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX 
+
+      - name: build
+        shell: powershell
+        run: |
+          cd xeus-mylang/bld
+          cmake --build . --target ALL_BUILD 
+
+
 #    runs-on: ${{ matrix.os }}
 #    strategy:
 #      fail-fast: false
