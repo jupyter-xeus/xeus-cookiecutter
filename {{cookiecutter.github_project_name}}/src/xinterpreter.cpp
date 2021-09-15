@@ -105,10 +105,24 @@ namespace {{cookiecutter.cpp_namespace}}
                                                      int /* cursor_pos */)
     {
         nl::json result;
-        result["status"] = "ok";
-        result["matches"] = {"a.test1", "a.test2"};
-        result["cursor_start"] = 2;
-        result["cursor_end"] = 6;
+
+        // Code starts with 'H', it could be the following completion
+        if (code[0] == 'H')
+        {
+            result["status"] = "ok";
+            result["matches"] = {"Hello", "Hey", "Howdy"};
+            result["cursor_start"] = 5;
+            result["cursor_end"] = cursor_pos;
+        }
+        // No completion result
+        else
+        {
+            result["status"] = "ok";
+            result["matches"] = nl::json::array();
+            result["cursor_start"] = cursor_pos;
+            result["cursor_end"] = cursor_pos;
+        }
+
         return result;
     }
 
