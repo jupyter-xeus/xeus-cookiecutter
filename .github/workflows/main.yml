@@ -85,7 +85,7 @@ jobs:
       - name: probe micromamba
         shell: powershell
         run: |
-          micromamba.exe 
+          .\micromamba.exe 
 
       - name: create project with cookiecutter
         shell: powershell
