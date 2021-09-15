@@ -91,7 +91,7 @@ jobs:
         shell: powershell
         run: |
           cd xeus-mylang
-          $MAMBA_EXE env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba.exe env create -f xeus-mylang/environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
