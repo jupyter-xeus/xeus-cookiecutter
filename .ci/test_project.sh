@@ -29,7 +29,7 @@ echo " use cookiecutter"
 echo "------------------------------------------------------------"
 cookiecutter  . --no-input -f
 cd ${PACKAGE_NAME}
-
+echo "micromambaLoc" ${micromambaLoc}
 echo "------------------------------------------------------------"
 echo " create env"
 echo "------------------------------------------------------------"
