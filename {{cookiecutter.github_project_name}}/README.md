@@ -1,6 +1,10 @@
 # ![{{cookiecutter.package_name}}](docs/source/xeus-python.svg)
 
-[![Azure Pipelines](https://dev.azure.com/{{cookiecutter.azure_user_name}}/{{cookiecutter.project_name}}/_apis/build/status/jupyter-xeus.xeus-python?branchName=main)](https://dev.azure.com/{{cookiecutter.azure_user_name}}/{{cookiecutter.project_name}}/_build/latest?definitionId=2&branchName=main)
+
+
+
+[![Build Status](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml/badge.svg)](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml)
+
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://{{cookiecutter.readthedocs_package_name}}readthedocs.io/en/latest/?badge=latest)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/main?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb)
 
