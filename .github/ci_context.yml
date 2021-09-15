@@ -1,0 +1,4 @@
+default_context:
+    full_name: "Thorsten Beier"
+    email: "derthorstenbeier@gmail.com"
+    branch: "rendered"
