@@ -90,7 +90,6 @@ jobs:
       - name: create and activate env
         shell: powershell
         run: |
-          cd xeus-mylang
           micromamba.exe env create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
