@@ -1,7 +1,7 @@
 {
   "display_name": "{{cookiecutter.language}} {{cookiecutter.language_version}} ({cookiecutter.kernel_name}})",({{cookiecutter.kernel_name}})",
   "argv": [
-      "@{{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH@{{coookiecutter.kernel_name}}",
+      "@{{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH@{{cookiecutter.kernel_name}}",
       "-f",
       "{connection_file}"
   ],
