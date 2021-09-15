@@ -29,7 +29,7 @@ jobs:
       - name: create project with cookiecutter
         shell: bash -l {0}
         run: 
-          cookiecutter  . --config-file  .github/ci_contex.yaml  --no-input -f
+          cookiecutter  . --config-file  .github/ci_contex.yml  --no-input -f
 
       - name: create and activate env
         shell: bash -l {0}
