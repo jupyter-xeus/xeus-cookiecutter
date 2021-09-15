@@ -85,13 +85,10 @@ namespace {{cookiecutter.cpp_namespace}}
         // Perform some operations
     }
 
-    nl::json interpreter::complete_request_impl(const std::string& code,
-                                                       int cursor_pos)
+    nl::json interpreter::is_complete_request_impl(const std::string& code)
     {
         nl::json result;
         result["status"] = "complete";
-        result["cursor_start"] = cursor_pos;
-        result["cursor_end"] = cursor_pos;  
         if (code.compare("incomplete") == 0)
         {
             result["status"] = "incomplete";
@@ -104,28 +101,26 @@ namespace {{cookiecutter.cpp_namespace}}
         }
         return result;
     }
+    nl::json test_interpreter::complete_request_impl(const std::string& /* code */,
+                                                     int /* cursor_pos */)
+    {
+        nl::json result;
+        result["status"] = "ok";
+        result["matches"] = {"a.test1", "a.test2"};
+        result["cursor_start"] = 2;
+        result["cursor_end"] = 6;
+        return result;
+    }
 
     nl::json interpreter::inspect_request_impl(const std::string& code,
                                                       int /*cursor_pos*/,
                                                       int /*detail_level*/)
     {
         nl::json result;
-        result["data"] = nl::json::object();
-        result["metadata"] = nl::json::object();
-
-        if (code.compare("print") == 0)
-        {
-
-            result["found"] = true;
-            result["text/plain"] = "Print objects to the text stream file, [...]";
-            result["data"] = {"key","value"};
-        }
-        else
-        {
-            result["found"] = false;
-        }
-
         result["status"] = "ok";
+        result["found"] = true;
+        result["data"] = {{"text/plain", ""}};
+        result["metadata"] = {{"text/plain", ""}};
         return result;
     }
 
@@ -134,49 +129,6 @@ namespace {{cookiecutter.cpp_namespace}}
         std::cout << "Bye!!" << std::endl;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    nl::json interpreter::is_complete_request_impl(const std::string& code)
-    {
-        nl::json result;
-        result["status"] = code;
-        if (code.compare("incomplete") == 0)
-        {
-            result["indent"] = "   ";
-        }
-        return result;
-    }
 
     nl::json interpreter::kernel_info_request_impl()
     {
