@@ -28,12 +28,9 @@ jobs:
 
       - name: run tests
         shell: bash -l {0}
-        run: |
-          chmod +x .ci/test_project.sh || exit 1
-          ./.ci/test_project.sh || exit 1
-
-
-
+        run: 
+           $MAMBA_BIN env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+           micromamba activate xeus_cookiecutter_test_env
 #  ci:
 #    runs-on: ${{ matrix.os }}
 #    strategy:
