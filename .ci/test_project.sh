@@ -6,15 +6,15 @@
 # micromamba shell init -s bash -p ~/micromamba
 # mkdir -p ~/micromamba/pkgs/
 
-echo "------------------------------------------------------------"
-echo " create cookiecutter env"
-echo "------------------------------------------------------------"
-export MAMBA_ROOT_PREFIX=~/micromamba
-export MAMBA_EXE=$(pwd)/micromamba
+# echo "------------------------------------------------------------"
+# echo " create cookiecutter env"
+# echo "------------------------------------------------------------"
+# export MAMBA_ROOT_PREFIX=~/micromamba
+# export MAMBA_EXE=$(pwd)/micromamba
 
-. $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
-micromamba create -f .ci/microenv.yml -y
-micromamba activate microenv
+# . $MAMBA_ROOT_PREFIX/etc/profile.d/mamba.sh
+# micromamba create -f .ci/microenv.yml -y
+# micromamba activate microenv
 
 ENV_NAME=xeus_cookiecutter_test_env
 PACKAGE_NAME=xeus-mylang
@@ -33,7 +33,7 @@ cd ${PACKAGE_NAME}
 echo "------------------------------------------------------------"
 echo " create env"
 echo "------------------------------------------------------------"
-micromamba env create -f environment-dev.yml  -y --name ${ENV_NAME}
+${micromambaLoc} env create -f environment-dev.yml  -y --name ${ENV_NAME}
 
 echo "------------------------------------------------------------"
 echo " activate env"
@@ -43,7 +43,7 @@ micromamba activate ${ENV_NAME}
 echo "------------------------------------------------------------"
 echo " install cxx compiler"
 echo "------------------------------------------------------------"
-.micromamba install cxx-compiler -c conda-forge -y
+${micromambaLoc}  install cxx-compiler -c conda-forge -y
 mkdir -p bld
 cd bld
 cmake .. \
