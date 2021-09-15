@@ -86,10 +86,12 @@ namespace {{cookiecutter.cpp_namespace}}
     }
 
     nl::json interpreter::complete_request_impl(const std::string& code,
-                                                       int /*cursor_pos*/)
+                                                       int cursor_pos)
     {
         nl::json result;
         result["status"] = "complete";
+        result["cursor_start"] = cursor_pos;
+        result["cursor_end"] = cursor_pos;  
         if (code.compare("incomplete") == 0)
         {
             result["status"] = "incomplete";
@@ -116,6 +118,7 @@ namespace {{cookiecutter.cpp_namespace}}
 
             result["found"] = true;
             result["text/plain"] = "Print objects to the text stream file, [...]";
+            result["data"] = {"key","value"};
         }
         else
         {

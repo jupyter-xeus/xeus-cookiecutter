@@ -35,6 +35,7 @@ class KernelTests(jupyter_kernel_test.KernelTests):
         self.assertEqual(output_msgs[0]['content']['text'], 'hello, world')
 
     def test_stderr(self):
+        reply, output_msgs = self.execute_helper(code='error')
         self.assertEqual(output_msgs[0]['msg_type'], 'stream')
         self.assertEqual(output_msgs[0]['content']['name'], 'stderr')
 
