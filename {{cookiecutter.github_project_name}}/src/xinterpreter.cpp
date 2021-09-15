@@ -137,8 +137,10 @@ namespace {{cookiecutter.cpp_namespace}}
         nl::json result;
         result["status"] = "ok";
         result["found"] = true;
+        {% raw %}
         result["data"] = {{std::string("text/plain"), std::string("hello!")}};
         result["metadata"] = {{std::string("text/plain"), std::string("hello!")}};
+        {% endraw %} 
         return result;
     }
 
