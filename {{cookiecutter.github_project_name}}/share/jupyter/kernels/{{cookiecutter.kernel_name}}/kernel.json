@@ -1,8 +1,0 @@
-{
-  "display_name": "Wren 0.12 (XWren)",
-  "argv": ["xwren", "-f", "{connection_file}"],
-  "language": "wren",
-  "metadata": {
-    "debugger": false
-  }
-}
