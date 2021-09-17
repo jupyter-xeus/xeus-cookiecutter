@@ -155,7 +155,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
         if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
             target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- xeus-wren requires C++{cookiecutter.cpp_standart} support!")
+            message(FATAL_ERROR "Unsupported compiler -- {{cookiecutter.project_name}} requires C++{cookiecutter.cpp_standart} support!")
         endif ()
     endif ()
 
@@ -189,7 +189,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
     target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 endmacro()
 
-# Common macro for shared and static library xeus-wren
+# Common macro for shared and static library
 macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage output_name)
     string(TOUPPER "${linkage}" linkage_upper)
 
@@ -271,7 +271,7 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-set({{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-wrenConfig.cmake")
+set({{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for {{cookiecutter.project_name}}Config.cmake")
 
 # Install {{cookiecutter.library_name}} and {{cookiecutter.library_name}}-static
 if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
@@ -280,7 +280,7 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xeus-wren)
+            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/{{cookiecutter.cpp_root_folder}})
 
     # Makes the project importable from the build directory
     export(EXPORT ${PROJECT_NAME}-targets
@@ -292,7 +292,7 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     install(TARGETS {{cookiecutter.binary_name}}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-    # Configuration and data directories for jupyter and xeus-wren
+    # Configuration and data directories for jupyter and {{cookiecutter.project_name}}
     set(XJUPYTER_DATA_DIR "share/jupyter"    CACHE STRING "Jupyter data directory")
 
     # Install {{cookiecutter.kernel_name}} Jupyter kernelspec
@@ -310,7 +310,7 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     endif ()
 endif ()
 
-# Configure 'xeus-wrenConfig.cmake' for a build tree
+# Configure '{{cookiecutter.project_name}}Config.cmake' for a build tree
 set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "####### Expanded from \@{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE\@ #######\n")
 set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "{{'${'}}{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE}set(CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/cmake;\${CMAKE_MODULE_PATH}\")\n")
 set({{cookiecutter.cmake_var_prefix}}_CONFIG_CODE "{{'${'}}{{cookiecutter.cmake_var_prefix}}_CONFIG_CODE}##################################################")
