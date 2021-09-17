@@ -61,7 +61,7 @@ OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_pre
 # ============
 
 set(xtl_REQUIRED_VERSION 0.6.23)
-set(xeus_REQUIRED_VERSION 0.25.0)
+set(xeus_REQUIRED_VERSION 2.0.0)
 
 if (NOT TARGET xtl)
     find_package(xtl ${xtl_REQUIRED_VERSION} REQUIRED)
