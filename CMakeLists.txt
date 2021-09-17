@@ -61,7 +61,7 @@ OPTION(XEUS_MYLANG_USE_SHARED_XEUS_MYLANG "Link xmylang  with the xeus shared li
 # ============
 
 set(xtl_REQUIRED_VERSION 0.6.23)
-set(xeus_REQUIRED_VERSION 0.25.0)
+set(xeus_REQUIRED_VERSION 2.0.0)
 
 if (NOT TARGET xtl)
     find_package(xtl ${xtl_REQUIRED_VERSION} REQUIRED)
