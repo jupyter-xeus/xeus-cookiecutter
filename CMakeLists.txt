@@ -155,7 +155,7 @@ macro(xeus_mylang_set_common_options target_name)
         if (HAS_CPP_17_FLAG)
             target_compile_features(${target_name} PRIVATE cxx_std_17)
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- xeus-wren requires C++{cookiecutter.cpp_standart} support!")
+            message(FATAL_ERROR "Unsupported compiler -- xeus-mylang requires C++{cookiecutter.cpp_standart} support!")
         endif ()
     endif ()
 
@@ -189,7 +189,7 @@ macro(xeus_mylang_set_kernel_options target_name)
     target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 endmacro()
 
-# Common macro for shared and static library xeus-wren
+# Common macro for shared and static library
 macro(xeus_mylang_create_target target_name linkage output_name)
     string(TOUPPER "${linkage}" linkage_upper)
 
@@ -271,7 +271,7 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-set(XEUS_MYLANG_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-wrenConfig.cmake")
+set(XEUS_MYLANG_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-mylangConfig.cmake")
 
 # Install xeus-mylang and xeus-mylang-static
 if (XEUS_MYLANG_BUILD_SHARED)
@@ -280,7 +280,7 @@ if (XEUS_MYLANG_BUILD_SHARED)
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xeus-wren)
+            PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/xeus-mylang)
 
     # Makes the project importable from the build directory
     export(EXPORT ${PROJECT_NAME}-targets
@@ -292,7 +292,7 @@ if (XEUS_MYLANG_BUILD_EXECUTABLE)
     install(TARGETS xmylang
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-    # Configuration and data directories for jupyter and xeus-wren
+    # Configuration and data directories for jupyter and xeus-mylang
     set(XJUPYTER_DATA_DIR "share/jupyter"    CACHE STRING "Jupyter data directory")
 
     # Install xmylang Jupyter kernelspec
@@ -310,7 +310,7 @@ if (XEUS_MYLANG_BUILD_EXECUTABLE)
     endif ()
 endif ()
 
-# Configure 'xeus-wrenConfig.cmake' for a build tree
+# Configure 'xeus-mylangConfig.cmake' for a build tree
 set(XEUS_MYLANG_CONFIG_CODE "####### Expanded from \@XEUS_MYLANG_CONFIG_CODE\@ #######\n")
 set(XEUS_MYLANG_CONFIG_CODE "${XEUS_MYLANG_CONFIG_CODE}set(CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/cmake;\${CMAKE_MODULE_PATH}\")\n")
 set(XEUS_MYLANG_CONFIG_CODE "${XEUS_MYLANG_CONFIG_CODE}##################################################")
