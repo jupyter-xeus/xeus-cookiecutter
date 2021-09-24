@@ -150,12 +150,12 @@ macro(xeus_mylang_set_common_options target_name)
             target_compile_options(${target_name} PUBLIC -march=native)
         endif ()
 
-        # C++{cookiecutter.cpp_standart} flag
+        # C++17 flag
         CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP_17_FLAG)
         if (HAS_CPP_17_FLAG)
             target_compile_features(${target_name} PRIVATE cxx_std_17)
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- xeus-mylang requires C++{cookiecutter.cpp_standart} support!")
+            message(FATAL_ERROR "Unsupported compiler -- xeus-mylang requires C++17 support!")
         endif ()
     endif ()
 
