@@ -150,12 +150,12 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
             target_compile_options(${target_name} PUBLIC -march=native)
         endif ()
 
-        # C++{cookiecutter.cpp_standart} flag
+        # C++{{cookiecutter.cpp_standart}} flag
         CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standart}}" HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
         if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
             target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- {{cookiecutter.project_name}} requires C++{cookiecutter.cpp_standart} support!")
+            message(FATAL_ERROR "Unsupported compiler -- {{cookiecutter.project_name}} requires C++{{cookiecutter.cpp_standart}} support!")
         endif ()
     endif ()
 
