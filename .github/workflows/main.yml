@@ -56,7 +56,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd test
-          pytest .
+          pytest .  --reruns 5
 
   win:
     
@@ -101,3 +101,11 @@ jobs:
           cd bld
           set CL=/MP
           nmake install
+
+      - name: test
+        shell: cmd
+        run: |
+          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          cd test
+          pytest .  --reruns 5
+
