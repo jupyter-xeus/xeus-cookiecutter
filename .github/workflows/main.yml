@@ -74,7 +74,7 @@ jobs:
           max_attempts: 4
           shell: bash
           command: |
-            ./micromamba shell init -s bash -p ~/micromamba
+            $HOME/micromamba-bin/micromamba shell init -s bash -p ~/micromamba
             source ~/.bashrc
             micromamba activate xeus_cookiecutter_test_env
             cd xeus-mylang/test
