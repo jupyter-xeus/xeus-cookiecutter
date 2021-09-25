@@ -138,12 +138,64 @@ jobs:
           cd xeus-mylang/bld
           cmake --build . --target ALL_BUILD 
 
-#      - name: Push
-#        uses: s0/git-publish-subdir-action@develop
-#        env:
-#          REPO: self
-#          BRANCH: rendered # The branch name where you want to push the assets
-#          FOLDER: xeus-mylang # The directory where your assets are generated
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-#          MESSAGE: "added rendered: ({sha}) {msg}" # The commit message
-          
+
+  win_nmake:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install mamba
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          environment-file: .github/ci_env.yml
+          environment-name: ci_env
+
+      - name: probe micromamba
+        shell: powershell
+        run: |
+          .\micromamba.exe 
+
+      - name: micromamba shell hook
+        shell: powershell
+        run: |
+          micromamba shell hook -s cmd.exe -p C:\Users\runneradmin\micromamba
+          Get-Content -Path C:\Users\runneradmin\micromamba\condabin\mamba_hook.bat
+
+      - name: create project with cookiecutter
+        shell: powershell
+        run: 
+          cookiecutter  . --no-input -f
+
+      - name: create and activate env
+        shell: powershell
+        run: |
+         .\micromamba.exe  env create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
+
+      - name: install cxx compiler
+        shell: powershell
+        run: |
+          micromamba activate xeus_cookiecutter_test_env
+          .\micromamba.exe install cxx-compiler -c conda-forge -y
+
+      - name: cmake configure
+        shell: cmd
+        run: |
+          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          cd xeus-mylang
+          mkdir -p bld
+          cd bld
+          cmake .. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DXEUS_BUILD_TESTS=ON -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" -DCMAKE_INSTALL_PREFIX="%CONDA_PREFIX%" 
+
+      - name: build
+        shell: cmd
+        run: |
+          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          cd xeus-mylang/bld
+          set CL=/MP
+          nmake install
