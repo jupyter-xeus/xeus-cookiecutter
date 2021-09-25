@@ -105,7 +105,7 @@ jobs:
       - name: test
         shell: cmd
         run: |
-          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus-mylang
           cd test
           pytest .  --reruns 5
 
