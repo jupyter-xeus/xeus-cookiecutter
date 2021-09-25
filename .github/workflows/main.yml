@@ -70,8 +70,6 @@ jobs:
       - name: test
         shell: bash -l {0}
         run: |
-          $HOME/micromamba-bin/micromamba shell init -s bash -p ~/micromamba
-          source ~/.bashrc
           micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
