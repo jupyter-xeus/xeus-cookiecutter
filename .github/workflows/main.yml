@@ -67,6 +67,13 @@ jobs:
           cd xeus-mylang/bld
           make install
 
+      - name: init
+        shell: bash
+        run: |
+          $HOME/micromamba-bin/micromamba shell init -s bash -p ~/micromamba
+          source ~/.bashrc
+
+
       - name: test
         uses: nick-invision/retry@v2
         with:
