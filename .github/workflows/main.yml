@@ -100,11 +100,6 @@ jobs:
           environment-file: .github/ci_env.yml
           environment-name: ci_env
 
-      - name: probe micromamba
-        shell: powershell
-        run: |
-          .\micromamba.exe 
-
       - name: micromamba shell hook
         shell: powershell
         run: |
