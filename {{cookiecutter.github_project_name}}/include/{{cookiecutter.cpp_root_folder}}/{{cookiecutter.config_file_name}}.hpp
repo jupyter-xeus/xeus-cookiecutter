@@ -10,8 +10,8 @@
 
 // Project version
 #define {{cookiecutter.cpp_macro_prefix}}_VERSION_MAJOR 0
-#define {{cookiecutter.cpp_macro_prefix}}_VERSION_MINOR 12
-#define {{cookiecutter.cpp_macro_prefix}}_VERSION_PATCH 5
+#define {{cookiecutter.cpp_macro_prefix}}_VERSION_MINOR 1
+#define {{cookiecutter.cpp_macro_prefix}}_VERSION_PATCH 0
 
 // Composing the version string from major, minor and patch
 #define {{cookiecutter.cpp_macro_prefix}}_CONCATENATE(A, B) {{cookiecutter.cpp_macro_prefix}}_CONCATENATE_IMPL(A, B)
