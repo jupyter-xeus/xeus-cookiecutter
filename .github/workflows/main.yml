@@ -67,25 +67,14 @@ jobs:
           cd xeus-mylang/bld
           make install
 
-      - name: init
-        shell: bash
-        run: |
-          $HOME/micromamba-bin/micromamba shell init -s bash -p ~/micromamba
-          source ~/.bashrc
-
-
       - name: test
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 4
-          max_attempts: 4
-          shell: bash
-          command: |
+          shell: bash -l {0}
+          run: |
             $HOME/micromamba-bin/micromamba shell init -s bash -p ~/micromamba
             source ~/.bashrc
             micromamba activate xeus_cookiecutter_test_env
             cd xeus-mylang/test
-            pytest .
+            pytest .  --reruns 5
 
       - name: Push
         uses: s0/git-publish-subdir-action@develop
@@ -153,13 +142,9 @@ jobs:
           nmake install
 
       - name: test
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 4
-          max_attempts: 4
-          shell: cmd
-          command: |
-            call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
-            cd xeus-mylang/test
-            pytest .
+        shell: cmd
+        run: |
+          call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          cd xeus-mylang/test
+          pytest .  --reruns 5
 

@@ -15,3 +15,4 @@ dependencies:
   - sh
   - nlohmann_json
   - cppzmq
+  - pytest-rerunfailures
