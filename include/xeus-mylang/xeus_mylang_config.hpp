@@ -10,8 +10,8 @@
 
 // Project version
 #define XEUS_MYLANG_VERSION_MAJOR 0
-#define XEUS_MYLANG_VERSION_MINOR 12
-#define XEUS_MYLANG_VERSION_PATCH 5
+#define XEUS_MYLANG_VERSION_MINOR 1
+#define XEUS_MYLANG_VERSION_PATCH 0
 
 // Composing the version string from major, minor and patch
 #define XEUS_MYLANG_CONCATENATE(A, B) XEUS_MYLANG_CONCATENATE_IMPL(A, B)
