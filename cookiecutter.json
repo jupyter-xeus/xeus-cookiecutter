@@ -6,6 +6,7 @@
     "language_mimetype":            "text/x-{{ cookiecutter.language}}src",
     "language_file_extension":      "{{ cookiecutter.language}}",
     "language_version":             "1.0.0",
+    "with_wasm":                    ["yes", "no"],
     "with_debugger":                ["no", "yes"],
     "project_name":                 "xeus-{{ cookiecutter.language|lower|replace(' ', '-') }}",
     "kernel_name":                  "x{{ cookiecutter.language|lower|replace(' ', '-') }}",
