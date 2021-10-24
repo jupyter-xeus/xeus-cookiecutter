@@ -26,7 +26,7 @@ set(${PROJECT_NAME}_VERSION
     ${XEUS_MYLANG_VERSION_MAJOR}.${XEUS_MYLANG_VERSION_MINOR}.${XEUS_MYLANG_VERSION_PATCH})
 message(STATUS "Building xeus-mylang v${${PROJECT_NAME}_VERSION}")
 
-# Configuration
+# ConfigurationG342
 # =============
 
 include(GNUInstallDirs)
@@ -55,6 +55,21 @@ OPTION(XEUS_MYLANG_BUILD_EXECUTABLE "Build the xmylang executable" ON)
 
 OPTION(XEUS_MYLANG_USE_SHARED_XEUS "Link xmylang  with the xeus shared library (instead of the static library)" ON)
 OPTION(XEUS_MYLANG_USE_SHARED_XEUS_MYLANG "Link xmylang  with the xeus shared library (instead of the static library)" ON)
+OPTION(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD "Build for wasm with emscripten" OFF)
+
+
+if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
+    add_compile_definitions(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
+    message("Build with emscripten")
+    SET(XEUS_MYLANG_DISABLE_ARCH_NATIVE ON)
+    SET(XEUS_MYLANG_DISABLE_TUNE_GENERIC ON)
+    SET(XEUS_MYLANG_BUILD_STATIC ON)
+    SET(XEUS_MYLANG_BUILD_SHARED OFF)
+    SET(XEUS_MYLANG_BUILD_EXECUTABLE OFF)
+    SET(XEUS_MYLANG_USE_SHARED_XEUS OFF)
+    SET(XEUS_MYLANG_USE_SHARED_XEUS_MYLANG OFF)
+    SET(XEUS_MYLANG_BUILD_TESTS OFF)
+endif()
 
 
 # Dependencies
@@ -82,7 +97,7 @@ if (MSVC)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-    if(NOT EMSCRIPTEN)    
+    if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)    
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     endif()
     if (XEUS_MYLANG_DISABLE_ARCH_NATIVE AND NOT XEUS_MYLANG_DISABLE_TUNE_GENERIC)
@@ -102,6 +117,29 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     endif ()
 
 endif ()
+
+
+if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
+
+    include(XeusEmscriptenWasmFlags)
+
+    # async
+    set(XEUS_EMSCRIPTEN_WASM_FLAGS "${XEUS_EMSCRIPTEN_WASM_FLAGS} --bind")
+    set(XEUS_EMSCRIPTEN_WASM_FLAGS "${XEUS_EMSCRIPTEN_WASM_FLAGS} -s ASYNCIFY=1")
+    set(XEUS_EMSCRIPTEN_WASM_FLAGS "${XEUS_EMSCRIPTEN_WASM_FLAGS} -s 'ASYNCIFY_IMPORTS=[\"async_get_input_function\"]'")
+    set(XEUS_EMSCRIPTEN_WASM_FLAGS "${XEUS_EMSCRIPTEN_WASM_FLAGS} -s 'ASYNCIFY_STACK_SIZE=20480'")
+
+    # ENV (https://github.com/emscripten-core/emscripten/commit/6d9681ad04f60b41ef6345ab06c29bbc9eeb84e0)
+    set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[ENV']\"")
+
+    # filesystem
+    #file(COPY asset_dir DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    #set(XEUS_EMSCRIPTEN_WASM_FLAGS "${XEUS_EMSCRIPTEN_WASM_FLAGS} --embed-file asset_dir")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XEUS_EMSCRIPTEN_WASM_FLAGS}")
+    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${XEUS_EMSCRIPTEN_WASM_FLAGS} ---proxy-to-worker")
+endif()
+
 
 
 # Source files
@@ -187,6 +225,16 @@ macro(xeus_mylang_set_kernel_options target_name)
     endif()
     find_package(Threads) 
     target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+
+    if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
+        find_package(Threads) 
+        target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT}  )
+    else()
+        # add something to link here
+        # target_link_libraries(${target_name} PRIVATE  
+        #     ${SOME_LIBRARIES})
+    endif()
+
 endmacro()
 
 # Common macro for shared and static library
@@ -230,8 +278,13 @@ macro(xeus_mylang_create_target target_name linkage output_name)
     endif ()
 
     find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
-    target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT} )
-
+    if(NOT XEUS_LUA_EMSCRIPTEN_WASM_BUILD)
+        find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
+        target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+    else()
+        # add some library here
+        #target_link_libraries(${target_name} PRIVATE  ${SOME_LIBRARIES})
+    endif()
 endmacro()
 
 # xeus-mylang
@@ -263,6 +316,12 @@ if (XEUS_MYLANG_BUILD_EXECUTABLE)
     target_compile_features(xmylang PRIVATE cxx_std_17)
     xeus_mylang_set_common_options(xmylang)
     xeus_mylang_set_kernel_options(xmylang)
+endif()
+
+
+if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
+    add_executable(xeus_kernel src/main_emscripten_kernel.cpp )
+    target_link_libraries(xeus_kernel  xeus-mylang-static)
 endif()
 
 
