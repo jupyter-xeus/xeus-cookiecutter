@@ -8,7 +8,9 @@ on:
   pull_request:
     branches:
     - main
-
+  schedule:
+    - cron: '0 2 * * *' # run at 2 AM UTC
+    
 jobs:
   unix:
     runs-on: ${{ matrix.os }}
@@ -152,8 +154,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["emscripten/emsdk:2.0.27", "emscripten/emsdk:2.0.32", "emscripten/latest"]
-    container: emscripten/emsdk:2.0.32
+        container: ["emscripten/emsdk:2.0.27", "emscripten/emsdk:2.0.32", "emscripten/emsdk:latest"]
+    
+    container: ${{ matrix.container}}
 
     steps:
       - uses: actions/checkout@v2
@@ -235,7 +238,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang/bld
-          emmake make -j8
+          emmake make -j2
 
       - name: install rendered project
         shell: bash -l {0}
