@@ -275,7 +275,7 @@ macro(xeus_mylang_create_target target_name linkage output_name)
         target_link_libraries(${target_name} PRIVATE "-undefined dynamic_lookup")
     endif ()
 
-    if(NOT XEUS_LUA_EMSCRIPTEN_WASM_BUILD)
+    if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     else()
