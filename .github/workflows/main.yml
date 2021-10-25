@@ -152,7 +152,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container: ["emscripten/emsdk:2.0.27", "emscripten/emsdk:2.0.32", "emscripten/latest"]
+        container: ["emscripten/emsdk:2.0.27", "emscripten/emsdk:2.0.32", "emscripten/emsdk:latest"]
     
     container: ${{ matrix.container}}
 
