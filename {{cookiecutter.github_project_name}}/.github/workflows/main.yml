@@ -240,7 +240,9 @@ jobs:
       - name: "install nlohmann-json"
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           mkdir -p /opt/nlohmannjson/build 
           git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
