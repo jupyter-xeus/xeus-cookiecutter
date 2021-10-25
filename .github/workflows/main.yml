@@ -365,9 +365,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-
+    
+    if: github.ref == 'refs/heads/main'
     steps:
-      if: github.ref == 'refs/heads/main'
       - uses: actions/checkout@v2
 
       - name: install mamba
