@@ -357,3 +357,36 @@ jobs:
           source "/opt/emsdk/emsdk_env.sh"
           cd $GITHUB_WORKSPACE/xeus-mylang/bld
           make install
+
+
+
+  push:
+    needs: [unix, win, emscripten_wasm_docker, emscripten_wasm]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install mamba
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          environment-file: .github/ci_env.yml
+          environment-name: ci_env
+
+      - name: create project with cookiecutter
+        shell: bash -l {0}
+        run: 
+          cookiecutter  . --config-file  .github/ci_context.yml  --no-input -f
+
+      - name: Push to rendered branch
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: rendered
+          FOLDER: xeus-mylang
+          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          MESSAGE: "added rendered: ({sha}) {msg}"
+        if: matrix.os == 'ubuntu-latest'
