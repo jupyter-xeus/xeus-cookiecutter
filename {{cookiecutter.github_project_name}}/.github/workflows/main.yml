@@ -124,7 +124,7 @@ jobs:
     {% raw %}
     container: ${{ matrix.container}}
     {% endraw %} 
-
+    steps:
       - uses: actions/checkout@v2
 
       - name: Verify emscripten
