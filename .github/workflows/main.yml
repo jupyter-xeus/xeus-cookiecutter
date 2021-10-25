@@ -285,6 +285,7 @@ jobs:
           ./emsdk activate ${{matrix.emsdk_ver}}
            
           source "/opt/emsdk/emsdk_env.sh"
+          cd $GITHUB_WORKSPACE
           mkdir -p bld
           cd bld
           emcmake cmake .. \
@@ -302,6 +303,7 @@ jobs:
           ./emsdk activate ${{matrix.emsdk_ver}}
            
           source "/opt/emsdk/emsdk_env.sh"
+          cd $GITHUB_WORKSPACE
           cd bld
           emmake make -j8
 
@@ -313,5 +315,6 @@ jobs:
           ./emsdk activate ${{matrix.emsdk_ver}}
            
           source "/opt/emsdk/emsdk_env.sh"
+          cd $GITHUB_WORKSPACE
           cd bld
           make install
