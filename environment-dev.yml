@@ -6,7 +6,7 @@ dependencies:
   - make
   - cmake
   # Host dependencies
-  - xeus
+  - xeus >= 2.0
   - nlohmann_json
   - cppzmq
   - xtl
