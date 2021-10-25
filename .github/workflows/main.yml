@@ -185,7 +185,7 @@ jobs:
       - name: build rendered project
         shell: bash -l {0}
         run: |
-          cd xeus-mylang/bld
+          cd bld
           emmake make -j2
 
       - name: install rendered project
