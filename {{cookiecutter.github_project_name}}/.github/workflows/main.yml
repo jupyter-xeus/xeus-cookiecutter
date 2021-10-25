@@ -211,7 +211,9 @@ jobs:
         run: |
           git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
           cd /opt/emsdk 
+          {% raw %} 
           ./emsdk install ${{matrix.emsdk_ver}}
+          {% endraw %} 
 
       - name: install mamba
         uses: mamba-org/provision-with-micromamba@main
@@ -222,7 +224,9 @@ jobs:
       - name: "install xtl"
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           mkdir -p /opt/xtl/build 
 
@@ -249,7 +253,9 @@ jobs:
       - name: "install xeus"
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           mkdir -p /opt/xeus/build 
           git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
@@ -270,7 +276,9 @@ jobs:
         shell: bash -l {0}
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           mkdir -p bld
           cd bld
@@ -285,7 +293,9 @@ jobs:
         shell: bash
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           cd bld
           emmake make -j8
@@ -294,7 +304,9 @@ jobs:
         shell: bash -l {0}
         run: |
           cd /opt/emsdk
+          {% raw %} 
           ./emsdk activate ${{matrix.emsdk_ver}}
+          {% endraw %} 
           source "/opt/emsdk/emsdk_env.sh"
           cd bld
           make install
