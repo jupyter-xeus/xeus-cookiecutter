@@ -26,7 +26,7 @@ set(${PROJECT_NAME}_VERSION
     ${XEUS_MYLANG_VERSION_MAJOR}.${XEUS_MYLANG_VERSION_MINOR}.${XEUS_MYLANG_VERSION_PATCH})
 message(STATUS "Building xeus-mylang v${${PROJECT_NAME}_VERSION}")
 
-# ConfigurationG342
+# Configuration
 # =============
 
 include(GNUInstallDirs)
@@ -223,8 +223,6 @@ macro(xeus_mylang_set_kernel_options target_name)
     else ()
         target_link_libraries(${target_name} PRIVATE xeus-mylang-static)
     endif()
-    find_package(Threads) 
-    target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
     if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) 
@@ -277,7 +275,6 @@ macro(xeus_mylang_create_target target_name linkage output_name)
         target_link_libraries(${target_name} PRIVATE "-undefined dynamic_lookup")
     endif ()
 
-    find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
     if(NOT XEUS_LUA_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
