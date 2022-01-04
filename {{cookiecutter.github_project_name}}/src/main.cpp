@@ -122,7 +122,7 @@ int main(int argc, char* argv[])
                              xeus::make_xserver_zmq);
 
         std::cout <<
-            "Starting xeus-wren kernel...\n\n"
+            "Starting {{cookiecutter.kernel_name}} kernel...\n\n"
             "If you want to connect to this kernel from an other client, you can use"
             " the " + connection_filename + " file."
             << std::endl;

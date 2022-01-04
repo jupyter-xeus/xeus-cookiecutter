@@ -109,11 +109,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     endif ()
 
 
-    CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standart}}" HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
-    if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++{{cookiecutter.cpp_standart}}")
+    CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standard}}" HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
+    if (HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++{{cookiecutter.cpp_standard}}")
     else ()
-        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++{{cookiecutter.cpp_standart}} support!")
+        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++{{cookiecutter.cpp_standard}} support!")
     endif ()
 
 endif ()
@@ -139,7 +139,6 @@ if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XEUS_EMSCRIPTEN_WASM_FLAGS}")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${XEUS_EMSCRIPTEN_WASM_FLAGS} ---proxy-to-worker")
 endif()
-
 
 
 # Source files
@@ -188,12 +187,12 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
             target_compile_options(${target_name} PUBLIC -march=native)
         endif ()
 
-        # C++{{cookiecutter.cpp_standart}} flag
-        CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standart}}" HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
-        if (HAS_CPP_{{cookiecutter.cpp_standart}}_FLAG)
-            target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
+        # C++{{cookiecutter.cpp_standard}} flag
+        CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standard}}" HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
+        if (HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
+            target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standard}})
         else ()
-            message(FATAL_ERROR "Unsupported compiler -- {{cookiecutter.project_name}} requires C++{{cookiecutter.cpp_standart}} support!")
+            message(FATAL_ERROR "Unsupported compiler -- {{cookiecutter.project_name}} requires C++{{cookiecutter.cpp_standard}} support!")
         endif ()
     endif ()
 
@@ -255,7 +254,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage 
 
     target_compile_definitions(${target_name} PUBLIC "{{cookiecutter.cpp_macro_prefix}}_EXPORTS")
 
-    target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
+    target_compile_features(${target_name} PRIVATE cxx_std_{{cookiecutter.cpp_standard}})
 
     target_include_directories(${target_name}
                                PUBLIC
@@ -310,7 +309,7 @@ endif ()
 # =======
 if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     add_executable({{cookiecutter.binary_name}} {{'${'}}{{cookiecutter.cmake_var_prefix}}_MAIN_SRC})
-    target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_{{cookiecutter.cpp_standart}})
+    target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_{{cookiecutter.cpp_standard}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_common_options({{cookiecutter.binary_name}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
 endif()
