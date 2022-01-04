@@ -32,4 +32,13 @@
 *.app
 *.wasm
 
+# Jupyter
+.ipynb_checkpoints/
+
+# Generated kernelspec
+share/jupyter/kernels/{{cookiecutter.kernel_name}}/kernel.json
+
+# Build directory
+build/
+
 bld
