@@ -1,5 +1,5 @@
 /***************************************************************************
-* Copyright (c) {% now 'utc', '%Y' %},                                          
+* Copyright (c) {% now 'utc', '%Y' %}, {{coookiecutter.full_name}}                                  
 *                                                                          
 * Distributed under the terms of the {{cookiecutter.open_source_license}}.                 
 *                                                                          
@@ -101,6 +101,7 @@ namespace {{cookiecutter.cpp_namespace}}
         }
         return result;
     }
+
     nl::json interpreter::complete_request_impl(const std::string&  code,
                                                      int cursor_pos)
     {
@@ -130,7 +131,7 @@ namespace {{cookiecutter.cpp_namespace}}
         return result;
     }
 
-    nl::json interpreter::inspect_request_impl(const std::string& code,
+    nl::json interpreter::inspect_request_impl(const std::string& /*code*/,
                                                       int /*cursor_pos*/,
                                                       int /*detail_level*/)
     {
@@ -144,11 +145,9 @@ namespace {{cookiecutter.cpp_namespace}}
         return result;
     }
 
-   
     void interpreter::shutdown_request_impl() {
         std::cout << "Bye!!" << std::endl;
     }
-
 
     nl::json interpreter::kernel_info_request_impl()
     {
