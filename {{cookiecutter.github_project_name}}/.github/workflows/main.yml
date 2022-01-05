@@ -1,11 +1,11 @@
 name: CI
 on:
+
+  workflow_dispatch:
+  pull_request:
   push:
     branches:
-    - {{cookiecutter.branch_name}}
-  pull_request:
-    branches:
-    - {{cookiecutter.branch_name}}
+     - {{cookiecutter.branch_name}}
 
   schedule:
     - cron: '0 2 * * *' # run at 2 AM UTC
