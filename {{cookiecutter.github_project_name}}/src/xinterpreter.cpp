@@ -15,6 +15,7 @@
 
 #include "xeus/xinput.hpp"
 #include "xeus/xinterpreter.hpp"
+#include "xeus/xhelper.hpp"
 
 #include "{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp"
 
@@ -31,7 +32,7 @@ namespace {{cookiecutter.cpp_namespace}}
     }
 
     nl::json interpreter::execute_request_impl(int execution_counter, // Typically the cell number
-                                                      const std::string& code, // Code to execute
+                                                      const  std::string & code, // Code to execute
                                                       bool /*silent*/,
                                                       bool /*store_history*/,
                                                       nl::json /*user_expressions*/,
@@ -106,30 +107,31 @@ namespace {{cookiecutter.cpp_namespace}}
     nl::json interpreter::complete_request_impl(const std::string&  code,
                                                      int cursor_pos)
     {
-        nl::json result;
-
         // Code starts with 'H', it could be the following completion
         if (code[0] == 'H')
         {
-            result["status"] = "ok";
-            result["matches"] = {
-                std::string("Hello"), 
-                std::string("Hey"), 
-                std::string("Howdy")
-            };
-            result["cursor_start"] = 5;
-            result["cursor_end"] = cursor_pos;
+       
+            return xeus::create_complete_reply(
+                {
+                    std::string("Hello"), 
+                    std::string("Hey"), 
+                    std::string("Howdy")
+                },          /*matches*/
+                5,          /*cursor_start*/
+                cursor_pos  /*cursor_end*/
+            );
         }
+
         // No completion result
         else
         {
-            result["status"] = "ok";
-            result["matches"] = nl::json::array();
-            result["cursor_start"] = cursor_pos;
-            result["cursor_end"] = cursor_pos;
-        }
 
-        return result;
+            return xeus::create_complete_reply(
+                nl::json::array(),  /*matches*/
+                cursor_pos,         /*cursor_start*/
+                cursor_pos          /*cursor_end*/
+            );
+        }
     }
 
     nl::json interpreter::inspect_request_impl(const std::string& /*code*/,
@@ -152,15 +154,43 @@ namespace {{cookiecutter.cpp_namespace}}
 
     nl::json interpreter::kernel_info_request_impl()
     {
-        nl::json result;
-        result["implementation"] = "{{cookiecutter.kernel_name}}";
-        result["implementation_version"] = {{cookiecutter.cpp_macro_prefix}}_VERSION;
-        result["banner"] = "{{cookiecutter.kernel_name}}";
-        result["language_info"]["name"] = "{{cookiecutter.language}}";
-        result["language_info"]["version"] = "{{cookiecutter.language_version}}";
-        result["language_info"]["mimetype"] = "{{cookiecutter.language_mimetype}}";
-        result["language_info"]["file_extension"] = "{{cookiecutter.language_file_extension}}";
-        return result;
+
+
+        const std::string  protocol_version = "5.3";
+        const std::string  implementation = "{{cookiecutter.kernel_name}}";
+        const std::string  implementation_version = {{cookiecutter.cpp_macro_prefix}}_VERSION;
+        const std::string  language_name = "{{cookiecutter.language}}";
+        const std::string  language_version = "{{cookiecutter.language_version}}";
+        const std::string  language_mimetype = "{{cookiecutter.language_mimetype}}";;
+        const std::string  language_file_extension = "{{cookiecutter.language_file_extension}}";;
+        const std::string  language_pygments_lexer = "";
+        const std::string  language_codemirror_mode = "";
+        const std::string  language_nbconvert_exporter = "";
+        const std::string  banner = "{{cookiecutter.kernel_name}}";
+        {%- if cookiecutter.with_debugger == "yes" -%}
+        const bool         debugger = true;
+        {%- elif cookiecutter.with_debugger == "no" -%}
+        const bool         debugger = false;
+        {% endif %}
+        const nl::json     help_links = nl::json::object();
+
+
+
+        return xeus::create_info_reply(
+            protocol_version,
+            implementation,
+            implementation_version,
+            language_name,
+            language_version,
+            language_mimetype,
+            language_file_extension,
+            language_pygments_lexer,
+            language_codemirror_mode,
+            language_nbconvert_exporter,
+            banner,
+            debugger,
+            help_links
+        );
     }
 
 }
