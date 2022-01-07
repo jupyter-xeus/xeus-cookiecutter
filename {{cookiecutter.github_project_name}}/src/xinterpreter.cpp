@@ -15,6 +15,7 @@
 
 #include "xeus/xinput.hpp"
 #include "xeus/xinterpreter.hpp"
+#include "xeus/xhelper.hpp"
 
 #include "{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp"
 
@@ -23,15 +24,13 @@ namespace nl = nlohmann;
 namespace {{cookiecutter.cpp_namespace}}
 {
  
-
-
     interpreter::interpreter()
     {
         xeus::register_interpreter(this);
     }
 
     nl::json interpreter::execute_request_impl(int execution_counter, // Typically the cell number
-                                                      const std::string& code, // Code to execute
+                                                      const  std::string & code, // Code to execute
                                                       bool /*silent*/,
                                                       bool /*store_history*/,
                                                       nl::json /*user_expressions*/,
@@ -54,9 +53,10 @@ namespace {{cookiecutter.cpp_namespace}}
             std::string html_content = R"(<iframe class="xpyt-iframe-pager" src="
                 https://xeus.readthedocs.io"></iframe>)";
 
-            kernel_res["status"] = "ok";
-            kernel_res["payload"] = nl::json::array();
-            kernel_res["payload"][0] = nl::json::object({
+            auto payload = nl::json::array();
+        
+            payload = nl::json::array();
+            payload[0] = nl::json::object({
                 {"data", {
                     {"text/plain", "https://xeus.readthedocs.io"},
                     {"text/html", html_content}}
@@ -64,21 +64,21 @@ namespace {{cookiecutter.cpp_namespace}}
                 {"source", "page"},
                 {"start", 0}
             });
-            kernel_res["user_expressions"] = nl::json::object();
 
-            return kernel_res;
+            return xeus::create_successful_reply(payload);
         }
 
         nl::json pub_data;
         pub_data["text/plain"] = code;
-        publish_execution_result(execution_counter, std::move(pub_data), nl::json());
 
-        kernel_res["status"] = "ok";
-        kernel_res["payload"] = nl::json::array();
-        kernel_res["user_expressions"] = nl::json::object();
+        publish_execution_result(execution_counter, 
+            std::move(pub_data),
+            // due to https://github.com/nlohmann/json/issues/2046 
+            // we return empty json objects as below
+            nl::json(nl::json::value_t::object)
+        );
 
-        return kernel_res;
-
+        return xeus::create_successful_reply();
     }
 
     void interpreter::configure_impl()
@@ -88,62 +88,60 @@ namespace {{cookiecutter.cpp_namespace}}
 
     nl::json interpreter::is_complete_request_impl(const std::string& code)
     {
-        nl::json result;
-        result["status"] = "complete";
         if (code.compare("incomplete") == 0)
         {
-            result["status"] = "incomplete";
-            result["indent"] = "   ";
+            return xeus::create_is_complete_reply("incomplete"/*status*/, "   "/*indent*/);
         }
         else if(code.compare("invalid") == 0)
         {
-            result["status"] = "invalid";
-            result["indent"] = "   ";
+            return xeus::create_is_complete_reply("invalid"/*status*/);
         }
-        return result;
+        else
+        {
+            return xeus::create_is_complete_reply("complete"/*status*/);
+        }   
     }
 
     nl::json interpreter::complete_request_impl(const std::string&  code,
                                                      int cursor_pos)
     {
-        nl::json result;
-
         // Code starts with 'H', it could be the following completion
         if (code[0] == 'H')
         {
-            result["status"] = "ok";
-            result["matches"] = {
-                std::string("Hello"), 
-                std::string("Hey"), 
-                std::string("Howdy")
-            };
-            result["cursor_start"] = 5;
-            result["cursor_end"] = cursor_pos;
+       
+            return xeus::create_complete_reply(
+                {
+                    std::string("Hello"), 
+                    std::string("Hey"), 
+                    std::string("Howdy")
+                },          /*matches*/
+                5,          /*cursor_start*/
+                cursor_pos  /*cursor_end*/
+            );
         }
+
         // No completion result
         else
         {
-            result["status"] = "ok";
-            result["matches"] = nl::json::array();
-            result["cursor_start"] = cursor_pos;
-            result["cursor_end"] = cursor_pos;
-        }
 
-        return result;
+            return xeus::create_complete_reply(
+                nl::json::array(),  /*matches*/
+                cursor_pos,         /*cursor_start*/
+                cursor_pos          /*cursor_end*/
+            );
+        }
     }
 
     nl::json interpreter::inspect_request_impl(const std::string& /*code*/,
                                                       int /*cursor_pos*/,
                                                       int /*detail_level*/)
     {
-        nl::json result;
-        result["status"] = "ok";
-        result["found"] = true;
         {% raw %}
-        result["data"] = {{std::string("text/plain"), std::string("hello!")}};
-        result["metadata"] = {{std::string("text/plain"), std::string("hello!")}};
+        return xeus::create_inspect_reply(true/*found*/, 
+            {{std::string("text/plain"), std::string("hello!")}}, /*data*/
+            {{std::string("text/plain"), std::string("hello!")}}  /*meta-data*/
+        );
         {% endraw %} 
-        return result;
     }
 
     void interpreter::shutdown_request_impl() {
@@ -152,15 +150,41 @@ namespace {{cookiecutter.cpp_namespace}}
 
     nl::json interpreter::kernel_info_request_impl()
     {
-        nl::json result;
-        result["implementation"] = "{{cookiecutter.kernel_name}}";
-        result["implementation_version"] = {{cookiecutter.cpp_macro_prefix}}_VERSION;
-        result["banner"] = "{{cookiecutter.kernel_name}}";
-        result["language_info"]["name"] = "{{cookiecutter.language}}";
-        result["language_info"]["version"] = "{{cookiecutter.language_version}}";
-        result["language_info"]["mimetype"] = "{{cookiecutter.language_mimetype}}";
-        result["language_info"]["file_extension"] = "{{cookiecutter.language_file_extension}}";
-        return result;
+
+        const std::string  protocol_version = "5.3";
+        const std::string  implementation = "{{cookiecutter.kernel_name}}";
+        const std::string  implementation_version = {{cookiecutter.cpp_macro_prefix}}_VERSION;
+        const std::string  language_name = "{{cookiecutter.language}}";
+        const std::string  language_version = "{{cookiecutter.language_version}}";
+        const std::string  language_mimetype = "{{cookiecutter.language_mimetype}}";;
+        const std::string  language_file_extension = "{{cookiecutter.language_file_extension}}";;
+        const std::string  language_pygments_lexer = "";
+        const std::string  language_codemirror_mode = "";
+        const std::string  language_nbconvert_exporter = "";
+        const std::string  banner = "{{cookiecutter.kernel_name}}";
+        {%- if cookiecutter.with_debugger == "yes" -%}
+        const bool         debugger = true;
+        {%- elif cookiecutter.with_debugger == "no" -%}
+        const bool         debugger = false;
+        {% endif %}
+        const nl::json     help_links = nl::json::array();
+
+
+        return xeus::create_info_reply(
+            protocol_version,
+            implementation,
+            implementation_version,
+            language_name,
+            language_version,
+            language_mimetype,
+            language_file_extension,
+            language_pygments_lexer,
+            language_codemirror_mode,
+            language_nbconvert_exporter,
+            banner,
+            debugger,
+            help_links
+        );
     }
 
 }

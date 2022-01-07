@@ -75,15 +75,15 @@ jobs:
           cd xeus-mylang/test
           pytest .  --reruns 5
 
-      - name: Push
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: rendered
-          FOLDER: xeus-mylang
-          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
-          MESSAGE: "added rendered: ({sha}) {msg}"
-        if: matrix.os == 'ubuntu-latest'
+      # - name: Push
+      #   uses: s0/git-publish-subdir-action@develop
+      #   env:
+      #     REPO: self
+      #     BRANCH: rendered
+      #     FOLDER: xeus-mylang
+      #     GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+      #     MESSAGE: "added rendered: ({sha}) {msg}"
+      #   if: matrix.os == 'ubuntu-latest'
 
   win:
     runs-on: ${{ matrix.os }}
