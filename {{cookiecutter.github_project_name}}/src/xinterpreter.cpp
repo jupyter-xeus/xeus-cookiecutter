@@ -24,8 +24,6 @@ namespace nl = nlohmann;
 namespace {{cookiecutter.cpp_namespace}}
 {
  
-
-
     interpreter::interpreter()
     {
         xeus::register_interpreter(this);
@@ -57,8 +55,8 @@ namespace {{cookiecutter.cpp_namespace}}
 
             auto payload = nl::json::array();
         
-            kernel_res["payload"] = nl::json::array();
-            kernel_res["payload"][0] = nl::json::object({
+            payload = nl::json::array();
+            payload[0] = nl::json::object({
                 {"data", {
                     {"text/plain", "https://xeus.readthedocs.io"},
                     {"text/html", html_content}}
@@ -69,18 +67,18 @@ namespace {{cookiecutter.cpp_namespace}}
 
             return xeus::create_successful_reply(payload);
         }
-;
+
         nl::json pub_data;
         pub_data["text/plain"] = code;
 
-        nl::json metadata;
-        //metadata["some_key"] = 42;
-        publish_execution_result(execution_counter, std::move(pub_data),nl::json(nl::json::value_t::object));
-
-   
+        publish_execution_result(execution_counter, 
+            std::move(pub_data),
+            // due to https://github.com/nlohmann/json/issues/2046 
+            // we return empty json objects as below
+            nl::json(nl::json::value_t::object)
+        );
 
         return xeus::create_successful_reply();
-
     }
 
     void interpreter::configure_impl()
@@ -90,19 +88,18 @@ namespace {{cookiecutter.cpp_namespace}}
 
     nl::json interpreter::is_complete_request_impl(const std::string& code)
     {
-        nl::json result;
-        result["status"] = "complete";
         if (code.compare("incomplete") == 0)
         {
-            result["status"] = "incomplete";
-            result["indent"] = "   ";
+            return xeus::create_is_complete_reply("incomplete"/*status*/, "   "/*indent*/);
         }
         else if(code.compare("invalid") == 0)
         {
-            result["status"] = "invalid";
-            result["indent"] = "   ";
+            return xeus::create_is_complete_reply("invalid"/*status*/);
         }
-        return result;
+        else
+        {
+            return xeus::create_is_complete_reply("unknown"/*status*/);
+        }   
     }
 
     nl::json interpreter::complete_request_impl(const std::string&  code,
@@ -139,14 +136,12 @@ namespace {{cookiecutter.cpp_namespace}}
                                                       int /*cursor_pos*/,
                                                       int /*detail_level*/)
     {
-        nl::json result;
-        result["status"] = "ok";
-        result["found"] = true;
         {% raw %}
-        result["data"] = {{std::string("text/plain"), std::string("hello!")}};
-        result["metadata"] = {{std::string("text/plain"), std::string("hello!")}};
+        return xeus::create_inspect_reply(true/*found*/, 
+            {{std::string("text/plain"), std::string("hello!")}}, /*data*/
+            {{std::string("text/plain"), std::string("hello!")}}  /*meta-data*/
+        );
         {% endraw %} 
-        return result;
     }
 
     void interpreter::shutdown_request_impl() {
@@ -155,7 +150,6 @@ namespace {{cookiecutter.cpp_namespace}}
 
     nl::json interpreter::kernel_info_request_impl()
     {
-
 
         const std::string  protocol_version = "5.3";
         const std::string  implementation = "{{cookiecutter.kernel_name}}";

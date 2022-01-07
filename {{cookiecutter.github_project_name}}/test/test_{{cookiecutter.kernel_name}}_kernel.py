@@ -15,13 +15,14 @@ class KernelTests(jupyter_kernel_test.KernelTests):
 
     kernel_name = "{{cookiecutter.kernel_name}}"
     language_name = "{{cookiecutter.language}}"
-    # code_hello_world = "hello, world"
-    # code_page_something = "?"
-    # completion_samples = [{"text": "H", "matches": {"Hello", "Hey", "Howdy"}}]
-    # complete_code_samples = ["hello, world"]
-    # incomplete_code_samples = ["incomplete"]
-    # invalid_code_samples = ["invalid"]
-    # code_inspect_sample = "print"
+    code_hello_world = "hello, world"
+    code_page_something = "?"
+    completion_samples = [{"text": "H", "matches": {"Hello", "Hey", "Howdy"}}]
+    complete_code_samples = ["hello, world"]
+    incomplete_code_samples = ["incomplete"]
+    invalid_code_samples = ["invalid"]
+    code_inspect_sample = "print"
+
     def test_stdout(self):
         self.flush_channels()
         reply, output_msgs = self.execute_helper(code="hello, world")
@@ -29,11 +30,12 @@ class KernelTests(jupyter_kernel_test.KernelTests):
         self.assertEqual(output_msgs[0]["content"]["name"], "stdout")
         self.assertEqual(output_msgs[0]["content"]["text"], "hello, world")
 
-# def test_stderr(self):
-#     self.flush_channels()
-#     reply, output_msgs = self.execute_helper(code="error")
-#     self.assertEqual(output_msgs[0]["msg_type"], "stream")
-#     self.assertEqual(output_msgs[0]["content"]["name"], "stderr")
+    def test_stderr(self):
+        self.flush_channels()
+        reply, output_msgs = self.execute_helper(code="error")
+        self.assertEqual(output_msgs[0]["msg_type"], "stream")
+        self.assertEqual(output_msgs[0]["content"]["name"], "stderr")
+
 
 if __name__ == "__main__":
     unittest.main()
