@@ -1,5 +1,5 @@
 #############################################################################
-#Copyright (c) 2021,                                          
+#Copyright (c) 2022,                                          
 #                                                                         
 #Distributed under the terms of the BSD 3-Clause License.                 
 #                                                                         
@@ -139,7 +139,6 @@ if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XEUS_EMSCRIPTEN_WASM_FLAGS}")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${XEUS_EMSCRIPTEN_WASM_FLAGS} ---proxy-to-worker")
 endif()
-
 
 
 # Source files

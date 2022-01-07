@@ -12,6 +12,6 @@ dependencies:
   - xtl
   # Test dependencies
   - pytest
-  - jupyter_kernel_test
+  - jupyter_kernel_test>=0.4.3
   - nbval
   - pytest-rerunfailures

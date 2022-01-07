@@ -1,11 +1,11 @@
 name: CI
 on:
+
+  workflow_dispatch:
+  pull_request:
   push:
     branches:
-    - rendered
-  pull_request:
-    branches:
-    - rendered
+     - rendered
 
   schedule:
     - cron: '0 2 * * *' # run at 2 AM UTC
