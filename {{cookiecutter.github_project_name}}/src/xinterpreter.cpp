@@ -98,7 +98,7 @@ namespace {{cookiecutter.cpp_namespace}}
         }
         else
         {
-            return xeus::create_is_complete_reply("unknown"/*status*/);
+            return xeus::create_is_complete_reply("complete"/*status*/);
         }   
     }
 
