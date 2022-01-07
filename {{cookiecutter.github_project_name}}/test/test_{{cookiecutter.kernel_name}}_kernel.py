@@ -22,13 +22,12 @@ class KernelTests(jupyter_kernel_test.KernelTests):
     # incomplete_code_samples = ["incomplete"]
     # invalid_code_samples = ["invalid"]
     # code_inspect_sample = "print"
-
-# def test_stdout(self):
-#     self.flush_channels()
-#     reply, output_msgs = self.execute_helper(code="hello, world")
-#     self.assertEqual(output_msgs[0]["msg_type"], "stream")
-#     self.assertEqual(output_msgs[0]["content"]["name"], "stdout")
-#     self.assertEqual(output_msgs[0]["content"]["text"], "hello, world")
+    def test_stdout(self):
+        self.flush_channels()
+        reply, output_msgs = self.execute_helper(code="hello, world")
+        self.assertEqual(output_msgs[0]["msg_type"], "stream")
+        self.assertEqual(output_msgs[0]["content"]["name"], "stdout")
+        self.assertEqual(output_msgs[0]["content"]["text"], "hello, world")
 
 # def test_stderr(self):
 #     self.flush_channels()

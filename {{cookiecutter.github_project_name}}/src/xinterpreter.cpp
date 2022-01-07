@@ -55,7 +55,8 @@ namespace {{cookiecutter.cpp_namespace}}
             std::string html_content = R"(<iframe class="xpyt-iframe-pager" src="
                 https://xeus.readthedocs.io"></iframe>)";
 
-            kernel_res["status"] = "ok";
+            auto payload = nl::json::array();
+        
             kernel_res["payload"] = nl::json::array();
             kernel_res["payload"][0] = nl::json::object({
                 {"data", {
@@ -65,20 +66,20 @@ namespace {{cookiecutter.cpp_namespace}}
                 {"source", "page"},
                 {"start", 0}
             });
-            kernel_res["user_expressions"] = nl::json::object();
 
-            return kernel_res;
+            return xeus::create_successful_reply(payload);
         }
-
+;
         nl::json pub_data;
         pub_data["text/plain"] = code;
-        publish_execution_result(execution_counter, std::move(pub_data), nl::json());
 
-        kernel_res["status"] = "ok";
-        kernel_res["payload"] = nl::json::array();
-        kernel_res["user_expressions"] = nl::json::object();
+        nl::json metadata;
+        //metadata["some_key"] = 42;
+        publish_execution_result(execution_counter, std::move(pub_data),nl::json(nl::json::value_t::object));
 
-        return kernel_res;
+   
+
+        return xeus::create_successful_reply();
 
     }
 
@@ -172,8 +173,7 @@ namespace {{cookiecutter.cpp_namespace}}
         {%- elif cookiecutter.with_debugger == "no" -%}
         const bool         debugger = false;
         {% endif %}
-        const nl::json     help_links = nl::json::object();
-
+        const nl::json     help_links = nl::json::array();
 
 
         return xeus::create_info_reply(
