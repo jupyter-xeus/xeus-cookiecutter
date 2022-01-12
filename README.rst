@@ -19,4 +19,3 @@ xeus-cookiecutter
         :target: http://xeus-cookiecutter.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status               
 
-
