@@ -45,7 +45,6 @@ configure_file (
 # Build options
 # =============
 
-# Compilation options
 OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
 OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
 
@@ -56,12 +55,11 @@ OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE "Build the {{cookiecut
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 
-{%- if cookiecutter.with_wasm == "yes" -%}
+{% if cookiecutter.with_wasm == "yes" -%}
 OPTION({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD "Build for wasm with emscripten" OFF)
 {% endif %}
 
-
-{%- if cookiecutter.with_wasm == "yes" -%}
+{% if cookiecutter.with_wasm == "yes" -%}
 if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     add_compile_definitions({{cookiecutter.cpp_macro_prefix}}_EMSCRIPTEN_WASM_BUILD)
     message("Build with emscripten")
@@ -75,10 +73,8 @@ if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     SET({{cookiecutter.cmake_var_prefix}}_BUILD_TESTS OFF)
 endif()
 {% endif %}
-
 # Dependencies
 # ============
-
 set(xtl_REQUIRED_VERSION 0.6.23)
 set(xeus_REQUIRED_VERSION 2.0.0)
 
@@ -102,11 +98,11 @@ endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Intel")
 
-    {%- if cookiecutter.with_wasm == "yes" -%}
+    {% if cookiecutter.with_wasm == "yes" -%}
     if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)    
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     endif()
-    {%- elif cookiecutter.with_wasm == "no" -%}
+    {% else -%}
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     {% endif %}
 
@@ -128,7 +124,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
 
 endif ()
 
-{%- if cookiecutter.with_wasm == "yes" -%}
+{% if cookiecutter.with_wasm == "yes" -%}
+
 if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
 
     include(XeusEmscriptenWasmFlags)
@@ -149,6 +146,7 @@ if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XEUS_EMSCRIPTEN_WASM_FLAGS}")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${XEUS_EMSCRIPTEN_WASM_FLAGS} ---proxy-to-worker")
 endif()
+
 {% endif %}
 
 # Source files
@@ -233,14 +231,16 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
         target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}}-static)
     endif()
 
-    {%- if cookiecutter.with_wasm == "yes" -%}
+    {% if cookiecutter.with_wasm == "yes" -%}
+
     if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) 
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
-    {%- elif cookiecutter.with_wasm == "no" -%}
+    {% else -%}
         find_package(Threads) 
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+
     {% endif %}
 
 endmacro()
@@ -285,14 +285,16 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage 
         target_link_libraries(${target_name} PRIVATE "-undefined dynamic_lookup")
     endif ()
 
-    {%- if cookiecutter.with_wasm == "yes" -%}
+    {% if cookiecutter.with_wasm == "yes" -%}
+
     if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
-    {%- elif cookiecutter.with_wasm == "no" -%}
+    {% else -%}
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+
     {% endif %}
 
 endmacro()
@@ -328,7 +330,7 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
 endif()
 
-{%- if cookiecutter.with_wasm == "yes" -%}
+{% if cookiecutter.with_wasm == "yes" -%}
 if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     add_executable(xeus_kernel src/main_emscripten_kernel.cpp )
     target_link_libraries(xeus_kernel  {{cookiecutter.library_name}}-static)
@@ -337,7 +339,6 @@ endif()
 
 # Installation
 # ============
-
 include(CMakePackageConfigHelpers)
 
 set({{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for {{cookiecutter.project_name}}Config.cmake")
