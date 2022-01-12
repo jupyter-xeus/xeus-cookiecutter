@@ -23,7 +23,8 @@ xeus-cookiecutter
 Usage
 -------
 
-
 .. image:: term/usage.gif
   :width: 800
   :alt: Alternative text
+
+

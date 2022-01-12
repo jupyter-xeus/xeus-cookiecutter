@@ -1,3 +1,4 @@
+
 =================================================
 xeus-cookiecutter
 =================================================
@@ -23,7 +24,9 @@ xeus-cookiecutter
 Usage
 -------
 
+For more details, visit the `documentation side <http://xeus-cookiecutter.readthedocs.io/en/latest/?badge=latest>`_
 
 .. image:: docs/term/usage.gif
   :width: 800
   :alt: Alternative text
+
