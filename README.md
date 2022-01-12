@@ -1,12 +1,12 @@
 # ![xeus-mylang](docs/source/xeus-logo.svg)
 
-
+rendered
 
 
 [![Build Status](https://github.com/DerThorsten/xeus-mylang/actions/workflows/main.yml/badge.svg)](https://github.com/DerThorsten/xeus-mylang/actions/workflows/main.yml)
 
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://xeus-mylangreadthedocs.io/en/latest/?badge=latest)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/DerThorsten/xeus-mylang/main?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/DerThorsten/xeus-mylang/rendered?urlpath=/lab/tree/notebooks/xeus-mylang.ipynb)
 
 `xeus-mylang` is a Jupyter kernel for mylang based on the native implementation of the
 Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
