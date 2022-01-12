@@ -368,7 +368,6 @@ jobs:
     strategy:
       fail-fast: false
     
-    #if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
 
@@ -391,4 +390,3 @@ jobs:
           FOLDER: xeus-mylang
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
           MESSAGE: "added rendered: ({sha}) {msg}"
-        if: matrix.os == 'ubuntu-latest'
