@@ -1,12 +1,12 @@
 # ![{{cookiecutter.package_name}}](docs/source/xeus-logo.svg)
 
-
+{{cookiecutter.branch_name}}
 
 
 [![Build Status](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml/badge.svg)](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml)
 
 [![Documentation Status](http://readthedocs.org/projects/xeus-python/badge/?version=latest)](https://{{cookiecutter.readthedocs_package_name}}readthedocs.io/en/latest/?badge=latest)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/main?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/{{cookiecutter.branch_name}}?urlpath=/lab/tree/notebooks/{{cookiecutter.package_name}}.ipynb)
 
 `{{cookiecutter.conda_package_name}}` is a Jupyter kernel for {{cookiecutter.language}} based on the native implementation of the
 Jupyter protocol [xeus](https://github.com/jupyter-xeus/xeus).
