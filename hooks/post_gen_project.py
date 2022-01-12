@@ -13,5 +13,5 @@ def remove(filepath):
 with_wasm = "{{cookiecutter.with_wasm}}" == "y"
 
 
-if not wasm:
+if not with_wasm:
     remove("src/main_emscripten_kernel.cpp")
