@@ -1,6 +1,5 @@
 /***************************************************************************
-* Copyright (c) {% now 'utc', '%Y' %}, {{cookiecutter
-.full_name}}                                  
+* Copyright (c) {% now 'utc', '%Y' %}, {{cookiecutter.full_name}}                                  
 *                                                                          
 * Distributed under the terms of the {{cookiecutter.open_source_license}}.                 
 *                                                                          
