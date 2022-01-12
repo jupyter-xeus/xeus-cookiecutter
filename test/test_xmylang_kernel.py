@@ -1,5 +1,5 @@
 #############################################################################
-# Copyright (c) 2022,
+# Copyright (c) 2022, Thorsten Beier
 #
 # Distributed under the terms of the BSD 3-Clause License.
 #

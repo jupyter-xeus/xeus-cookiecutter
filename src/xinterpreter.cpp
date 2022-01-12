@@ -72,9 +72,7 @@ namespace xeus_mylang
 
         publish_execution_result(execution_counter, 
             std::move(pub_data),
-            // due to https://github.com/nlohmann/json/issues/2046 
-            // we return empty json objects as below
-            nl::json(nl::json::value_t::object)
+            nl::json::object()
         );
 
         return xeus::create_successful_reply();

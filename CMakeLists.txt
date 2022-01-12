@@ -45,7 +45,6 @@ configure_file (
 # Build options
 # =============
 
-# Compilation options
 OPTION(XEUS_MYLANG_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
 OPTION(XEUS_MYLANG_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
 
@@ -55,6 +54,7 @@ OPTION(XEUS_MYLANG_BUILD_EXECUTABLE "Build the xmylang executable" ON)
 
 OPTION(XEUS_MYLANG_USE_SHARED_XEUS "Link xmylang  with the xeus shared library (instead of the static library)" ON)
 OPTION(XEUS_MYLANG_USE_SHARED_XEUS_MYLANG "Link xmylang  with the xeus shared library (instead of the static library)" ON)
+
 OPTION(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD "Build for wasm with emscripten" OFF)
 
 
@@ -71,10 +71,8 @@ if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
     SET(XEUS_MYLANG_BUILD_TESTS OFF)
 endif()
 
-
 # Dependencies
 # ============
-
 set(xtl_REQUIRED_VERSION 0.6.23)
 set(xeus_REQUIRED_VERSION 2.0.0)
 
@@ -97,9 +95,12 @@ if (MSVC)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Intel")
+
     if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)    
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     endif()
+    
+
     if (XEUS_MYLANG_DISABLE_ARCH_NATIVE AND NOT XEUS_MYLANG_DISABLE_TUNE_GENERIC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=generic")
     elseif (XEUS_MYLANG_DISABLE_TUNE_GENERIC)
@@ -117,7 +118,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     endif ()
 
 endif ()
-
 
 if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
 
@@ -139,6 +139,7 @@ if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${XEUS_EMSCRIPTEN_WASM_FLAGS}")
     set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS}  ${XEUS_EMSCRIPTEN_WASM_FLAGS} ---proxy-to-worker")
 endif()
+
 
 
 # Source files
@@ -225,12 +226,9 @@ macro(xeus_mylang_set_kernel_options target_name)
 
     if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) 
-        target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT}  )
-    else()
-        # add something to link here
-        # target_link_libraries(${target_name} PRIVATE  
-        #     ${SOME_LIBRARIES})
+        target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
+    
 
 endmacro()
 
@@ -277,10 +275,9 @@ macro(xeus_mylang_create_target target_name linkage output_name)
     if(NOT XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-    else()
-        # add some library here
-        #target_link_libraries(${target_name} PRIVATE  ${SOME_LIBRARIES})
     endif()
+    
+
 endmacro()
 
 # xeus-mylang
@@ -314,7 +311,6 @@ if (XEUS_MYLANG_BUILD_EXECUTABLE)
     xeus_mylang_set_kernel_options(xmylang)
 endif()
 
-
 if(XEUS_MYLANG_EMSCRIPTEN_WASM_BUILD)
     add_executable(xeus_kernel src/main_emscripten_kernel.cpp )
     target_link_libraries(xeus_kernel  xeus-mylang-static)
@@ -323,7 +319,6 @@ endif()
 
 # Installation
 # ============
-
 include(CMakePackageConfigHelpers)
 
 set(XEUS_MYLANG_CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}" CACHE STRING "install path for xeus-mylangConfig.cmake")

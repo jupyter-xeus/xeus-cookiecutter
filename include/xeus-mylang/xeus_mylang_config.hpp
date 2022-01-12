@@ -5,6 +5,7 @@
 *                                                                          
 * The full license is in the file LICENSE, distributed with this software. 
 ****************************************************************************/
+
 #ifndef XEUS_MYLANG_CONFIG_HPP
 #define XEUS_MYLANG_CONFIG_HPP
 
