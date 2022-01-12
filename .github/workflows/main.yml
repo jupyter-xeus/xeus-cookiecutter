@@ -110,7 +110,10 @@ jobs:
         run: |
           call C:\Users\runneradmin\micromamba\condabin\micromamba.bat activate xeus-mylang
           cd test
-          pytest .  --reruns 5emscripten_wasm_docker:
+          pytest .  --reruns 5
+
+
+emscripten_wasm_docker:
     runs-on: ubuntu-20.04
 
     strategy:
