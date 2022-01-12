@@ -3,3 +3,4 @@ default_context:
     email: "derthorstenbeier@gmail.com"
     github_user_name: DerThorsten
     branch_name: "rendered"
+    with_wasm: "no"

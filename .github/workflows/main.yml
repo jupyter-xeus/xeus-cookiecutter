@@ -30,7 +30,7 @@ jobs:
       - name: create project with cookiecutter
         shell: bash -l {0}
         run: 
-          cookiecutter  . --config-file  .github/ci_context.yml  --no-input -f
+          cookiecutter  . --config-file  .github/ci_context_no_wasm.yml  --no-input -f
 
       - name: create and activate env
         shell: bash -l {0}
@@ -74,16 +74,6 @@ jobs:
           micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
-
-      # - name: Push
-      #   uses: s0/git-publish-subdir-action@develop
-      #   env:
-      #     REPO: self
-      #     BRANCH: rendered
-      #     FOLDER: xeus-mylang
-      #     GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
-      #     MESSAGE: "added rendered: ({sha}) {msg}"
-      #   if: matrix.os == 'ubuntu-latest'
 
   win:
     runs-on: ${{ matrix.os }}
@@ -176,7 +166,7 @@ jobs:
       - name: "install this repo"
         run: |
           sudo /usr/bin/python3.8  -m pip install cookiecutter
-          sudo /usr/bin/python3.8  -m cookiecutter  . --config-file  .github/ci_context.yml  --no-input -f
+          sudo /usr/bin/python3.8  -m cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
 
 
       - name: "install xtl"
@@ -277,7 +267,7 @@ jobs:
       - name: create project with cookiecutter
         shell: bash -l {0}
         run: 
-          cookiecutter  . --config-file  .github/ci_context.yml  --no-input -f
+          cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
 
       - name: "install xtl"
         run: |
@@ -360,8 +350,6 @@ jobs:
           cd $GITHUB_WORKSPACE/xeus-mylang/bld
           make install
 
-
-
   push:
     needs: [unix, win, emscripten_wasm_docker, emscripten_wasm]
     runs-on: ubuntu-latest
@@ -381,7 +369,7 @@ jobs:
       - name: create project with cookiecutter
         shell: bash -l {0}
         run: 
-          cookiecutter  . --config-file  .github/ci_context.yml  --no-input -f
+          cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
 
       - name: Push to rendered branch
         uses: s0/git-publish-subdir-action@develop
