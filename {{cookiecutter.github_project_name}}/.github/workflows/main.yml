@@ -112,11 +112,7 @@ jobs:
           cd test
           pytest .  --reruns 5
 
-
-{%- if cookiecutter.with_wasm == "yes" -%}
-
-# emscripten
-
+  {%- if cookiecutter.with_wasm == "yes" -%}
   emscripten_wasm_docker:
     runs-on: ubuntu-20.04
 
@@ -322,5 +318,4 @@ jobs:
           cd $GITHUB_WORKSPACE
           cd bld
           make install
-
-{%- endif %}
+  {% endif %}
