@@ -115,6 +115,7 @@ jobs:
 
 {%- if cookiecutter.with_wasm == "yes" -%}
 
+# emscripten
 
   emscripten_wasm_docker:
     runs-on: ubuntu-20.04
