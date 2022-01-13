@@ -318,3 +318,4 @@ emscripten_wasm_docker:
           cd $GITHUB_WORKSPACE
           cd bld
           make install
+
