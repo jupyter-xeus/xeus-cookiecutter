@@ -1,3 +1,4 @@
+
 =================================================
 xeus-cookiecutter
 =================================================
@@ -18,4 +19,14 @@ xeus-cookiecutter
 .. image:: https://readthedocs.org/projects/xeus-cookiecutter/badge/?version=latest
         :target: http://xeus-cookiecutter.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status               
+
+
+Usage
+-------
+
+For more details, visit the `documentation side <http://xeus-cookiecutter.readthedocs.io/en/latest/?badge=latest>`_
+
+.. image:: docs/term/usage.gif
+  :width: 800
+  :alt: Alternative text
 
