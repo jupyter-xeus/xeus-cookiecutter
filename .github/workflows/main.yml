@@ -113,7 +113,7 @@ jobs:
           pytest .  --reruns 5
 
 
-emscripten_wasm_docker:
+  emscripten_wasm_docker:
     runs-on: ubuntu-20.04
 
     strategy:
@@ -319,3 +319,4 @@ emscripten_wasm_docker:
           cd bld
           make install
 
+  
