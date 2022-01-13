@@ -20,13 +20,75 @@ xeus-cookiecutter
         :alt: Documentation Status               
 
 
+Overview
+-------------
+This cookiecutter can be used to generated `xeus-based  <https://github.com/jupyter-xeus/xeus>`_   `Jupyter kernels <https://jupyter.org/>`_.
+This cookiecutter has been used to generate `xeus-lua <https://github.com/jupyter-xeus/xeus-lua>`_ and `xeus-wren <https://github.com/jupyter-xeus/xeus-wren>`_.
+
+
+Features
+--------------
+
+* Unit Tests:
+    * Kernel is tested via `jupyter-kernel-tests <https://github.com/jupyter/jupyter_kernel_test>`_.
+* Continuous Integration with Github Actions:
+    * Tests run on ubuntu, mac, win and emscripten
+    * Fast installation of dependencies via `micromamba <https://github.com/mamba-org/mamba>`_
+* Documentation:
+    * Ready to use `sphinx-based <https://www.sphinx-doc.org/en/master/>`_ included.
+    * Compatible to run on `readthedocs <readthedocs.org>`_.
+* Modern CMake
+* WASM build: 
+    * Includes a wasm target which can be used to build a `jupyterlite-kernel <https://jupyterlite.readthedocs.io/>`_ for your kernel similar to `jupyterlite xeus-lua <https://github.com/jupyterlite/xeus-lua-kernel>`_.
+
 Usage
--------
+-------------
+
+
+
+Install the cookiecutter package with conda
+
+.. code-block:: bash
+    
+    conda install cookiecutter -c conda-forge
+
+or pip
+
+.. code-block:: bash
+
+    python -m pip install cookiecutter
+
+
+Once cookiecutter is available on your system, run the xeus-cookiecutter:
+
+.. code-block:: bash
+
+    cookiecutter https://github.com/DerThorsten/xeus-cookiecutter
 
 .. image:: term/usage.gif
   :width: 800
   :alt:  Variables
 
+
+First Steps
+-------------
+
+
+* To build the kernel, follow the readme of the generated project. An example of a generated project can be found `here <https://github.com/DerThorsten/xeus-cookiecutter/tree/rendered>`_.
+
+* Activate the project on `readthedocs <readthedocs.org>`_
+
+Conda-Forge
+-------------
+To release your kernel on `conda-forge <https://conda-forge.org/>`_, you create a conda forge recipe. Examples for conda forge recipes for xeus-based kernels can be found here.
+
+* https://github.com/conda-forge/xeus-lua-feedstock/
+* https://github.com/conda-forge/xeus-wren-feedstock/
+* https://github.com/conda-forge/xeus-python-feedstock/
+
+
+Cookiecutter Variables Explanation
+-----------------------------------
 
 .. list-table:: Variables
    :header-rows: 1
