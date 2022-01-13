@@ -25,9 +25,7 @@ Usage
 
 .. image:: term/usage.gif
   :width: 800
-  :alt: Alternative text
-
-
+  :alt:  Variables
 
 
 .. list-table:: Variables
@@ -66,77 +64,78 @@ Usage
      - Version of the language. Used in the `kernel.json` file.
    
    * - with_wasm
-     - yes
-     -
+     - no
+     - Include code to build your kernel for wasm with emscripten. Not every kernel / language can be compiled to wasm code.
    
    * - with_debugger
      - no
-     -
+     - Include code for the debugger to support the debugger protocol. This is only a placeholder for future releases. Atm this option is only used in the `kernel.json` file.
    
    * - project_name
      - xeus-mylang
-     -
+     - The name of the project. This is used everywhere.
    
    * - kernel_name
      - xmylang
-     -
+     - The name of the kernel itself. 
    
    * - package_name
      - xeus-mylang
-     -
+     - The name of the  package.
    
    * - library_name
      - xeus-mylang
-     -
+     - The name of the shared/static library.
    
    * - binary_name
      - xmylang
-     -
+     - Name of ther binary.
    
    * - conda_package_name
      - xeus-mylang
-     -
+     - The name of the conda package for this package. This is used in the `environment.yml` which is used for `mybinder <https://mybinder.org/>`_ support. This only becomes useful once the package is released on conda-forge (this has to be done by hand).
    
    * - cmake_package_name
      - xeus-mylang
-     -
+     - Name of the cmake package
    
    * - readthedocs_package_name
      - xeus-mylang
-     -
+     - Name of the package on `readthedocs <https://readthedocs.org/>`_. (The package has to be activated on readthedocs by hand).
+   
    
    * - github_project_name
      - xeus-mylang
-     -
+     - The name of the root folder / the name of the project on `github <https://www.github.com/>`_ 
    
    * - branch_name
      - main
-     -
+     - The default branch name
    
    * - cpp_root_folder
      - xeus-mylang
-     -
+     - The name of the C++ root include folder.
    
    * - config_file_name
      - xeus_mylang_config
-     -
+     - Name of the `*.hpp` config file in the include folder.
    
    * - cpp_namespace
      - xeus_mylang
-     -
+     - Name of the C++ namespace used for this project.
    
    * - cpp_macro_prefix
      - XEUS_MYLANG
-     -
+     - Prefix for macros used in C++ for this project.
    
    * - cmake_var_prefix
      - XEUS_MYLANG
-     -
+     - Prefix for CMake variables used in CMake for this project.
    
    * - cpp_standard
      - 17
-     -
+     - Which C++ standard shall be used. At the moment one can choose between 14 and 17.
    
    * - open_source_license
      - BSD 3-Clause License
-     -
+     - Which license shall be attached to your project.
