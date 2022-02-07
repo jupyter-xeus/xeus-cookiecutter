@@ -36,7 +36,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang
-          $HOME/micromamba-bin/micromamba env create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          $HOME/micromamba-bin/micromamba create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
@@ -104,7 +104,7 @@ jobs:
       - name: create and activate env
         shell: powershell
         run: |
-         micromamba  env create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
