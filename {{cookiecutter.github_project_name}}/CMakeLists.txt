@@ -35,8 +35,6 @@ if (NOT DEFINED {{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH)
     set({{cookiecutter.cmake_var_prefix}}_KERNELSPEC_PATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/")
 endif ()
 
-
-
 configure_file (
     "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/{{cookiecutter.kernel_name}}/kernel.json.in"
     "${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels/{{cookiecutter.kernel_name}}/kernel.json"
@@ -44,9 +42,6 @@ configure_file (
 
 # Build options
 # =============
-
-OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE "disable -march=native flag" OFF)
-OPTION({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC "disable -mtune=generic flag" OFF)
 
 option({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC "Build {{cookiecutter.project_name}} static library" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED "Split {{cookiecutter.binary_name}} build into executable and library" ON)
@@ -63,8 +58,6 @@ OPTION({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD "Build for wasm w
 if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     add_compile_definitions({{cookiecutter.cpp_macro_prefix}}_EMSCRIPTEN_WASM_BUILD)
     message("Build with emscripten")
-    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE ON)
-    SET({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC ON)
     SET({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC ON)
     SET({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED OFF)
     SET({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE OFF)
@@ -78,7 +71,7 @@ endif()
 # ============
 
 set(xtl_REQUIRED_VERSION 0.7.0)
-set(xeus_REQUIRED_VERSION 2.4.0)
+set(xeus_REQUIRED_VERSION 3.0.5)
 
 if (NOT TARGET xtl)
     find_package(xtl ${xtl_REQUIRED_VERSION} REQUIRED)
@@ -104,13 +97,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
     {% else -%}
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     {% endif %}
-    if ({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE AND NOT {{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=generic")
-    elseif ({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    else ()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-    endif ()
 
     CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standard}}" HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
     if (HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
@@ -164,14 +150,6 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
         CMAKE_CXX_COMPILER_ID MATCHES "Intel")
 
         target_compile_options(${target_name} PUBLIC -Wunused-parameter -Wextra -Wreorder)
-
-        # Mtune generic/native
-        if ({{cookiecutter.cmake_var_prefix}}_DISABLE_ARCH_NATIVE AND NOT {{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
-            target_compile_options(${target_name} PUBLIC -mtune=generic)
-        elseif ({{cookiecutter.cmake_var_prefix}}_DISABLE_TUNE_GENERIC)
-        else ()
-            target_compile_options(${target_name} PUBLIC -march=native)
-        endif ()
 
         # C++{{cookiecutter.cpp_standard}} flag
         CHECK_CXX_COMPILER_FLAG("-std=c++{{cookiecutter.cpp_standard}}" HAS_CPP_{{cookiecutter.cpp_standard}}_FLAG)
@@ -292,19 +270,26 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC)
     list(APPEND {{cookiecutter.cmake_var_prefix}}_TARGETS {{cookiecutter.library_name}}-static)
 endif ()
 
-# {{cookiecutter.library_name}}
+# {{cookiecutter.binary_name}}
 # =======
 if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
+    find_package(xeus-zmq 1.0.2 REQUIRED)
     add_executable({{cookiecutter.binary_name}} {{'${'}}{{cookiecutter.cmake_var_prefix}}_MAIN_SRC})
     target_compile_features({{cookiecutter.binary_name}} PRIVATE cxx_std_{{cookiecutter.cpp_standard}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_common_options({{cookiecutter.binary_name}})
     {{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options({{cookiecutter.binary_name}})
+    target_link_libraries({{cookiecutter.binary_name}} PRIVATE xeus-zmq)
 endif()
 
 {% if cookiecutter.with_wasm == "yes" -%}
 if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
-    add_executable(xeus_kernel src/main_emscripten_kernel.cpp )
-    target_link_libraries(xeus_kernel {{cookiecutter.library_name}}-static)
+    include(WasmBuildOptions)
+    find_package(xeus-lite REQUIRED)
+    add_executable({{cookiecutter.binary_name}}_wasm src/main_emscripten_kernel.cpp )
+    target_link_libraries({{cookiecutter.binary_name}}_wasm {{cookiecutter.library_name}}-static xeus-lite)
+    {{cookiecutter.cmake_var_prefix}}_set_kernel_options(xlua_wasm)
+    xeus_wasm_compile_options(xlua_wasm)
+    xeus_wasm_link_options(xlua_wasm "web,worker")
 endif()
 {% endif %}
 
@@ -377,3 +362,15 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
             FILE ${PROJECT_NAME}Targets.cmake
             DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 endif ()
+
+{% if cookiecutter.with_wasm == "yes" -%}
+if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+    install(TARGETS {{cookiecutter.binary_name}}_wasm
+            ARCHIVE DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
+
+    install(FILES
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>:{{cookiecutter.binary_name}}_wasm.js"
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>:{{cookiecutter.binary_name}}_wasm.wasm"
+            DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif ()
+{% endif %}
