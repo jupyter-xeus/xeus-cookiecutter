@@ -286,10 +286,10 @@ if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
     include(WasmBuildOptions)
     find_package(xeus-lite REQUIRED)
     add_executable({{cookiecutter.binary_name}}_wasm src/main_emscripten_kernel.cpp )
-    target_link_libraries({{cookiecutter.binary_name}}_wasm {{cookiecutter.library_name}}-static xeus-lite)
-    {{cookiecutter.cmake_var_prefix}}_set_kernel_options(xlua_wasm)
-    xeus_wasm_compile_options(xlua_wasm)
-    xeus_wasm_link_options(xlua_wasm "web,worker")
+    target_link_libraries({{cookiecutter.binary_name}}_wasm PRIVATE {{cookiecutter.library_name}}-static xeus-lite)
+    {{cookiecutter.cmake_var_prefix}}_set_kernel_options({{cookiecutter.binary_name}}_wasm)
+    xeus_wasm_compile_options({{cookiecutter.binary_name}}_wasm)
+    xeus_wasm_link_options({{cookiecutter.binary_name}}_wasm "web,worker")
 endif()
 {% endif %}
 
@@ -369,8 +369,8 @@ if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
             ARCHIVE DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 
     install(FILES
-            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>:{{cookiecutter.binary_name}}_wasm.js"
-            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>:{{cookiecutter.binary_name}}_wasm.wasm"
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>/{{cookiecutter.binary_name}}_wasm.js"
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>/{{cookiecutter.binary_name}}_wasm.wasm"
             DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif ()
 {% endif %}

@@ -108,10 +108,10 @@ jobs:
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
-        shell: powershell
+        shell: cmd
         run: |
-          micromamba activate xeus_cookiecutter_test_env
-          micromamba install cxx-compiler -c conda-forge -y
+          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat install cxx-compiler -c conda-forge -y
 
       - name: cmake configure
         shell: cmd
