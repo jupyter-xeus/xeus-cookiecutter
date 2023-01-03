@@ -24,5 +24,6 @@
     "cpp_macro_prefix":             "{{ cookiecutter.project_name|upper|replace(' ', '_')|replace('-', '_') }}",    
     "cmake_var_prefix":             "{{ cookiecutter.cpp_macro_prefix|upper|replace(' ', '_')|replace('-', '_') }}",    
     "cpp_standard":                 ["17", "14"],
-    "open_source_license":          ["BSD 3-Clause License", "BSD License", "MIT license", "ISC License", "Apache Software License 2.0", "GNU General Public License v3", "Not open source"]
+    "open_source_license":          ["BSD 3-Clause License", "BSD License", "MIT license", "ISC License", "Apache Software License 2.0", "GNU General Public License v3", "Not open source"],
+    "_new_lines":                   "\n"
 }

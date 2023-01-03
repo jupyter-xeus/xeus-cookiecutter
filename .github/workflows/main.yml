@@ -108,10 +108,10 @@ jobs:
           micromamba activate xeus_cookiecutter_test_env
 
       - name: install cxx compiler
-        shell: powershell
+        shell: cmd
         run: |
-          micromamba activate xeus_cookiecutter_test_env
-          micromamba install cxx-compiler -c conda-forge -y
+          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat install cxx-compiler -c conda-forge -y
 
       - name: cmake configure
         shell: cmd
@@ -136,104 +136,6 @@ jobs:
           call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
-
-  emscripten_wasm_docker:
-    runs-on: ubuntu-20.04
-
-    strategy:
-      fail-fast: false
-      matrix:
-        container: ["emscripten/emsdk:2.0.34", "emscripten/emsdk:3.1.3", "emscripten/emsdk:latest"]
-
-    container: ${{ matrix.container}}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Verify emscripten
-        run: emcc -v
-
-      - name: Verify cmake
-        run: cmake --version
-
-
-      - name: whereis python
-        run: |
-          whereis python
-
-
-
-      - name: "install this repo"
-        run: |
-          sudo /usr/bin/python3.8  -m pip install cookiecutter
-          sudo /usr/bin/python3.8  -m cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
-
-
-      - name: "install xtl"
-        run: |
-          mkdir -p /opt/xtl/build
-          git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
-          cd /opt/xtl/src
-          git checkout 0.7.2
-          cd /opt/xtl/build
-          emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=/custom_sysroot
-          emmake make -j2 install
-
-      - name: "install nlohmann-json"
-        run: |
-          mkdir -p /opt/nlohmannjson/build
-          git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
-          cd  /opt/nlohmannjson/src
-          git checkout v3.9.0
-          cd /opt/nlohmannjson/build
-          emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=/custom_sysroot
-          emmake make -j2 install
-
-      - name: "install xeus"
-        run: |
-          mkdir -p /opt/xeus/build
-          git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
-          cd  /opt/xeus/src
-          git checkout 2.4.0
-
-
-          cd /opt/xeus/build
-          emcmake cmake ../src \
-            -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
-            -DXEUS_BUILD_TESTS=ON \
-            -DCMAKE_INSTALL_PREFIX=/custom_sysroot\
-            -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
-            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json
-
-          emmake make -j2
-          emmake make -j2 install
-
-
-      - name: cmake configure rendered project
-        shell: bash -l {0}
-        run: |
-          cd xeus-mylang
-          mkdir -p bld
-          cd bld
-          emcmake cmake .. \
-           -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF \
-           -DXEUS_MYLANG_EMSCRIPTEN_WASM_BUILD=ON \
-           -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
-           -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
-           -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus \
-           -DCMAKE_INSTALL_PREFIX=/custom_sysroot
-
-      - name: build rendered project
-        shell: bash -l {0}
-        run: |
-          cd xeus-mylang/bld
-          emmake make -j2
-
-      - name: install rendered project
-        shell: bash -l {0}
-        run: |
-          cd xeus-mylang/bld
-          make install
 
   emscripten_wasm:
     runs-on: ubuntu-latest
@@ -275,7 +177,6 @@ jobs:
           ./emsdk activate ${{matrix.emsdk_ver}}
           source "/opt/emsdk/emsdk_env.sh"
           mkdir -p /opt/xtl/build
-
           git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
           cd /opt/xtl/src
           git checkout 0.7.2
@@ -304,17 +205,35 @@ jobs:
           mkdir -p /opt/xeus/build
           git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
           cd  /opt/xeus/src
-          git checkout 2.4.0
+          git checkout 3.0.5
           cd /opt/xeus/build
           emcmake cmake ../src \
             -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
-            -DXEUS_BUILD_TESTS=ON \
+            -DXEUS_BUILD_TESTS=OFF \
             -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
             -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
             -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot
           emmake make -j2
           emmake make -j2 install
 
+      - name: "install xeus-lite"
+        run: |
+          cd /opt/emsdk
+          ./emsdk activate ${{matrix.emsdk_ver}}
+          source "/opt/emsdk/emsdk_env.sh"
+          mkdir -p /opt/xeus-lite/build
+          git clone https://github.com/jupyter-xeus/xeus-lite.git  /opt/xeus-lite/src
+          cd /opt/xeus-lite/src
+          git checkout 1.0.1
+          cd /opt/xeus-lite/build
+          emcmake cmake ../src \
+            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot \
+            -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
+            -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
+            -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus 
+
+          emmake make -j2
+          emmake make -j2 install
 
       - name: cmake configure rendered project
         shell: bash -l {0}
@@ -330,7 +249,8 @@ jobs:
            -DXEUS_MYLANG_EMSCRIPTEN_WASM_BUILD=ON \
            -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
            -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
-           -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus
+           -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus \
+           -Dxeus-lite_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus-lite
 
       - name: build rendered project
         shell: bash
@@ -351,7 +271,7 @@ jobs:
           make install
 
   push:
-    needs: [unix, win, emscripten_wasm_docker, emscripten_wasm]
+    needs: [unix, win, emscripten_wasm]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -376,5 +296,7 @@ jobs:
           REPO: self
           BRANCH: rendered
           FOLDER: xeus-mylang
-          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "added rendered: ({sha}) {msg}"
+        # GITHUB_TOKEN permmissions cannot be changed for forks
+        continue-on-error: true

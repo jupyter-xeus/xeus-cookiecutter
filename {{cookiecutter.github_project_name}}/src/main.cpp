@@ -23,7 +23,7 @@
 
 #include "xeus/xkernel.hpp"
 #include "xeus/xkernel_configuration.hpp"
-#include "xeus/xserver_zmq.hpp"
+#include "xeus-zmq/xserver_zmq.hpp"
 
 
 #include "{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp"
