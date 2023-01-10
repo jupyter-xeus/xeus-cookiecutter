@@ -35,74 +35,56 @@ namespace {{cookiecutter.cpp_namespace}}
                                                       nl::json /*user_expressions*/,
                                                       bool /*allow_stdin*/)
     {
-        nl::json kernel_res;
-
-        if (code.compare("hello, world") == 0)
-        {
-            publish_stream("stdout", code);
-        }
-
-        if (code.compare("error") == 0)
-        {
-            publish_stream("stderr", code);
-        }
-
-        if (code.compare("?") == 0)
-        {
-            std::string html_content = R"(<iframe class="xpyt-iframe-pager" src="
-                https://xeus.readthedocs.io"></iframe>)";
-
-            auto payload = nl::json::array();
-        
-            payload = nl::json::array();
-            payload[0] = nl::json::object({
-                {"data", {
-                    {"text/plain", "https://xeus.readthedocs.io"},
-                    {"text/html", html_content}}
-                },
-                {"source", "page"},
-                {"start", 0}
-            });
-
-            return xeus::create_successful_reply(payload);
-        }
-
+        // Use this method for publishing the execution result to the client,
+        // this method takes the ``execution_counter`` as first argument,
+        // the data to publish (mime type data) as second argument and metadata
+        // as third argument.
+        // Replace "Hello World !!" by what you want to be displayed under the execution cell
         nl::json pub_data;
-        pub_data["text/plain"] = code;
+        pub_data["text/plain"] = "Hello World !!";
 
-        publish_execution_result(execution_counter, 
-            std::move(pub_data),
-            nl::json::object()
-        );
+        // If silent is set to true, do not publish anything!
+        // Otherwise:
+        // Publish the execution result
+        publish_execution_result(execution_counter, std::move(pub_data), nl::json::object());
 
-        return xeus::create_successful_reply();
+        // You can also use this method for publishing errors to the client, if the code
+        // failed to execute
+        // publish_execution_error(error_name, error_value, error_traceback);
+        publish_execution_error("TypeError", "123", {"!@#$", "*(*"});
+
+        // Use publish_stream to publish a stream message or error:
+        publish_stream("stdout", "I am publishing a message");
+        publish_stream("stderr", "Error!");
+
+        // Use Helpers that create replies to the server to be returned
+        return xeus::create_successful_reply(/*payload, user_expressions*/);
+        // Or in case of error:
+        //return xeus::create_error_reply(evalue, ename, trace_back);
     }
 
     void interpreter::configure_impl()
     {
-        // Perform some operations
+        // `configure_impl` allows you to perform some operations
+        // after the custom_interpreter creation and before executing any request.
+        // This is optional, but can be useful;
+        // you can for example initialize an engine here or redirect output.
     }
 
     nl::json interpreter::is_complete_request_impl(const std::string& code)
     {
-        if (code.compare("incomplete") == 0)
-        {
-            return xeus::create_is_complete_reply("incomplete"/*status*/, "   "/*indent*/);
-        }
-        else if(code.compare("invalid") == 0)
-        {
-            return xeus::create_is_complete_reply("invalid"/*status*/);
-        }
-        else
-        {
-            return xeus::create_is_complete_reply("complete"/*status*/);
-        }   
+        // Insert code here to validate the ``code``
+        // and use `create_is_complete_reply` with the corresponding status
+        // "unknown", "incomplete", "invalid", "complete"
+        return xeus::create_is_complete_reply("complete"/*status*/, "   "/*indent*/);
     }
 
     nl::json interpreter::complete_request_impl(const std::string&  code,
                                                      int cursor_pos)
     {
-        // Code starts with 'H', it could be the following completion
+        // Should be replaced with code performing the completion
+        // and use the returned `matches` to `create_complete_reply`
+        // i.e if the code starts with 'H', it could be the following completion
         if (code[0] == 'H')
         {
        
