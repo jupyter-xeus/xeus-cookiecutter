@@ -1,6 +1,6 @@
-# Contributing to Xeus-python
+# Contributing to {{cookiecutter.project_name}}
 
-Xeus and xeus-python are subprojects of Project Jupyter and subject to the
+Xeus and {{cookiecutter.project_name}} are subprojects of Project Jupyter and subject to the
 [Jupyter governance](https://github.com/jupyter/governance) and
 [Code of conduct](https://github.com/jupyter/governance/blob/master/conduct/code_of_conduct.md).
 
@@ -22,33 +22,27 @@ First, you need to fork the project. Then setup your environment:
 ```bash
 # create a new conda environment
 conda create -f environment-dev.yml
-conda activate xeus-python
+conda activate {{cookiecutter.project_name}}
 
-# download xeus-python from your GitHub fork
-git clone https://github.com/<your-github-username>/xeus-python.git
+# download {{cookiecutter.github_project_name}} from your GitHub fork
+git clone https://github.com/<your-github-username>/{{cookiecutter.github_project_name}}.git
 ```
 
 You may also want to install a C++ compiler, and cmake from conda if they are not
 available on your system.
 
-## Building and installing xeus-python
+## Building and installing {{cookiecutter.package_name}}
 
 ```bash
 # Create a directory for building
 mkdir build && cd build
 # Generate the makefile with cmake
-cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DXPYT_DOWNLOAD_GTEST=ON -DPYTHON_EXECUTABLE=`which python` -DCMAKE_INSTALL_LIBDIR=lib ..
+cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_PREFIX_PATH=$CONDA_PREFIX -D CMAKE_INSTALL_PREFIX=$CONDA_PREFIX -D CMAKE_INSTALL_LIBDIR=lib ..
 # Build and install
 make install -j2
 ```
 
 ## Running the tests
-
-To run the C++ test suite, from the build directory, type
-
-```bash
-./test/test_xeus-python
-```
 
 To run Python tests, from the build directory, type
 
