@@ -23,9 +23,9 @@
 
 import unittest
 
-class FakeTest(unittest.TestCase):
+class TestFake(unittest.TestCase):
 
-    def fake_test(self):
+    def test_fake(self):
         pass
 
 #########################################################################################
