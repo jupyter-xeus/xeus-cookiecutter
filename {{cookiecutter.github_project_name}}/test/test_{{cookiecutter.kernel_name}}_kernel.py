@@ -7,14 +7,30 @@
 #############################################################################
 
 
-#######################################################################################
-# TODO Uncomment these code lines in order to enable the tests (to be modified/adapted)
-#######################################################################################
-# These tests examples check that the given code "hello, world" would be published as
-# text stdout stream message and "error" as stderr
-# Other tests are performed inside the jupyter_kernel_test `execute_helper` function
-# and based on the variables defined below
+##########################################################################################
+# TODO
+# Please remove fake test and uncomment the code lines underneath it in order to enable
+# the actual tests (to be modified/adapted)
+#########################################################################################
+# These tests examples (to be modified) check that the given code "hello, world" would be
+# published as text stdout stream message and "error" as stderr
+# Other tests are performed during the initialization of `jupyter_kernel_test.KernelTests`
+# and inside the `execute_helper` function based on the given variables defined within
+# the class
+#########################################################################################
+#                               TO BE REMOVED                                           #
+#########################################################################################
 
+import unittest
+
+class FakeTest(unittest.TestCase):
+
+    def fake_test(self):
+        pass
+
+#########################################################################################
+#                            TO UNCOMMENT AND ADAPT                                     #
+#########################################################################################
 
 #import tempfile
 #import unittest
@@ -46,6 +62,8 @@
         #self.assertEqual(output_msgs[0]["msg_type"], "stream")
         #self.assertEqual(output_msgs[0]["content"]["name"], "stderr")
 
+#########################################################################################
+#########################################################################################
 
-#if __name__ == "__main__":
-    #unittest.main()
+if __name__ == "__main__":
+    unittest.main()
