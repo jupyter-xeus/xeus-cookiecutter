@@ -4,8 +4,8 @@
 
    The full license is in the file LICENSE, distributed with this software.
 
-.. image:: xeus-python.svg
-   :alt: xeus-python
+.. image:: xeus-logo.svg
+   :alt: xeus-logo
 
 
 Introduction
