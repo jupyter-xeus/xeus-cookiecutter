@@ -1,4 +1,4 @@
-name: xeus-python-docs
+name: {{cookiecutter.project_name}}-docs
 
 channels:
   - conda-forge

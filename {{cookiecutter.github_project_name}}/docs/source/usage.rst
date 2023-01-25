@@ -1,7 +1,6 @@
-.. Copyright (c) 2017, Martin Renou, Johan Mabille, Sylvain Corlay, and
-   Wolf Vollprecht
+.. Copyright (c) {% now 'utc', '%Y' %}, {{cookiecutter.full_name}}
 
-   Distributed under the terms of the BSD 3-Clause License.
+   Distributed under the terms of the {{cookiecutter.open_source_license}}.
 
    The full license is in the file LICENSE, distributed with this software.
 
@@ -9,7 +8,7 @@ Usage
 =====
 
 Launch the Jupyter notebook with `jupyter notebook` or Jupyter lab with `jupyter lab` and launch
-a new Python notebook by selecting the **xpython** kernel.
+a new {{cookiecutter.language}} notebook by selecting the **{{cookiecutter.kernel_name}}** kernel.
 
 Code execution and variable display
 -----------------------------------
