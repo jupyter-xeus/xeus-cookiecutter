@@ -301,4 +301,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "added rendered: ({sha}) {msg}"
         # GITHUB_TOKEN permmissions cannot be changed for forks
-        continue-on-error: true
+        continue-on-error: false
