@@ -25,7 +25,7 @@ html_static_path = ['_static']
 source_suffix = '.rst'
 master_doc = 'index'
 project = '{{cookiecutter.project_name}}'
-copyright = '2017, {{cookiecutter.full_name}}'
+copyright = '{% now 'utc', '%Y' %}, {{cookiecutter.full_name}}'
 author = '{{cookiecutter.full_name}}'
 
 html_logo = 'quantstack-white.svg'
