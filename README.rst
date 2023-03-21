@@ -8,12 +8,12 @@ xeus-cookiecutter
    :scale: 150 %
 
 
-.. image:: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml/badge.svg
-    :target: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml
+.. image:: https://github.com/jupyter-xeus/xeus-cookiecutter/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/jupyter-xeus/xeus-cookiecutter/actions/workflows/main.yml
 
 
-.. image:: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml/badge.svg?branch=rendered
-    :target: https://github.com/DerThorsten/xeus-cookiecutter/actions/workflows/main.yml
+.. image:: https://github.com/jupyter-xeus/xeus-cookiecutter/actions/workflows/main.yml/badge.svg?branch=rendered
+    :target: https://github.com/jupyter-xeus/xeus-cookiecutter/actions/workflows/main.yml
 
 
 .. image:: https://readthedocs.org/projects/xeus-cookiecutter/badge/?version=latest
@@ -22,14 +22,13 @@ xeus-cookiecutter
 
 
 Overview
--------------
-This cookiecutter can be used to generated `xeus-based  <https://github.com/jupyter-xeus/xeus>`_   `Jupyter kernels <https://jupyter.org/>`_.
+--------
+
+This cookiecutter can be used to generate `xeus-based <https://github.com/jupyter-xeus/xeus>`_ `Jupyter kernels <https://jupyter.org/>`_.
 This cookiecutter has been used to generate `xeus-lua <https://github.com/jupyter-xeus/xeus-lua>`_ and `xeus-wren <https://github.com/jupyter-xeus/xeus-wren>`_.
 
-
-
 Features
---------------
+--------
 
 * Unit Tests:
     * Kernel is tested via `jupyter-kernel-tests <https://github.com/jupyter/jupyter_kernel_test>`_.
@@ -44,7 +43,7 @@ Features
     * Includes a wasm target which can be used to build a `jupyterlite-kernel <https://jupyterlite.readthedocs.io/>`_ for your kernel similar to `jupyterlite xeus-lua <https://github.com/jupyterlite/xeus-lua-kernel>`_.
 
 Usage
--------------
+-----
 
 
 Install the cookiecutter package with conda
@@ -59,12 +58,11 @@ or pip
 
     python -m pip install cookiecutter
 
-
 Once cookiecutter is available on your system, run the xeus-cookiecutter:
 
 .. code-block:: bash
 
-    cookiecutter https://github.com/DerThorsten/xeus-cookiecutter
+    cookiecutter https://github.com/jupyter-xeus/xeus-cookiecutter
 
 
 .. image:: docs/term/usage.gif
@@ -73,7 +71,8 @@ Once cookiecutter is available on your system, run the xeus-cookiecutter:
 
 
 Conda-Forge
--------------
+-----------
+
 To release your kernel on `conda-forge <https://conda-forge.org/>`_, you create a conda forge recipe. Examples for conda forge recipes for xeus-based kernels can be found here.
 
 * https://github.com/conda-forge/xeus-lua-feedstock/
@@ -82,7 +81,7 @@ To release your kernel on `conda-forge <https://conda-forge.org/>`_, you create 
 
 
 Cookiecutter Variables Explanation
------------------------------------
+----------------------------------
 
 .. list-table:: Variables
    :header-rows: 1

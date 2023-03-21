@@ -176,7 +176,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_common_options target_name)
     )
 endmacro()
 
-# Common macro kernels ({{cookiecutter.kernel_name}} )
+# Common macro kernels ({{cookiecutter.kernel_name}})
 macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
     if ({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}})
         target_link_libraries(${target_name} PRIVATE {{cookiecutter.library_name}})
