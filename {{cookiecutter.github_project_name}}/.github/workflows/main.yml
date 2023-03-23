@@ -155,8 +155,6 @@ jobs:
           mkdir -p /opt/xeus/build 
           git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
           cd  /opt/xeus/src
-          git checkout 2.4.0
-
 
           cd /opt/xeus/build 
           emcmake cmake ../src \
@@ -169,6 +167,19 @@ jobs:
           emmake make -j2
           emmake make -j2 install
 
+      - name: "install xeus-lite"
+        run: |
+          mkdir -p /opt/xeus-lite/build 
+          git clone https://github.com/jupyter-xeus/xeus-lite.git  /opt/xeus-lite/src
+          cd /opt/xeus-lite/build 
+          emcmake cmake ../src \
+            -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
+            -DCMAKE_INSTALL_PREFIX=/custom_sysroot \
+            -Dxtl_DIR=custom_sysroot/share/cmake/xtl \
+            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
+            -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
+          emmake make -j2
+          emmake make -j2 install
 
       - name: cmake configure rendered project
         shell: bash -l {0}
@@ -180,6 +191,7 @@ jobs:
            -Dxtl_DIR=/custom_sysroot/share/cmake/xtl \
            -Dnlohmann_json_DIR=/custom_sysroot/lib/cmake/nlohmann_json \
            -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus \
+           -Dxeus-lite_DIR=/custom_sysroot/lib/cmake/xeus-lite \
            -DCMAKE_INSTALL_PREFIX=/custom_sysroot
 
       - name: build rendered project
@@ -195,127 +207,54 @@ jobs:
           make install
 
   emscripten_wasm:
+
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
-        emsdk_ver: ["2.0.34", "3.1.3", "latest"]
+        emsdk_ver: ["2.0.34", "3.1.3"]
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: make_install_dir
-        shell: bash -l {0}
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/custom_sysroot
-
-      - name: install emsdk
-        shell: bash -l {0}
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
-          cd /opt/emsdk 
-          {% raw %} 
-          ./emsdk install ${{matrix.emsdk_ver}}
-          {% endraw %} 
-
-      - name: install mamba
+      - name: Install mamba
         uses: mamba-org/provision-with-micromamba@main
         with:
-          environment-file: environment-dev.yml
-          environment-name: {{cookiecutter.conda_package_name}}
+          environment-file: environment-wasm-build.yml
+          environment-name: {{cookiecutter.conda_package_name}}-wasm-build
 
-      - name: "install xtl"
-        run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
-          {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          mkdir -p /opt/xtl/build 
-
-          git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
-          cd /opt/xtl/src 
-          git checkout 0.7.2
-          cd /opt/xtl/build 
-          emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot
-          emmake make -j2 install
-
-      - name: "install nlohmann-json"
-        run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
-          {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          mkdir -p /opt/nlohmannjson/build 
-          git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
-          cd  /opt/nlohmannjson/src
-          git checkout v3.9.0
-          cd /opt/nlohmannjson/build 
-          emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot
-          emmake make -j2 install
-
-      - name: "install xeus"
-        run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
-          {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          mkdir -p /opt/xeus/build 
-          git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
-          cd  /opt/xeus/src
-          git checkout 2.4.0
-          cd /opt/xeus/build 
-          emcmake cmake ../src \
-            -DXEUS_EMSCRIPTEN_WASM_BUILD=ON \
-            -DXEUS_BUILD_TESTS=ON \
-            -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
-            -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
-            -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot 
-          emmake make -j2
-          emmake make -j2 install
-
-
-      - name: cmake configure this repo
+      - name: Setup emsdk
         shell: bash -l {0}
         run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
+          {% raw %}
+          emsdk install ${{ matrix.emsdk_ver }}
           {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          cd $GITHUB_WORKSPACE
-          mkdir -p bld
-          cd bld
-          emcmake cmake .. \
-           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot \
-           -D{{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD=ON \
-           -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
-           -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
-           -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus 
 
-      - name: build rendered project
-        shell: bash
-        run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
-          {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          cd $GITHUB_WORKSPACE
-          cd bld
-          emmake make -j8
-
-      - name: install rendered project
+      - name: Build
         shell: bash -l {0}
         run: |
-          cd /opt/emsdk
-          {% raw %} 
-          ./emsdk activate ${{matrix.emsdk_ver}}
+          {% raw %}
+          emsdk activate ${{ matrix.emsdk_ver }}
           {% endraw %} 
-          source "/opt/emsdk/emsdk_env.sh"
-          cd $GITHUB_WORKSPACE
-          cd bld
-          make install
+          source $CONDA_EMSDK_DIR/emsdk_env.sh
+          micromamba create -f environment-wasm-host.yml --platform=emscripten-32
+          
+          mkdir build
+          pushd build
+
+          export EMPACK_PREFIX=$MAMBA_ROOT_PREFIX/envs/{{cookiecutter.conda_package_name}}-wasm-build
+          export PREFIX=$MAMBA_ROOT_PREFIX/envs/{{cookiecutter.conda_package_name}}-wasm-host
+          export CMAKE_PREFIX_PATH=$PREFIX
+          export CMAKE_SYSTEM_PREFIX_PATH=$PREFIX
+
+          emcmake cmake \
+            -DCMAKE_BUILD_TYPE=Release                        \
+            -DCMAKE_PREFIX_PATH=$PREFIX                       \
+            -DCMAKE_INSTALL_PREFIX=$PREFIX                    \
+            -D{{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD=ON               \
+            -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ON            \
+            ..
+          make -j5
+
   {% endif %}
