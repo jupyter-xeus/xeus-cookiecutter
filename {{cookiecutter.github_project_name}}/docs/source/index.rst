@@ -28,4 +28,4 @@ The full license is in the file LICENSE, distributed with this software.
 
    dev-build-options
 
-.. _xeus: https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}
+.. _xeus: https://github.com/jupyter-xeus/xeus
