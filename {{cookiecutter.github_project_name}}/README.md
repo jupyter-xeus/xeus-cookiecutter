@@ -1,8 +1,5 @@
 # ![{{cookiecutter.package_name}}](docs/source/xeus-logo.svg)
 
-{{cookiecutter.branch_name}}
-
-
 [![Build Status](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml/badge.svg)](https://github.com/{{cookiecutter.github_user_name}}/{{cookiecutter.github_project_name}}/actions/workflows/main.yml)
 
 [![Documentation Status](http://readthedocs.org/projects/{{cookiecutter.readthedocs_package_name}}/badge/?version=latest)](https://{{cookiecutter.readthedocs_package_name}}readthedocs.io/en/latest/?badge=latest)
