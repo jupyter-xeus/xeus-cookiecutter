@@ -3,7 +3,7 @@
     "email":                        "john@doe.de",
     "github_user_name":             "JohnDoe",
     "language":                     "mylang",
-    "language_mimetype":            "text/x-{{ cookiecutter.language}}src",
+    "language_mimetype":            "text/x-{{ cookiecutter.language}}",
     "language_file_extension":      "{{ cookiecutter.language}}",
     "language_version":             "1.0.0",
     "with_wasm":                    ["no", "yes"],
