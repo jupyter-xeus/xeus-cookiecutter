@@ -50,12 +50,9 @@ OPTION({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE "Build the {{cookiecut
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_XEUS "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 OPTION({{cookiecutter.cmake_var_prefix}}_USE_SHARED_{{cookiecutter.cmake_var_prefix}} "Link {{cookiecutter.binary_name}}  with the xeus shared library (instead of the static library)" ON)
 
-{% if cookiecutter.with_wasm == "yes" -%}
-OPTION({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD "Build for wasm with emscripten" OFF)
-{% endif %}
 
 {% if cookiecutter.with_wasm == "yes" -%}
-if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+if(EMSCRIPTEN)
     add_compile_definitions({{cookiecutter.cpp_macro_prefix}}_EMSCRIPTEN_WASM_BUILD)
     message("Build with emscripten")
     SET({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC ON)
@@ -91,7 +88,7 @@ endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Intel")
     {% if cookiecutter.with_wasm == "yes" -%}
-    if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+    if(NOT EMSCRIPTEN)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-parameter -Wextra -Wreorder")
     endif()
     {% else -%}
@@ -107,7 +104,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU"
 endif ()
 
 {% if cookiecutter.with_wasm == "yes" -%}
-if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+if(EMSCRIPTEN)
     # ENV (https://github.com/emscripten-core/emscripten/commit/6d9681ad04f60b41ef6345ab06c29bbc9eeb84e0)
     set(EMSCRIPTEN_FEATURES "${EMSCRIPTEN_FEATURES} -s \"EXTRA_EXPORTED_RUNTIME_METHODS=[ENV']\"")
 endif()
@@ -188,7 +185,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
     endif()
 
     {% if cookiecutter.with_wasm == "yes" -%}
-    if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+    if(NOT EMSCRIPTEN)
         find_package(Threads)
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
@@ -238,7 +235,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_create_target target_name linkage 
         target_link_libraries(${target_name} PRIVATE "-undefined dynamic_lookup")
     endif ()
     {% if cookiecutter.with_wasm == "yes" -%}
-    if(NOT {{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+    if(NOT EMSCRIPTEN)
         find_package(Threads) # TODO: add Threads as a dependence of xeus-static?
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
@@ -282,14 +279,14 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
 endif()
 
 {% if cookiecutter.with_wasm == "yes" -%}
-if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
+if(EMSCRIPTEN)
     include(WasmBuildOptions)
     find_package(xeus-lite REQUIRED)
-    add_executable({{cookiecutter.binary_name}}_wasm src/main_emscripten_kernel.cpp )
-    target_link_libraries({{cookiecutter.binary_name}}_wasm PRIVATE {{cookiecutter.library_name}}-static xeus-lite)
-    {{cookiecutter.cmake_var_prefix}}_set_kernel_options({{cookiecutter.binary_name}}_wasm)
-    xeus_wasm_compile_options({{cookiecutter.binary_name}}_wasm)
-    xeus_wasm_link_options({{cookiecutter.binary_name}}_wasm "web,worker")
+    add_executable({{cookiecutter.binary_name}} src/main_emscripten_kernel.cpp )
+    target_link_libraries({{cookiecutter.binary_name}} PRIVATE {{cookiecutter.library_name}}-static xeus-lite)
+    {{cookiecutter.cmake_var_prefix}}_set_kernel_options({{cookiecutter.binary_name}})
+    xeus_wasm_compile_options({{cookiecutter.binary_name}})
+    xeus_wasm_link_options({{cookiecutter.binary_name}} "web,worker")
 endif()
 {% endif %}
 
@@ -317,7 +314,9 @@ endif ()
 if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE)
     install(TARGETS {{cookiecutter.binary_name}}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
 
+if ({{cookiecutter.cmake_var_prefix}}_BUILD_EXECUTABLE OR EMSCRIPTEN)
     # Configuration and data directories for jupyter and {{cookiecutter.project_name}}
     set(XJUPYTER_DATA_DIR "share/jupyter"    CACHE STRING "Jupyter data directory")
 
@@ -364,13 +363,13 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_SHARED)
 endif ()
 
 {% if cookiecutter.with_wasm == "yes" -%}
-if({{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD)
-    install(TARGETS {{cookiecutter.binary_name}}_wasm
+if(EMSCRIPTEN)
+    install(TARGETS {{cookiecutter.binary_name}}
             ARCHIVE DESTINATION {{'${'}}{{cookiecutter.cmake_var_prefix}}_CMAKECONFIG_INSTALL_DIR})
 
     install(FILES
-            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>/{{cookiecutter.binary_name}}_wasm.js"
-            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}_wasm>/{{cookiecutter.binary_name}}_wasm.wasm"
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}>/{{cookiecutter.binary_name}}.js"
+            "$<TARGET_FILE_DIR:{{cookiecutter.binary_name}}>/{{cookiecutter.binary_name}}.wasm"
             DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif ()
 {% endif %}
