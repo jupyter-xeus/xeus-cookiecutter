@@ -90,11 +90,6 @@ jobs:
             cmd.exe
           environment-file: .github/ci_env.yml
 
-      - name: micromamba shell hook
-        shell: powershell
-        run: |
-          micromamba shell hook -s cmd.exe -p C:\Users\runneradmin\micromamba-root
-
       - name: create project with cookiecutter
         shell: powershell
         run:
@@ -106,10 +101,26 @@ jobs:
           micromamba create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
+      - name: debug win cmake
+        shell: powershell
+        run: |
+          micromamba activate xeus_cookiecutter_test_env
+          gci env:* | sort-object name
+
+      - name: find files
+        shell: powershell
+        run: |
+          micromamba activate xeus_cookiecutter_test_env
+          "Get children"
+          Get-ChildItem C:\Users\runneradmin\micromamba\envs\xeus_cookiecutter_test_env\Library\mingw-w64\bin\
+          "Get other childrem"
+          Get-ChildItem -Path C:\Users\runneradmin\micromamba\envs\xeus_cookiecutter_test_env\ -Filter *gxx* -Recurse
+          "Got'em"
+
       - name: cmake configure
         shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang
           mkdir -p bld
           cd bld
