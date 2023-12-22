@@ -23,7 +23,6 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
       - name: create project with cookiecutter
         shell: bash -l {0}
@@ -87,7 +86,6 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
       - name: micromamba shell hook
         shell: powershell
@@ -162,7 +160,6 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
       - name: create project with cookiecutter
         shell: bash -l {0}
@@ -283,7 +280,6 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
       - name: create project with cookiecutter
         shell: bash -l {0}
