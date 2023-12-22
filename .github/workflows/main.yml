@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: install mamba
         uses: mamba-org/setup-micromamba@v1
@@ -80,7 +80,7 @@ jobs:
         os: [ windows-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: install mamba
         uses: mamba-org/setup-micromamba@v1
@@ -142,7 +142,7 @@ jobs:
         # os: [ubuntu-latest, "macos-latest"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: make_install_dir
         shell: bash -l {0}
@@ -272,7 +272,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
