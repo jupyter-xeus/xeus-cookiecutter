@@ -33,14 +33,8 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang
-          $HOME/micromamba-bin/micromamba create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
-
-      - name: Install cxx compiler
-        shell: bash -l {0}
-        run: |
-          micromamba activate xeus_cookiecutter_test_env
-          $HOME/micromamba-bin/micromamba install cxx-compiler -c conda-forge -y
 
       - name: Configure cmake
         shell: bash -l {0}
