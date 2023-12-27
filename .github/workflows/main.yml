@@ -129,7 +129,7 @@ jobs:
       - name: build
         shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/bld
           set CL=/MP
           nmake install
@@ -137,7 +137,7 @@ jobs:
       - name: test
         shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
 
