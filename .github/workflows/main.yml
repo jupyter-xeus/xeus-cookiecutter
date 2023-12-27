@@ -17,33 +17,26 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: install mamba
-        uses: mamba-org/provision-with-micromamba@main
+      - name: Install micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
-      - name: create project with cookiecutter
+      - name: Create project with cookiecutter
         shell: bash -l {0}
         run:
           cookiecutter  . --config-file  .github/ci_context_no_wasm.yml  --no-input -f
 
-      - name: create and activate env
+      - name: Create and activate env
         shell: bash -l {0}
         run: |
           cd xeus-mylang
-          $HOME/micromamba-bin/micromamba create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          micromamba create -f environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
-      - name: install cxx compiler
-        shell: bash -l {0}
-        run: |
-          micromamba activate xeus_cookiecutter_test_env
-          $HOME/micromamba-bin/micromamba install cxx-compiler -c conda-forge -y
-
-      - name: cmake configure
+      - name: Configure cmake
         shell: bash -l {0}
         run: |
           micromamba activate xeus_cookiecutter_test_env
@@ -54,19 +47,19 @@ jobs:
            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
 
-      - name: build
+      - name: Build
         shell: bash -l {0}
         run: |
           cd xeus-mylang/bld
           make -j8
 
-      - name: install
+      - name: Install
         shell: bash -l {0}
         run: |
           cd xeus-mylang/bld
           make install
 
-      - name: test
+      - name: Test
         shell: bash -l {0}
         run: |
           micromamba activate xeus_cookiecutter_test_env
@@ -81,57 +74,48 @@ jobs:
         os: [ windows-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: install mamba
-        uses: mamba-org/provision-with-micromamba@main
+      - name: Install micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
+          init-shell: >-
+            powershell
+            cmd.exe
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
-      - name: micromamba shell hook
-        shell: powershell
-        run: |
-          micromamba shell hook -s cmd.exe -p C:\Users\runneradmin\micromamba-root
-
-      - name: create project with cookiecutter
+      - name: Create project with cookiecutter
         shell: powershell
         run:
           cookiecutter  . --no-input -f
 
-      - name: create and activate env
+      - name: Create and activate env
         shell: powershell
         run: |
           micromamba create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
 
-      - name: install cxx compiler
-        shell: cmd
+      - name: Configure cmake
+        shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat install cxx-compiler -c conda-forge -y
-
-      - name: cmake configure
-        shell: cmd
-        run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang
           mkdir -p bld
           cd bld
           cmake .. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DXEUS_BUILD_TESTS=ON -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" -DCMAKE_INSTALL_PREFIX="%CONDA_PREFIX%"
 
-      - name: build
-        shell: cmd
+      - name: Build and install
+        shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/bld
           set CL=/MP
           nmake install
 
-      - name: test
-        shell: cmd
+      - name: Test
+        shell: cmd /C CALL {0}
         run: |
-          call C:\Users\runneradmin\micromamba-root\condabin\micromamba.bat activate xeus_cookiecutter_test_env
+          micromamba activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
 
@@ -144,32 +128,31 @@ jobs:
         # os: [ubuntu-latest, "macos-latest"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: make_install_dir
+      - name: Make install dir
         shell: bash -l {0}
         run: |
           mkdir -p $GITHUB_WORKSPACE/custom_sysroot
 
-      - name: install emsdk
+      - name: Install emsdk
         shell: bash -l {0}
         run: |
           git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
           cd /opt/emsdk
           ./emsdk install ${{matrix.emsdk_ver}}
 
-      - name: install mamba
-        uses: mamba-org/provision-with-micromamba@main
+      - name: Install micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
-      - name: create project with cookiecutter
+      - name: Create project with cookiecutter
         shell: bash -l {0}
         run:
           cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
 
-      - name: "install xtl"
+      - name: Install xtl
         run: |
           cd /opt/emsdk
           ./emsdk activate ${{matrix.emsdk_ver}}
@@ -182,7 +165,7 @@ jobs:
           emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot
           emmake make -j2 install
 
-      - name: "install nlohmann-json"
+      - name: Install nlohmann-json
         run: |
           cd /opt/emsdk
           ./emsdk activate ${{matrix.emsdk_ver}}
@@ -195,7 +178,7 @@ jobs:
           emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot
           emmake make -j2 install
 
-      - name: "install xeus"
+      - name: Install xeus
         run: |
           cd /opt/emsdk
           ./emsdk activate ${{matrix.emsdk_ver}}
@@ -214,7 +197,7 @@ jobs:
           emmake make -j2
           emmake make -j2 install
 
-      - name: "install xeus-lite"
+      - name: Install xeus-lite
         run: |
           cd /opt/emsdk
           ./emsdk activate ${{matrix.emsdk_ver}}
@@ -228,12 +211,12 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/custom_sysroot \
             -Dnlohmann_json_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/nlohmann_json \
             -Dxtl_DIR=$GITHUB_WORKSPACE/custom_sysroot/share/cmake/xtl \
-            -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus 
+            -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus
 
           emmake make -j2
           emmake make -j2 install
 
-      - name: cmake configure rendered project
+      - name: Configure cmake rendered project
         shell: bash -l {0}
         run: |
           cd /opt/emsdk
@@ -250,7 +233,7 @@ jobs:
            -Dxeus_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus \
            -Dxeus-lite_DIR=$GITHUB_WORKSPACE/custom_sysroot/lib/cmake/xeus-lite
 
-      - name: build rendered project
+      - name: Build rendered project
         shell: bash
         run: |
           cd /opt/emsdk
@@ -259,7 +242,7 @@ jobs:
           cd $GITHUB_WORKSPACE/xeus-mylang/bld
           emmake make -j8
 
-      - name: install rendered project
+      - name: Install rendered project
         shell: bash -l {0}
         run: |
           cd /opt/emsdk
@@ -275,21 +258,20 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: install mamba
-        uses: mamba-org/provision-with-micromamba@main
+      - name: Install micromamba
+        uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/ci_env.yml
-          environment-name: ci_env
 
-      - name: create project with cookiecutter
+      - name: Create project with cookiecutter
         shell: bash -l {0}
         run:
           cookiecutter  . --config-file  .github/ci_context_wasm.yml  --no-input -f
-        
+
       - name: Push to rendered branch
         if: github.repository == 'jupyter-xeus/xeus-cookiecutter' && github.ref == 'refs/heads/main'
         uses: s0/git-publish-subdir-action@develop
@@ -299,5 +281,5 @@ jobs:
           FOLDER: xeus-mylang
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "added rendered: ({sha}) {msg}"
-        # GITHUB_TOKEN permmissions cannot be changed for forks
+        # GITHUB_TOKEN permissions cannot be changed for forks
         continue-on-error: true
