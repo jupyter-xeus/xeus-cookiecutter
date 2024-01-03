@@ -1,8 +1,7 @@
-name: {{cookiecutter.conda_package_name}}
+name: {{cookiecutter.conda_package_name}}-wasm-build
 channels:
   - conda-forge
 dependencies:
-  - {{cookiecutter.conda_package_name}}=0.1.0
-  - notebook
-  - ipywidgets>=7.6
-  - jupyterlab=3
+  - cmake
+  - emsdk >=3.1.11
+  - empack >=2.0.1
