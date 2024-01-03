@@ -44,7 +44,9 @@ jobs:
 
       - name: Build
         shell: bash -l {0}
+        {% raw %}
         run: make -j${{ steps.cpu-cores.outputs.count }}
+        {% endraw %}
         working-directory: build
 
       - name: Install
@@ -125,6 +127,7 @@ jobs:
         run: emcc -v
 
       - name: Install xtl
+        {% raw %}
         run: |
           mkdir -p /opt/xtl/build
           git clone https://github.com/xtensor-stack/xtl.git  /opt/xtl/src
@@ -133,8 +136,10 @@ jobs:
           cd /opt/xtl/build
           emcmake cmake ../src/ -DCMAKE_INSTALL_PREFIX=/custom_sysroot
           emmake make -j${{ steps.cpu-cores.outputs.count }} install
+        {% endraw %}
 
       - name: Install nlohmann-json
+        {% raw %}
         run: |
           mkdir -p /opt/nlohmannjson/build
           git clone https://github.com/nlohmann/json.git  /opt/nlohmannjson/src
@@ -143,8 +148,10 @@ jobs:
           cd /opt/nlohmannjson/build
           emcmake cmake ../src/  -DJSON_BuildTests=OFF -DCMAKE_INSTALL_PREFIX=/custom_sysroot
           emmake make -j${{ steps.cpu-cores.outputs.count }} install
+        {% endraw %}
 
       - name: Install xeus
+        {% raw %}
         run: |
           mkdir -p /opt/xeus/build
           git clone https://github.com/jupyter-xeus/xeus.git  /opt/xeus/src
@@ -160,8 +167,10 @@ jobs:
 
           emmake make -j${{ steps.cpu-cores.outputs.count }}
           emmake make -j${{ steps.cpu-cores.outputs.count }} install
+        {% endraw %}
 
       - name: Install xeus-lite
+        {% raw %}
         run: |
           mkdir -p /opt/xeus-lite/build
           git clone https://github.com/jupyter-xeus/xeus-lite.git  /opt/xeus-lite/src
@@ -174,6 +183,7 @@ jobs:
             -Dxeus_DIR=/custom_sysroot/lib/cmake/xeus
           emmake make -j${{ steps.cpu-cores.outputs.count }}
           emmake make -j${{ steps.cpu-cores.outputs.count }} install
+        {% endraw %}
 
       - name: Make build directory
         run: mkdir build
@@ -192,7 +202,9 @@ jobs:
 
       - name: Build rendered project
         shell: bash -l {0}
+        {% raw %}
         run: emmake make -j${{ steps.cpu-cores.outputs.count }}
+        {% endraw %}
         working-directory: build
 
       - name: Install rendered project
@@ -252,6 +264,8 @@ jobs:
             -D{{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD=ON               \
             -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ON            \
             ..
+          {% raw %}
           make -j${{ steps.cpu-cores.outputs.count }}
+          {% endraw %}
 
   {% endif %}
