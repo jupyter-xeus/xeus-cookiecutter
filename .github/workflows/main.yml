@@ -124,7 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        emsdk_ver: ["3.1.33", "3.1.46", "latest"]
+        emsdk_ver: ["3.1.45"]
         # os: [ubuntu-latest, "macos-latest"]
 
     steps:
