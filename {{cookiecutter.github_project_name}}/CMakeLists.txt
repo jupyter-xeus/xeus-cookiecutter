@@ -1,9 +1,9 @@
 #############################################################################
-#Copyright (c) {% now 'utc', '%Y' %},                                          
-#                                                                         
-#Distributed under the terms of the {{cookiecutter.open_source_license}}.                 
-#                                                                         
-#The full license is in the file LICENSE, distributed with this software. 
+#Copyright (c) {% now 'utc', '%Y' %},
+#
+#Distributed under the terms of the {{cookiecutter.open_source_license}}.
+#
+#The full license is in the file LICENSE, distributed with this software.
 #############################################################################
 
 cmake_minimum_required(VERSION 3.4.3)
@@ -190,7 +190,7 @@ macro({{cookiecutter.cmake_var_prefix|lower}}_set_kernel_options target_name)
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     endif()
     {% else -%}
-        find_package(Threads) 
+        find_package(Threads)
         target_link_libraries(${target_name} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
     {% endif %}
 endmacro()
@@ -264,6 +264,9 @@ if ({{cookiecutter.cmake_var_prefix}}_BUILD_STATIC)
     else ()
         {{cookiecutter.cmake_var_prefix|lower}}_create_target({{cookiecutter.library_name}}-static STATIC {{cookiecutter.library_name}})
     endif ()
+    if(EMSCRIPTEN)
+        target_compile_options({{cookiecutter.library_name}}-static PRIVATE -fPIC)
+    endif()
     list(APPEND {{cookiecutter.cmake_var_prefix}}_TARGETS {{cookiecutter.library_name}}-static)
 endif ()
 
@@ -283,7 +286,8 @@ if(EMSCRIPTEN)
     include(WasmBuildOptions)
     find_package(xeus-lite REQUIRED)
     add_executable({{cookiecutter.binary_name}} src/main_emscripten_kernel.cpp )
-    target_link_libraries({{cookiecutter.binary_name}} PRIVATE {{cookiecutter.library_name}}-static xeus-lite)
+    target_link_libraries({{cookiecutter.binary_name}} PRIVATE xeus-lite)
+    target_compile_options({{cookiecutter.binary_name}} PRIVATE -fPIC)
     {{cookiecutter.cmake_var_prefix}}_set_kernel_options({{cookiecutter.binary_name}})
     xeus_wasm_compile_options({{cookiecutter.binary_name}})
     xeus_wasm_link_options({{cookiecutter.binary_name}} "web,worker")

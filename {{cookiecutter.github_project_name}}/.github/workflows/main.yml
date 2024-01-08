@@ -261,7 +261,6 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release                        \
             -DCMAKE_PREFIX_PATH=$PREFIX                       \
             -DCMAKE_INSTALL_PREFIX=$PREFIX                    \
-            -D{{cookiecutter.cmake_var_prefix}}_EMSCRIPTEN_WASM_BUILD=ON               \
             -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ON            \
             ..
           {% raw %}
