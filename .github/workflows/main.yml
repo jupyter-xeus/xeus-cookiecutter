@@ -55,11 +55,11 @@ jobs:
           cmake --build . --target install --config Release
 
 
-      - name: Install
-        shell: bash -l {0}
-        run: |
-          cd xeus-mylang/bld
-          make install
+      # - name: Install
+      #   shell: bash -l {0}
+      #   run: |
+      #     cd xeus-mylang/bld
+      #     make install
 
       - name: Test
         shell: bash -l {0}
