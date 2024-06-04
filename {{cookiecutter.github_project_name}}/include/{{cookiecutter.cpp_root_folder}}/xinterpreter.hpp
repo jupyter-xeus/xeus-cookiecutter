@@ -44,7 +44,7 @@ namespace {{cookiecutter.cpp_namespace}}
                                   int execution_counter,
                                   const std::string& code,
                                   xeus::execute_request_config config,
-                                  nl::json user_expressions) override
+                                  nl::json user_expressions) override;
 
         nl::json complete_request_impl(const std::string& code, int cursor_pos) override;
 
