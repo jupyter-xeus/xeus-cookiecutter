@@ -4,4 +4,4 @@ channels:
   - https://repo.mamba.pm/conda-forge
 dependencies:
   - cmake
-  - emscripten_emscripten-wasm32
+  - emscripten_emscripten-wasm32=3.1.45=py311h93d7dc1_27
