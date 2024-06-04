@@ -137,9 +137,6 @@ jobs:
       - name: Build
         shell: bash -l {0}
         run: |
-          {% raw %}
-          emsdk activate ${{ matrix.emsdk_ver }}
-          {% endraw %}
           source $CONDA_EMSDK_DIR/emsdk_env.sh
           micromamba create -f environment-wasm-host.yml --platform=emscripten-wasm32
 
