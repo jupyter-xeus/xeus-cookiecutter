@@ -170,7 +170,7 @@ jobs:
 
 
   push:
-    needs: [unix, win, emscripten_wasm]
+    needs: [generic, win, emscripten_wasm]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
