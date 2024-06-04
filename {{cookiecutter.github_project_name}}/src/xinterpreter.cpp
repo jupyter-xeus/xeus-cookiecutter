@@ -28,7 +28,7 @@ namespace {{cookiecutter.cpp_namespace}}
         xeus::register_interpreter(this);
     }
 
-    void execute_request_impl(send_reply_callback cb, // Callback to send the result
+    void interpreter::execute_request_impl(send_reply_callback cb, // Callback to send the result
                                   int execution_counter, // Typically the cell number
                                   const std::string& code, // Code to execute
                                   xeus::execute_request_config /*config*/,
