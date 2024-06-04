@@ -147,18 +147,11 @@ jobs:
         shell: bash -l {0}
         run: micromamba create -f xeus-mylang/environment-wasm-build.yml -y
 
-      - name: Setup emsdk
-        shell: bash -l {0}
-        run: |
-          micromamba activate xeus-mylang-wasm-build
-          emsdk install ${{ matrix.emsdk_ver }}
-
       - name: Build
         shell: bash -l {0}
         working-directory: xeus-mylang
         run: |
           micromamba activate xeus-mylang-wasm-build
-          emsdk activate ${{ matrix.emsdk_ver }}
 
           source $CONDA_EMSDK_DIR/emsdk_env.sh
           micromamba create -f environment-wasm-host.yml --platform=emscripten-wasm32
