@@ -21,9 +21,13 @@
 #include <unistd.h>
 #endif
 
+#include "xeus/xeus_context.hpp"
 #include "xeus/xkernel.hpp"
 #include "xeus/xkernel_configuration.hpp"
-#include "xeus-zmq/xserver_zmq.hpp"
+#include "xeus/xserver.hpp"
+
+#include "xeus-zmq/xserver_zmq_split.hpp"
+#include "xeus-zmq/xzmq_context.hpp"
 
 
 #include "{{cookiecutter.cpp_root_folder}}/xinterpreter.hpp"
@@ -102,7 +106,7 @@ int main(int argc, char* argv[])
     signal(SIGSEGV, handler);
 #endif
 
-    auto context = xeus::make_context<zmq::context_t>();
+    std::unique_ptr<xeus::xcontext> context = xeus::make_zmq_context();
 
     // Instantiating the xeus xinterpreter
     using interpreter_ptr = std::unique_ptr<{{cookiecutter.cpp_namespace}}::interpreter>;
