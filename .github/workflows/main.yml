@@ -9,12 +9,12 @@ on:
     - cron: '0 2 * * *' # run at 2 AM UTC
 
 jobs:
-  unix:
+  generic:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
