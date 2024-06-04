@@ -66,7 +66,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [windows-2019, windows-2022]
 
     steps:
       - uses: actions/checkout@v4
@@ -126,7 +126,7 @@ jobs:
         with:
           environment-file: environment-wasm-build.yml
           environment-name: {{cookiecutter.conda_package_name}}-wasm-build
-          
+
       - name: Build
         shell: bash -l {0}
         run: |
