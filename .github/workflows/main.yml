@@ -9,12 +9,12 @@ on:
     - cron: '0 2 * * *' # run at 2 AM UTC
 
 jobs:
-  unix:
+  generic:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +44,7 @@ jobs:
           mkdir -p bld
           cd bld
           cmake .. \
+           -DCMAKE_BUILD_TYPE=Release \
            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
 
@@ -51,13 +52,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang/bld
-          make -j8
-
-      - name: Install
-        shell: bash -l {0}
-        run: |
-          cd xeus-mylang/bld
-          make install
+          cmake --build . --target install --config Release
 
       - name: Test
         shell: bash -l {0}
@@ -66,66 +61,11 @@ jobs:
           cd xeus-mylang/test
           pytest .  --reruns 5
 
-  win:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ windows-latest]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install micromamba
-        uses: mamba-org/setup-micromamba@v1
-        with:
-          init-shell: >-
-            powershell
-            cmd.exe
-          environment-file: .github/ci_env.yml
-
-      - name: Create project with cookiecutter
-        shell: powershell
-        run:
-          cookiecutter  . --no-input -f
-
-      - name: Create and activate env
-        shell: powershell
-        run: |
-          micromamba create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
-          micromamba activate xeus_cookiecutter_test_env
-
-      - name: Configure cmake
-        shell: cmd /C CALL {0}
-        run: |
-          micromamba activate xeus_cookiecutter_test_env
-          cd xeus-mylang
-          mkdir -p bld
-          cd bld
-          cmake .. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DXEUS_BUILD_TESTS=ON -DDEPENDENCY_SEARCH_PREFIX="%CONDA_PREFIX%\Library" -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" -DCMAKE_INSTALL_PREFIX="%CONDA_PREFIX%"
-
-      - name: Build and install
-        shell: cmd /C CALL {0}
-        run: |
-          micromamba activate xeus_cookiecutter_test_env
-          cd xeus-mylang/bld
-          set CL=/MP
-          nmake install
-
-      - name: Test
-        shell: cmd /C CALL {0}
-        run: |
-          micromamba activate xeus_cookiecutter_test_env
-          cd xeus-mylang/test
-          pytest .  --reruns 5
 
   emscripten_wasm:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        emsdk_ver: ["3.1.45"]
-        # os: [ubuntu-latest, "macos-latest"]
 
     steps:
       - uses: actions/checkout@v4
@@ -147,18 +87,11 @@ jobs:
         shell: bash -l {0}
         run: micromamba create -f xeus-mylang/environment-wasm-build.yml -y
 
-      - name: Setup emsdk
-        shell: bash -l {0}
-        run: |
-          micromamba activate xeus-mylang-wasm-build
-          emsdk install ${{ matrix.emsdk_ver }}
-
       - name: Build
         shell: bash -l {0}
         working-directory: xeus-mylang
         run: |
           micromamba activate xeus-mylang-wasm-build
-          emsdk activate ${{ matrix.emsdk_ver }}
 
           source $CONDA_EMSDK_DIR/emsdk_env.sh
           micromamba create -f environment-wasm-host.yml --platform=emscripten-wasm32
@@ -181,7 +114,7 @@ jobs:
 
 
   push:
-    needs: [unix, win, emscripten_wasm]
+    needs: [generic, emscripten_wasm]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

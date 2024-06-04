@@ -4,6 +4,6 @@ channels:
   - https://repo.mamba.pm/conda-forge
 dependencies:
   - nlohmann_json
-  - xeus-lite
-  - xeus >=3.0.5,<4.0
+  - xeus-lite >= 3.0,<4.0
+  - xeus >=5.0.0,<6.0
   - xtl >=0.7,<0.8

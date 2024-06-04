@@ -1,7 +1,7 @@
 name: {{cookiecutter.conda_package_name}}-wasm-build
 channels:
-  - conda-forge
+  - https://repo.mamba.pm/emscripten-forge
+  - https://repo.mamba.pm/conda-forge
 dependencies:
   - cmake
-  - emsdk >=3.1.46
-  - empack >=3.2.0
+  - emscripten_emscripten-wasm32=3.1.45=py311h93d7dc1_27

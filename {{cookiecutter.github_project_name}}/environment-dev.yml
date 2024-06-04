@@ -7,12 +7,12 @@ dependencies:
   - cmake
   - cxx-compiler
   # Host dependencies
-  - xeus-zmq >=1.0.2,<2.0
+  - xeus-zmq >=3.0.0,<4.0
   - nlohmann_json
   - cppzmq
-  - xtl
   # Test dependencies
   - pytest
   - jupyter_kernel_test>=0.4.3
   - nbval
   - pytest-rerunfailures
+  - micromamba

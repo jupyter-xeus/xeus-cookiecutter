@@ -28,12 +28,11 @@ namespace {{cookiecutter.cpp_namespace}}
         xeus::register_interpreter(this);
     }
 
-    nl::json interpreter::execute_request_impl(int execution_counter, // Typically the cell number
-                                                      const  std::string & code, // Code to execute
-                                                      bool /*silent*/,
-                                                      bool /*store_history*/,
-                                                      nl::json /*user_expressions*/,
-                                                      bool /*allow_stdin*/)
+    void interpreter::execute_request_impl(send_reply_callback cb, // Callback to send the result
+                                  int execution_counter, // Typically the cell number
+                                  const std::string& code, // Code to execute
+                                  xeus::execute_request_config /*config*/,
+                                  nl::json /*user_expressions*/) 
     {
         // Use this method for publishing the execution result to the client,
         // this method takes the ``execution_counter`` as first argument,
@@ -58,9 +57,9 @@ namespace {{cookiecutter.cpp_namespace}}
         publish_stream("stderr", "Error!");
 
         // Use Helpers that create replies to the server to be returned
-        return xeus::create_successful_reply(/*payload, user_expressions*/);
+        cb(xeus::create_successful_reply(/*payload, user_expressions*/));
         // Or in case of error:
-        //return xeus::create_error_reply(evalue, ename, trace_back);
+        // cb(xeus::create_error_reply(evalue, ename, trace_back));
     }
 
     void interpreter::configure_impl()
