@@ -44,6 +44,7 @@ jobs:
           mkdir -p bld
           cd bld
           cmake .. \
+           -DCMAKE_BUILD_TYPE=Release \
            -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
 
@@ -51,7 +52,8 @@ jobs:
         shell: bash -l {0}
         run: |
           cd xeus-mylang/bld
-          make -j8
+          cmake --build . --target install --config Release
+
 
       - name: Install
         shell: bash -l {0}
@@ -170,7 +172,7 @@ jobs:
 
 
   push:
-    needs: [generic, win, emscripten_wasm]
+    needs: [generic, emscripten_wasm]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
