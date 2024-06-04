@@ -126,18 +126,10 @@ jobs:
         with:
           environment-file: environment-wasm-build.yml
           environment-name: {{cookiecutter.conda_package_name}}-wasm-build
-
-      - name: Setup emsdk
-        shell: bash -l {0}
-        run: |
-          {% raw %}
-          emsdk install ${{ matrix.emsdk_ver }}
-          {% endraw %}
-
+          
       - name: Build
         shell: bash -l {0}
         run: |
-          source $CONDA_EMSDK_DIR/emsdk_env.sh
           micromamba create -f environment-wasm-host.yml --platform=emscripten-wasm32
 
           mkdir build
