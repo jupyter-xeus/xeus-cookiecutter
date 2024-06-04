@@ -80,17 +80,16 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: >-
-            powershell
             cmd.exe
           environment-file: .github/ci_env.yml
 
       - name: Create project with cookiecutter
-        shell: powershell
+        shell: cmd /C CALL {0}
         run:
           cookiecutter  . --no-input -f
 
       - name: Create and activate env
-        shell: powershell
+        shell: cmd /C CALL {0}
         run: |
           micromamba create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
           micromamba activate xeus_cookiecutter_test_env
