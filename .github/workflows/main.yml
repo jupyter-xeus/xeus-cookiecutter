@@ -91,12 +91,12 @@ jobs:
       - name: Create and activate env
         shell: cmd /C CALL {0}
         run: |
-          $MAMBA_EXE create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
+          %MAMBA_EXE create -f xeus-mylang\environment-dev.yml  -y --name xeus_cookiecutter_test_env
 
       - name: Configure cmake
         shell: cmd /C CALL {0}
         run: |
-          $MAMBA_EXE activate xeus_cookiecutter_test_env
+          %MAMBA_EXE activate xeus_cookiecutter_test_env
           cd xeus-mylang
           mkdir -p bld
           cd bld
@@ -105,7 +105,7 @@ jobs:
       - name: Build and install
         shell: cmd /C CALL {0}
         run: |
-          $MAMBA_EXE activate xeus_cookiecutter_test_env
+          %MAMBA_EXE activate xeus_cookiecutter_test_env
           cd xeus-mylang/bld
           set CL=/MP
           nmake install
@@ -113,7 +113,7 @@ jobs:
       - name: Test
         shell: cmd /C CALL {0}
         run: |
-          $MAMBA_EXE activate xeus_cookiecutter_test_env
+          %MAMBA_EXE activate xeus_cookiecutter_test_env
           cd xeus-mylang/test
           pytest .  --reruns 5
 
