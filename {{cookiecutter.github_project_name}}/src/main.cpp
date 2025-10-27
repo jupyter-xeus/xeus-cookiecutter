@@ -13,7 +13,7 @@
 #include <string>
 #include <utility>
 
-#ifdef __GNUC__
+#ifdef __GLIBC__
 #include <stdio.h>
 #include <execinfo.h>
 #include <signal.h>
@@ -34,7 +34,7 @@
 #include "{{cookiecutter.cpp_root_folder}}/{{cookiecutter.config_file_name}}.hpp"
 
 
-#ifdef __GNUC__
+#ifdef __GLIBC__
 void handler(int sig)
 {
     void* array[10];
@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
     }
 
     // Registering SIGSEGV handler
-#ifdef __GNUC__
+#ifdef __GLIBC__
     std::clog << "registering handler for SIGSEGV" << std::endl;
     signal(SIGSEGV, handler);
 #endif
