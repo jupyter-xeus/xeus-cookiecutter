@@ -6,11 +6,11 @@ dependencies:
   - cookiecutter
   - make
   - cmake
-  - python >=3.6
+  - python
   - cookiecutter
   - pytest-cookies
   - pytest
-  - xeus-zmq >=1.0.2,<2.0
+  - xeus-zmq
   - xtl
   - sh
   - nlohmann_json

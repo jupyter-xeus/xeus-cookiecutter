@@ -1,7 +1,7 @@
 name: {{cookiecutter.conda_package_name}}-wasm-build
 channels:
-  - https://repo.mamba.pm/emscripten-forge
-  - https://repo.mamba.pm/conda-forge
+  - https://repo.prefix.dev/emscripten-forge-4x
+  - conda-forge
 dependencies:
   - cmake
-  - emscripten_emscripten-wasm32
+  - emscripten_emscripten-wasm32 == 4.0.9
